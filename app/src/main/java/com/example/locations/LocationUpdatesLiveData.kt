@@ -31,7 +31,7 @@ class LocationUpdatesLiveData(context:Context) : LiveData<String>() {
     override fun onActive() {
         super.onActive()
         try {
-            locationClient.requestLocationUpdates(locationRequest,locationCallback , Looper.getMainLooper())
+            //locationClient.requestLocationUpdates(locationRequest,locationCallback , Looper.getMainLooper())
         }catch (e:SecurityException){
             Log.d("LocationUpdatesLiveData" , "Missing location permission")
         }
