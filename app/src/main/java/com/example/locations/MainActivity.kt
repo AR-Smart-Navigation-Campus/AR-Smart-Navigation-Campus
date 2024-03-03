@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -32,6 +33,22 @@ class MainActivity : AppCompatActivity() {
         }
         else{
             locationRequestLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+        }
+
+        binding.btnSavePlace.setOnClickListener {
+            val latitude = MainActivityViewModel.data.latitude
+            val longitude = MainActivityViewModel.data.longitude
+            val name = binding.placeName.text.toString()
+
+            viewModel.addData(latitude, longitude ,name)
+            binding.placeName.text.clear()
+        }
+
+        viewModel.placeData.observe(this){ list-> // problem - not showing the list
+            if(list.isNotEmpty()){
+                binding.dataView.text = list.last().toString()
+
+            }
         }
     }
 
