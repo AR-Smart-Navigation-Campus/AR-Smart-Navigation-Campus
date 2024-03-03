@@ -6,12 +6,16 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import com.example.locations.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+
+    private val viewModel: MainActivityViewModel by viewModels()
+
     private val locationRequestLauncher : ActivityResultLauncher<String> = registerForActivityResult(ActivityResultContracts.RequestPermission()){
         if(it){
             getLocationUpdates()
@@ -32,6 +36,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun getLocationUpdates(){
-
+        viewModel.address.observe(this){
+            binding.textView.text = it
+        }
     }
 }
