@@ -21,6 +21,7 @@ class MainActivity : AppCompatActivity() {
         if(it){
             getLocationUpdates()
         }
+        val no = 1
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
