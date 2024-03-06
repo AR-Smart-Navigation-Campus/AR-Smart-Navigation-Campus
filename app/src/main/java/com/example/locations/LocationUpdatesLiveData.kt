@@ -1,7 +1,6 @@
 package com.example.locations
 
 import android.content.Context
-import android.location.Geocoder
 import android.os.Looper
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -11,39 +10,33 @@ import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
 
+/**
+ * LiveData class that provides updates for the user's location.
+ * This class handles requesting location updates from the FusedLocationProviderClient
+ * and emits updates to observers with the latest location as a formatted string.
+ */
 class LocationUpdatesLiveData(context:Context) : LiveData<String>() {
 
-    private val locationClient : FusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(context)
+    //FusedLocationProviderClient instance to request location updates.
+    private val locationClient : FusedLocationProviderClient =
+        LocationServices.getFusedLocationProviderClient(context)
 
-    private val geocoder by lazy {
-        Geocoder(context)
-    }
+    // Location request object specifying update interval and priority.
+    private val locationRequest =
+        LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY,TimeUnit.SECONDS.toMillis(40)).build()
 
-    private val job = Job()
-
-    private val scope = CoroutineScope(job + Dispatchers.IO)
-
-    private val locationRequest = LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY,TimeUnit.SECONDS.toMillis(20)).build()
-
-
+    //Location callback to receive location updates from the FusedLocationProviderClient.
     private val locationCallback = object  : LocationCallback(){
         override fun onLocationResult(p0: LocationResult) {
             p0.lastLocation?.let {
-//                scope.launch {
-//                    val addresses = geocoder.getFromLocation(it.latitude , it.longitude , 1)
-//                    postValue(addresses?.get(0)?.getAddressLine(0))
-//                }
                 postValue("${it.latitude} , ${it.longitude}")
             }
         }
     }
 
+    //Called when this LiveData becomes active. Starts requesting location updates.
     override fun onActive() {
         super.onActive()
         try {
@@ -51,9 +44,9 @@ class LocationUpdatesLiveData(context:Context) : LiveData<String>() {
         }catch (e:SecurityException){
             Log.d("LocationUpdatesLiveData" , "Missing location permission")
         }
-
     }
 
+    //Called when this LiveData becomes inactive. Stops requesting location updates.
     override fun onInactive() {
         super.onInactive()
         locationClient.removeLocationUpdates(locationCallback)
