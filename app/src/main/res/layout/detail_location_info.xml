@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="detail_location.DetailLocationInfo">
+
+
+    <TextView
+        android:id="@+id/location_name"
+        android:layout_width="395dp"
+        android:layout_height="38dp"
+        android:text="Location name"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.01"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="8dp" />
+
+    <TextView
+        android:id="@+id/location_location"
+        android:layout_width="394dp"
+        android:layout_height="27dp"
+        android:text="Location"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/location_azimuth"
+        app:layout_constraintTop_toBottomOf="@+id/location_name"
+        tools:layout_editor_absoluteX="17dp"
+        tools:ignore="MissingConstraints" />
+
+
+    <TextView
+        android:id="@+id/location_azimuth"
+        android:layout_width="392dp"
+        android:layout_height="27dp"
+        android:text="Azimuth"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/item_detail_image"
+        app:layout_constraintTop_toTopOf="@+id/location_name"
+        app:layout_constraintVertical_bias="0.191"
+        tools:layout_editor_absoluteX="19dp"
+        tools:ignore="MissingConstraints" />
+
+    <ImageView
+        android:id="@+id/item_detail_image"
+        android:layout_width="394dp"
+        android:layout_height="436dp"
+        android:src="@mipmap/ic_launcher"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_back"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="17dp" />
+
+    <Button
+        android:id="@+id/btn_back"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Back to Main"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/location_name"
+        app:layout_constraintVertical_bias="0.989"
+        tools:layout_editor_absoluteX="38dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+

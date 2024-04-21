@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/my_nav"
+    app:startDestination="@id/addItemFragment">
+
+    <fragment
+        android:id="@+id/allLocationsFragments"
+        android:name="com.example.locations.all_location.AllLocationsFragment"
+        android:label="all_locations_layout"
+        tools:layout="@layout/all_locations_layout" >
+        <action
+            android:id="@+id/action_allLocationsFragments_to_addLocationFragment"
+            app:destination="@id/addItemFragment"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_right"
+            app:popExitAnim="@anim/to_right" />
+        <action
+            android:id="@+id/action_allLocationsFragments_to_detailLocationInfo"
+            app:destination="@id/detailLocationInfo"
+            app:enterAnim="@anim/from_left"
+            app:exitAnim="@anim/to_right"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/addItemFragment"
+        android:name="com.example.locations.single_location.AddLocationFragment"
+        android:label="add_location_layout"
+        tools:layout="@layout/add_location" >
+        <action
+            android:id="@+id/action_addLocationFragment_to_allLocationsFragments"
+            app:destination="@id/allLocationsFragments"
+            app:enterAnim="@anim/from_left"
+            app:exitAnim="@anim/to_right"
+            app:popEnterAnim="@anim/from_right"
+            app:popExitAnim="@anim/to_left"
+            app:popUpTo="@id/allLocationsFragments"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailLocationInfo"
+        android:name="com.example.locations.detail_location.DetailLocationInfo"
+        android:label="DetailLocationInfo"
+        tools:layout="@layout/detail_location_info">
+        <action
+            android:id="@+id/action_detailLocationInfo_to_allLocationsFragments"
+            app:destination="@id/allLocationsFragments"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/to_left"
+            app:popExitAnim="@anim/to_left" />
+    </fragment>
+</navigation>
