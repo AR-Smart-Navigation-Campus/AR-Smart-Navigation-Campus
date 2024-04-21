@@ -27,6 +27,8 @@ interface LocationDao {
     // Query to delete a LocationData object from the database.
     @Delete
     fun deleteLocation(locationData: LocationData)
+
+    // Query to delete all LocationData objects from the database.
     @Query("DELETE FROM location_data")
     fun deleteAll()
 }

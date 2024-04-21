@@ -6,7 +6,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.locations.data.model.LocationData
 import com.example.locations.data.model.LocationRepository
-import com.example.locations.single_location.AzimuthSensorManager
 import com.example.locations.single_location.LocationUpdatesLiveData
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -14,17 +13,20 @@ import java.io.File
 import java.io.FileReader
 import java.io.FileWriter
 
-
+// MainViewModel class that extends AndroidViewModel and provides LiveData objects for the UI to observe.
 class MainViewModel(application: Application) : AndroidViewModel(application) {
 
+    // LiveData object for the list of LocationData objects
     private val _chosenItem  = MutableLiveData<LocationData>()
+    // LiveData object for the selected LocationData object
     val chosenItem : LiveData<LocationData> get() = _chosenItem
-
+    // LocationRepository object to interact with the database
     private val repository = LocationRepository(application)
-
+    // LiveData object for the list of LocationData objects
     val locationData : LiveData<List<LocationData>>? = repository.getLocations()
 
 
+    // Adds a new entry to the database and JSON file
     fun addEntry(imageUri: String) {
 
         // Generate a unique id
@@ -60,6 +62,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         FileWriter(file).use { it.write(updatedJson) }
     }
 
+    // Deletes an entry from the database and JSON file
     fun deleteEntry(locationData: LocationData){
         repository.deleteLocation(locationData)
 
@@ -102,10 +105,12 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    // Deletes all entries from the database and JSON file
     fun deleteAll() {
         repository.deleteAll()
     }
 
+    // Sets the selected LocationData object
     fun setLocation(it: LocationData) {
         _chosenItem.value = it
     }
@@ -113,16 +118,21 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
 ////////////////////////////////////////////////////////////////////////////
 
+    // LiveData object for the current address
     val address: LiveData<String> = LocationUpdatesLiveData(application.applicationContext)
+    // LiveData object for the current location
     private val _location = MutableLiveData<String>()
     val location: LiveData<String> = _location
+    // LiveData object for the user input
     private val _userInput = MutableLiveData<String>()
     val userInput: LiveData<String> = _userInput
 
+    // Updates the user input with the provided text
     fun addUserInput(text: String) {
         _userInput.value = text
     }
 
+    // Updates the current location with the provided value
     fun updateLocation(location: String) {
         _location.value = location
     }

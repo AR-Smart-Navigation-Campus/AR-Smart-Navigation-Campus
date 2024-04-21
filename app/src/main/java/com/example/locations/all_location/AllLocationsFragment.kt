@@ -22,19 +22,27 @@ import java.util.Locale
 
 class AllLocationsFragment : Fragment() {
 
+    // Binding object instance corresponding to the fragment_all_locations.xml layout
     private var _binding: AllLocationsLayoutBinding? = null
+
+    // Non-null access to the binding object instance
     private val binding get() = _binding!!
 
+    // Adapter for the RecyclerView
     private lateinit var adapter: LocationAdapter
 
+    // ViewModel instance
     private val viewModel: MainViewModel by activityViewModels()
 
+    // Inflate the layout for this fragment
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
                               savedInstanceState: Bundle?):
             View {
         _binding = AllLocationsLayoutBinding.inflate(inflater, container, false)
+        // Setup RecyclerView
         setupRecyclerView()
+        // Setup back button click listener
         binding.buttonBack.setOnClickListener {
             binding.searchEditText.text.clear()
             findNavController().navigate(R.id.action_allLocationsFragments_to_addLocationFragment)
@@ -42,11 +50,14 @@ class AllLocationsFragment : Fragment() {
         return binding.root
     }
 
+    // Called immediately after onCreateView() has returned, but before any saved state has been restored in to the view
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        // Setup search EditText
         setupSearchEditText()
     }
 
+    // Setup RecyclerView with data from the ViewModel
     private fun setupRecyclerView() {
         viewModel.locationData?.observe(viewLifecycleOwner) { allLocations ->
             setupAdapter(allLocations)
@@ -54,12 +65,14 @@ class AllLocationsFragment : Fragment() {
         }
     }
 
+    // Setup adapter for RecyclerView
     private fun setupAdapter(allLocations: List<LocationData>) {
          adapter = LocationAdapter(allLocations, object : LocationAdapter.ItemListener {
+             // Handle item click
             override fun onItemClick(index: Int) {
                 Toast.makeText(requireContext(), "Long touch for detailed info", Toast.LENGTH_SHORT).show()
             }
-
+             // Handle item long click
             override fun onItemLongClicked(index: Int) {
                 viewModel.setLocation(allLocations[index])
                 setupAdapter(allLocations)
@@ -72,13 +85,15 @@ class AllLocationsFragment : Fragment() {
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
     }
 
+    // Setup item touch helper for RecyclerView
     private fun setupItemTouchHelper() {
         ItemTouchHelper(object : ItemTouchHelper.Callback() {
+            // Setup movement flags for RecyclerView
             override fun getMovementFlags(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) =
                 makeFlag(ItemTouchHelper.ACTION_STATE_SWIPE, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT)
-
+            // Handle move event
             override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder) = false
-
+            // Handle swipe event
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val location = (binding.recyclerView.adapter as LocationAdapter).itemAt(viewHolder.adapterPosition)
                 viewModel.deleteEntry(location)
@@ -86,17 +101,19 @@ class AllLocationsFragment : Fragment() {
         }).attachToRecyclerView(binding.recyclerView)
     }
 
+    // Setup search EditText with text change listener
     private fun setupSearchEditText() {
         binding.searchEditText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                // Handle text change
                 filterBuilding(s.toString())
             }
             override fun afterTextChanged(s: Editable) {}
         })
     }
 
-
+    // Filter locations based on query
     private fun filterBuilding(query: String) {
         if (!::adapter.isInitialized) return
         val filteredList = ArrayList<LocationData>()
@@ -120,6 +137,7 @@ class AllLocationsFragment : Fragment() {
         adapter.updateData(filteredList)
     }
 
+    // Called when the view hierarchy associated with the fragment is being cleaned up
         override fun onDestroyView() {
             super.onDestroyView()
             _binding = null
