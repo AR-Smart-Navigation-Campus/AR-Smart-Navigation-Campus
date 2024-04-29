@@ -3,11 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/my_nav"
-    app:startDestination="@id/addItemFragment">
+    app:startDestination="@id/homePage">
 
     <fragment
         android:id="@+id/allLocationsFragments"
-        android:name="com.example.locations.all_location.AllLocationsFragment"
+        android:name="com.example.locations.Admin.all_location.AllLocationsFragment"
         android:label="all_locations_layout"
         tools:layout="@layout/all_locations_layout" >
         <action
@@ -24,10 +24,24 @@
             app:exitAnim="@anim/to_right"
             app:popEnterAnim="@anim/from_left"
             app:popExitAnim="@anim/to_right" />
+        <action
+            android:id="@+id/action_allLocationsFragments_to_StartNav"
+            app:destination="@id/StartNav"
+            app:enterAnim="@anim/from_left"
+            app:exitAnim="@anim/to_right"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right" />
+        <action
+            android:id="@+id/action_allLocationsFragments_to_AR"
+            app:destination="@id/AR"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/to_left"
+            app:popExitAnim="@anim/to_left" />
     </fragment>
     <fragment
         android:id="@+id/addItemFragment"
-        android:name="com.example.locations.single_location.AddLocationFragment"
+        android:name="com.example.locations.Admin.all_location.single_location.AddLocationFragment"
         android:label="add_location_layout"
         tools:layout="@layout/add_location" >
         <action
@@ -39,10 +53,19 @@
             app:popExitAnim="@anim/to_left"
             app:popUpTo="@id/allLocationsFragments"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_addLocationFragment_to_homePage"
+            app:destination="@id/homePage"
+            app:enterAnim="@anim/from_left"
+            app:exitAnim="@anim/to_right"
+            app:popEnterAnim="@anim/from_right"
+            app:popExitAnim="@anim/to_left"
+            app:popUpTo="@id/homePage"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/detailLocationInfo"
-        android:name="com.example.locations.detail_location.DetailLocationInfo"
+        android:name="com.example.locations.Admin.all_location.detail_location.DetailLocationInfo"
         android:label="DetailLocationInfo"
         tools:layout="@layout/detail_location_info">
         <action
@@ -52,5 +75,158 @@
             app:exitAnim="@anim/to_left"
             app:popEnterAnim="@anim/to_left"
             app:popExitAnim="@anim/to_left" />
+    </fragment>
+    <fragment
+        android:id="@+id/homePage"
+        android:name="com.example.locations.UI.ui_activity.HomePageFragment"
+        android:label="HomePageFragment"
+        tools:layout="@layout/home_page">
+        <action
+            android:id="@+id/action_homePage_to_addLocationFragment"
+            app:destination="@id/addItemFragment"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/to_left"
+            app:popExitAnim="@anim/to_left" />
+        <action
+            android:id="@+id/action_homePage_to_loginFragment"
+            app:destination="@id/Login"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/to_left"
+            app:popExitAnim="@anim/to_left" />
+        <action
+            android:id="@+id/action_homePage_to_Register"
+            app:destination="@id/Register"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/to_left"
+            app:popExitAnim="@anim/to_left" />
+    </fragment>
+    <fragment
+        android:id="@+id/Login"
+        android:name="com.example.locations.UI.LoginFragment"
+        android:label="LoginFragment"
+        tools:layout="@layout/login_fragment">
+        <action
+            android:id="@+id/action_loginFragment_to_homePage"
+            app:destination="@id/homePage"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/to_left"
+            app:popExitAnim="@anim/to_left" />
+        <action
+            android:id="@+id/action_LoginFragment_to_Nav"
+            app:destination="@id/Nav"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/to_left"
+            app:popExitAnim="@anim/to_left" />
+    </fragment>
+    <fragment
+        android:id="@+id/Register"
+        android:name="com.example.locations.UI.RegisterFragment"
+        android:label="RegisterFragment"
+        tools:layout="@layout/register_fragment">
+        <action
+            android:id="@+id/action_RegisterFragment_to_homePage"
+            app:destination="@id/homePage"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/to_left"
+            app:popExitAnim="@anim/to_left" />
+        <action
+            android:id="@+id/action_RegisterFragment_to_Nav"
+            app:destination="@id/Nav"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/to_left"
+            app:popExitAnim="@anim/to_left" />
+    </fragment>
+    <fragment
+        android:id="@+id/Nav"
+        android:name="com.example.locations.UI.ui_activity.NavigationFragment"
+        android:label="NavigationFragment"
+        tools:layout="@layout/navigation_fragment">
+        <action
+            android:id="@+id/action_Nav_to_News"
+            app:destination="@id/News"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/to_left"
+            app:popExitAnim="@anim/to_left" />
+        <action
+            android:id="@+id/action_Nav_to_StartNav"
+            app:destination="@id/StartNav"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/to_left"
+            app:popExitAnim="@anim/to_left" />
+    </fragment>
+    <fragment
+        android:id="@+id/News"
+        android:name="com.example.locations.UI.NewsletterFragment"
+        android:label="NewsFragment"
+        tools:layout="@layout/newsletter_fragment">
+        <action
+            android:id="@+id/action_News_to_Nav"
+            app:destination="@id/Nav"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/to_left"
+            app:popExitAnim="@anim/to_left" />
+    </fragment>
+    <fragment
+        android:id="@+id/StartNav"
+        android:name="com.example.locations.UI.ui_activity.StartNavFragment"
+        android:label="StartNavFragment"
+        tools:layout="@layout/start_nav_fragment">
+        <action
+            android:id="@+id/action_StartNav_to_Nav"
+            app:destination="@id/Nav"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/to_left"
+            app:popExitAnim="@anim/to_left" />
+        <action
+            android:id="@+id/action_StartNav_to_Map"
+            app:destination="@id/Map"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/to_left"
+            app:popExitAnim="@anim/to_left" />
+        <action
+            android:id="@+id/action_StartNav_to_allLocationsFragments"
+            app:destination="@id/allLocationsFragments"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/to_left"
+            app:popExitAnim="@anim/to_left" />
+    </fragment>
+    <fragment
+        android:id="@+id/Map"
+        android:name="com.example.locations.UI.ui_activity.MapFragment"
+        android:label="Map"
+        tools:layout="@layout/map_fragment">
+        <action
+            android:id="@+id/action_Map_to_StartNav"
+            app:destination="@id/StartNav"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/to_left"
+            app:popExitAnim="@anim/to_left" />
+        <action
+            android:id="@+id/action_MapFragment_to_AR"
+            app:destination="@id/AR"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/to_left"
+            app:popExitAnim="@anim/to_left" />
+    </fragment>
+    <fragment
+        android:id="@+id/AR"
+        android:name="com.example.locations.UI.ui_activity.StartARFragment"
+        android:label="AR"
+        tools:layout="@layout/start_ar_fragment">
     </fragment>
 </navigation>

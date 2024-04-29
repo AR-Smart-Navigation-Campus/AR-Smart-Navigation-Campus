@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="detail_location.DetailLocationInfo">
+    tools:context=".Admin.all_location.detail_location.DetailLocationInfo">
 
 
     <TextView
