@@ -1,4 +1,4 @@
-package com.example.locations.data.model
+package com.example.locations.Admin.all_location.model
 
 import android.content.Context
 import androidx.room.Database
@@ -15,7 +15,7 @@ abstract class LocationDatabase : RoomDatabase() {
    companion object{
       // Volatile variable to ensure that the value of instance is always up-to-date and the same to all execution threads.
       @Volatile
-      private var instance:LocationDatabase?=null
+      private var instance: LocationDatabase?=null
 
         // Function to get the database instance.
       fun getDataBase(context: Context) = instance ?: synchronized(this){

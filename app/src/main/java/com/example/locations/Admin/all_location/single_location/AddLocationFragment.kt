@@ -1,4 +1,4 @@
-package com.example.locations.single_location
+package com.example.locations.Admin.all_location.single_location
 
 import android.Manifest
 import android.content.Intent
@@ -13,7 +13,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import com.example.locations.MainViewModel
+import com.example.locations.Admin.all_location.AdminViewModel
 import com.example.locations.R
 import com.example.locations.databinding.AddLocationBinding
 
@@ -25,8 +25,8 @@ class AddLocationFragment: Fragment() {
     // Uri of the image selected by the user.
     private var imageUri: Uri? = null
 
-    // Instance of MainViewModel to access the data.
-    private val viewModel: MainViewModel by activityViewModels()
+    // Instance of AdminViewModel to access the data.
+    private val viewModel: AdminViewModel by activityViewModels()
 
     // Instance of AzimuthSensorManager to get azimuth updates.
     private lateinit var azimuthSensorManager: AzimuthSensorManager
@@ -57,6 +57,9 @@ class AddLocationFragment: Fragment() {
         binding.btnSavePlace.setOnClickListener { handleSavePlaceClick() }
         binding.imageBtn.setOnClickListener { handleImageBtnClick() }
         binding.btnViewList.setOnClickListener { handleViewListClick() }
+        binding.btnBack.setOnClickListener{
+            findNavController().navigate(R.id.action_addLocationFragment_to_homePage)
+        }
     }
 
     // Handle the click on the save place button.

@@ -1,4 +1,4 @@
-package com.example.locations.all_location
+package com.example.locations.Admin.all_location
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.locations.data.model.LocationData
+import com.example.locations.Admin.all_location.model.LocationData
 import com.example.locations.databinding.LocationItemBinding
 
 // Adapter for the RecyclerView in AllLocationsFragment
@@ -14,7 +14,8 @@ class LocationAdapter(
     // List of locations to display
     private var locationList: List<LocationData>,
     // Callback to handle item click and long click events
-    val callBack: ItemListener) :
+    val callBack: ItemListener
+) :
 RecyclerView.Adapter<LocationAdapter.LocationViewHolder>() {
 
     // Interface for item click and long click events

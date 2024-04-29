@@ -1,4 +1,4 @@
-package com.example.locations.single_location
+package com.example.locations.Admin.all_location.single_location
 
 import android.content.Context
 import android.hardware.Sensor

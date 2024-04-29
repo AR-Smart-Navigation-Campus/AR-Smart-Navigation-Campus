@@ -1,4 +1,4 @@
-package com.example.locations.detail_location
+package com.example.locations.Admin.all_location.detail_location
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
-import com.example.locations.MainViewModel
+import com.example.locations.Admin.all_location.AdminViewModel
 import com.example.locations.R
 import com.example.locations.databinding.DetailLocationInfoBinding
 
@@ -19,7 +19,7 @@ class DetailLocationInfo : Fragment() {
     private val binding get() = _binding!!
 
     // Get the view model
-    private val viewModel: MainViewModel by activityViewModels()
+    private val viewModel: AdminViewModel by activityViewModels()
 
     // Inflate the layout defined in detail_location_info.xml and return the root view
     override fun onCreateView(

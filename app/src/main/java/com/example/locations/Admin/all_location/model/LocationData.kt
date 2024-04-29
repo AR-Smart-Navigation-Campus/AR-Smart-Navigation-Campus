@@ -1,4 +1,4 @@
-package com.example.locations.data.model
+package com.example.locations.Admin.all_location.model
 
 import android.os.Parcelable
 import androidx.room.ColumnInfo

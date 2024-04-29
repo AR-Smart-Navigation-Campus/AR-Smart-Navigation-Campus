@@ -1,20 +1,20 @@
-package com.example.locations
+package com.example.locations.Admin.all_location
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.locations.data.model.LocationData
-import com.example.locations.data.model.LocationRepository
-import com.example.locations.single_location.LocationUpdatesLiveData
+import com.example.locations.Admin.all_location.model.LocationData
+import com.example.locations.Admin.all_location.model.LocationRepository
+import com.example.locations.Admin.all_location.single_location.LocationUpdatesLiveData
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.io.File
 import java.io.FileReader
 import java.io.FileWriter
 
-// MainViewModel class that extends AndroidViewModel and provides LiveData objects for the UI to observe.
-class MainViewModel(application: Application) : AndroidViewModel(application) {
+// AdminViewModel class that extends AndroidViewModel and provides LiveData objects for the UI to observe.
+class AdminViewModel(application: Application) : AndroidViewModel(application) {
 
     // LiveData object for the list of LocationData objects
     private val _chosenItem  = MutableLiveData<LocationData>()

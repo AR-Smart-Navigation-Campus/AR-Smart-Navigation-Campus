@@ -1,4 +1,4 @@
-package com.example.locations.all_location
+package com.example.locations.Admin.all_location
 
 import android.os.Bundle
 import android.text.Editable
@@ -6,7 +6,6 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -14,9 +13,8 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.locations.MainViewModel
 import com.example.locations.R
-import com.example.locations.data.model.LocationData
+import com.example.locations.Admin.all_location.model.LocationData
 import com.example.locations.databinding.AllLocationsLayoutBinding
 import java.util.Locale
 
@@ -32,7 +30,7 @@ class AllLocationsFragment : Fragment() {
     private lateinit var adapter: LocationAdapter
 
     // ViewModel instance
-    private val viewModel: MainViewModel by activityViewModels()
+    private val viewModel: AdminViewModel by activityViewModels()
 
     // Inflate the layout for this fragment
     override fun onCreateView(inflater: LayoutInflater,
@@ -43,9 +41,12 @@ class AllLocationsFragment : Fragment() {
         // Setup RecyclerView
         setupRecyclerView()
         // Setup back button click listener
-        binding.buttonBack.setOnClickListener {
+        binding.btnAdminBack.setOnClickListener {
             binding.searchEditText.text.clear()
             findNavController().navigate(R.id.action_allLocationsFragments_to_addLocationFragment)
+        }
+        binding.btnNavBack.setOnClickListener {
+            findNavController().navigate(R.id.action_allLocationsFragments_to_StartNav)
         }
         return binding.root
     }
@@ -70,7 +71,7 @@ class AllLocationsFragment : Fragment() {
          adapter = LocationAdapter(allLocations, object : LocationAdapter.ItemListener {
              // Handle item click
             override fun onItemClick(index: Int) {
-                Toast.makeText(requireContext(), "Long touch for detailed info", Toast.LENGTH_SHORT).show()
+                 findNavController().navigate(R.id.action_allLocationsFragments_to_AR)
             }
              // Handle item long click
             override fun onItemLongClicked(index: Int) {

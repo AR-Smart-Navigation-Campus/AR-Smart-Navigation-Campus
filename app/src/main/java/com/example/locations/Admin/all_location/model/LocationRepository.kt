@@ -1,10 +1,10 @@
-package com.example.locations.data.model
+package com.example.locations.Admin.all_location.model
 
 import android.app.Application
 
 // Repository class to interact with the database
 class LocationRepository(application: Application) {
-    private var locationDao:LocationDao? = null
+    private var locationDao: LocationDao? = null
 
     // Initialize the locationDao
     init {

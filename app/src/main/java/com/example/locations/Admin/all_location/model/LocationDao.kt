@@ -1,4 +1,4 @@
-package com.example.locations.data.model
+package com.example.locations.Admin.all_location.model
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
@@ -22,7 +22,7 @@ interface LocationDao {
     @Query("SELECT * FROM location_data")
     fun getAll(): LiveData<List<LocationData>>
     @Query("SELECT * FROM location_data WHERE id LIKE :id")
-    fun getLocation(id:Int):LocationData
+    fun getLocation(id:Int): LocationData
 
     // Query to delete a LocationData object from the database.
     @Delete
