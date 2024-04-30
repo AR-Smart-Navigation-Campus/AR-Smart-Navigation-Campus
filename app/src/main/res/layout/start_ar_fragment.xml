@@ -4,8 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/opencamera"
-    tools:context="com.example.locations.UI.ui_activity.StartARFragment">
+    tools:context="com.example.locations.AR.StartARFragment">
+
+    <fragment
+        android:id="@+id/sceneView"
+        android:name="com.google.ar.sceneform.ux.ArFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp" />
 
     <Button
         android:id="@+id/btnBack"

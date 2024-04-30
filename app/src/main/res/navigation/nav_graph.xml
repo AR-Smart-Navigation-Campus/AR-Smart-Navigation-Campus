@@ -225,7 +225,7 @@
     </fragment>
     <fragment
         android:id="@+id/AR"
-        android:name="com.example.locations.UI.ui_activity.StartARFragment"
+        android:name="com.example.locations.AR.StartARFragment"
         android:label="AR"
         tools:layout="@layout/start_ar_fragment">
     </fragment>
