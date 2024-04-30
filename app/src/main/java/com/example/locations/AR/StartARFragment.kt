@@ -33,4 +33,8 @@ class StartARFragment : Fragment() {
         arFragment.planeDiscoveryController.show()
     }
 
+    fun test(){
+
+    }
+
 }
