@@ -21,13 +21,13 @@ class RegisterFragment : Fragment() {
             findNavController().navigate(R.id.action_RegisterFragment_to_homePage)
         }
 
-        binding.buttonregister.setOnClickListener {
+        binding.confirmRegister.setOnClickListener {
             findNavController().navigate(R.id.action_RegisterFragment_to_Nav)
         }
 
-        var email = binding.editTextEmailAddress.text
-        var username = binding.editTextUserName.text
-        var password = binding.editTextPassword.text
+        var email = binding.emailTextInput.editText?.text
+        var username = binding.regUsernameTextInput.editText?.text
+        var password = binding.regPasswordTextInput.editText?.text
 
         return binding.root
 

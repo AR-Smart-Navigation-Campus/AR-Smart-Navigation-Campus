@@ -12,13 +12,12 @@
         android:layout_width="175dp"
         android:layout_height="42dp"
         android:layout_marginTop="500dp"
-        android:backgroundTint="@color/white"
+        android:backgroundTint="@color/btnsAndInput"
         android:text="Admin Manager"
         android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:backgroundTint="@color/white"
         tools:ignore="MissingConstraints" />
 
     <Button
@@ -27,7 +26,7 @@
         android:layout_height="43dp"
         android:layout_marginStart="159dp"
         android:layout_marginEnd="164dp"
-        android:backgroundTint="@color/white"
+        android:backgroundTint="@color/btnsAndInput"
         android:text="Login User"
         android:textColor="@color/black"
         app:layout_constraintBottom_toTopOf="@+id/buttonRegister"
@@ -35,14 +34,13 @@
         app:layout_constraintHorizontal_bias="0.433"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonAdmin"
-        tools:backgroundTint="@color/white"
         tools:ignore="MissingConstraints" />
 
     <Button
         android:id="@+id/buttonRegister"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/white"
+        android:backgroundTint="@color/btnsAndInput"
         android:text="@string/register"
         android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -50,7 +48,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.898"
-        tools:backgroundTint="@color/white"
         tools:ignore="MissingConstraints" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
