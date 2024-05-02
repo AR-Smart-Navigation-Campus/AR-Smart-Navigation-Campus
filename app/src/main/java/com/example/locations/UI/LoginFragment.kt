@@ -25,6 +25,7 @@ class LoginFragment : Fragment() {
         binding.buttonHomepage.setOnClickListener {
             findNavController().navigate(R.id.action_loginFragment_to_homePage)
         }
+
         // Clear focus and close keyboard when the user presses the "Done" or "Next" button on the keyboard
         binding.passwordTextInput.editText?.setOnEditorActionListener { v, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_DONE || actionId == EditorInfo.IME_ACTION_NEXT) {
@@ -41,9 +42,27 @@ class LoginFragment : Fragment() {
             }
         }
         binding.confirmLogin.setOnClickListener{
-            findNavController().navigate(R.id.action_LoginFragment_to_Nav)
+           if(checkLogin()) {
+               findNavController().navigate(R.id.action_LoginFragment_to_Nav)
+           }
         }
         return binding.root
     }
-
+fun checkLogin():Boolean {
+    val username = binding.usernameTextInput.editText?.text.toString()
+    val password = binding.passwordTextInput.editText?.text.toString()
+    if (username.isEmpty()) {
+        binding.usernameTextInput.error = "Username is required"
+        return false
+    } else {
+        binding.usernameTextInput.error = null
+    }
+    if (password.isEmpty()) {
+        binding.passwordTextInput.error = "Password is required"
+        return false
+    } else {
+        binding.passwordTextInput.error = null
+      }
+   return true
+}
 }
