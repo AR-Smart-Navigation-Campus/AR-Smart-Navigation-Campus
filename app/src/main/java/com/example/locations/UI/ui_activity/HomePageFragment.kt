@@ -8,12 +8,17 @@ import android.view.Window
 import android.view.WindowManager
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import com.example.locations.R
 import com.example.locations.databinding.HomePageBinding
+import com.google.firebase.Firebase
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.auth
 
 class HomePageFragment: Fragment() {
     lateinit var binding : HomePageBinding
+    private lateinit var auth: FirebaseAuth
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = HomePageBinding.inflate(inflater, container, false)
@@ -36,6 +41,20 @@ class HomePageFragment: Fragment() {
         binding.buttonAdmin.setOnClickListener{
             findNavController().navigate(R.id.action_homePage_to_addLocationFragment)
         }
+        auth = Firebase.auth // Initialize Firebase Auth
         return binding.root
+    }
+    public override fun onStart() {
+        super.onStart()
+        // Check if user is signed in (non-null) and update UI accordingly.
+        val currentUser = auth.currentUser
+        if (currentUser != null) {
+            navigateToHomePage()
+        }
+    }
+    private fun navigateToHomePage() {
+        view?.let {
+            Navigation.findNavController(it).navigate(R.id.action_homePage_to_Nav)
+        }
     }
 }

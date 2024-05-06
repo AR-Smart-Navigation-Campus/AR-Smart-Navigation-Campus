@@ -102,6 +102,9 @@
             app:exitAnim="@anim/to_left"
             app:popEnterAnim="@anim/to_left"
             app:popExitAnim="@anim/to_left" />
+        <action
+            android:id="@+id/action_homePage_to_Nav"
+            app:destination="@id/Nav" />
     </fragment>
     <fragment
         android:id="@+id/Login"

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background"
+    android:background="@color/background_white"
     tools:context="com.example.locations.UI.RegisterFragment">
 
     <Button
@@ -20,9 +20,34 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 
+    <TextView
+        android:id="@+id/reg_error"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/red"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:text="*Invalid email or password, please use an existing email and
+        a password of at least 6 characters"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/reg_email_text_input"
+        app:layout_constraintStart_toStartOf="parent"
+         />
+    <TextView
+        android:id="@+id/pass_error"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/red"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:text="*Passwords do not match"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/reg_email_text_input"
+        app:layout_constraintStart_toStartOf="parent"
+        />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/email_text_input"
+        android:id="@+id/reg_email_text_input"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Email"
@@ -51,35 +76,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/reg_username_text_input"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Username"
-        android:layout_marginTop="10dp"
-        app:boxStrokeColor="@color/black"
-        app:startIconDrawable="@drawable/user"
-        app:startIconTint="@color/black"
-        app:boxBackgroundColor="@color/btnsAndInput"
-        android:textColorHint="@color/black"
-        app:hintTextColor="@color/black"
-        android:imeOptions="actionDone"
-        app:errorIconTint="@color/red"
-        app:errorTextColor="@color/red"
-        app:boxStrokeErrorColor="@color/red"
-        app:cursorColor="@color/black"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-       app:layout_constraintTop_toBottomOf="@id/email_text_input">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:maxLength="8"
-            android:layout_height="wrap_content"
-            android:textColor="@color/black"
-            android:inputType="text"/>
-
-    </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/reg_password_text_input"
@@ -101,7 +98,7 @@
         app:hintTextColor="@color/black"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/reg_username_text_input">
+        app:layout_constraintTop_toBottomOf="@+id/reg_email_text_input">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"

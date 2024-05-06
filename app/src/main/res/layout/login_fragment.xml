@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background"
+    android:background="@color/background_white"
     tools:context="com.example.locations.UI.LoginFragment">
 
     <Button
@@ -20,17 +20,29 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints" />
 
+    <TextView
+        android:id="@+id/login_error"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/red"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:text="*Invalid email or password, please try again"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/email_text_input"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/username_text_input"
+        android:id="@+id/email_text_input"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Username"
+        android:hint="Email"
         app:errorTextColor="@color/red"
         app:errorIconTint="@color/red"
         app:boxStrokeErrorColor="@color/red"
         app:startIconTint="@color/black"
         app:cursorColor="@color/black"
-        app:startIconDrawable="@drawable/user"
+        app:startIconDrawable="@drawable/email"
         android:layout_marginTop="300dp"
         app:boxStrokeColor="@color/black"
         app:boxBackgroundColor="@color/btnsAndInput"
@@ -47,7 +59,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/black"
-            android:inputType="text"/>
+            android:inputType="textEmailAddress"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -71,7 +83,7 @@
         app:hintTextColor="@color/black"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/username_text_input">
+        app:layout_constraintTop_toBottomOf="@+id/email_text_input">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"

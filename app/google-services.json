@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "646379518514",
+    "project_id": "navigation-in-campus",
+    "storage_bucket": "navigation-in-campus.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:646379518514:android:ff25df636e4254c70d9a2b",
+        "android_client_info": {
+          "package_name": "com.example.locations"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBDBpI-UMkQME9RkfwmTr234juuA0xZcEI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
