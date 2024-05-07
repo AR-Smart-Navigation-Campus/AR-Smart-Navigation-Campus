@@ -1,5 +1,6 @@
 package com.example.locations.UI
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.ColorStateList
 import android.os.Bundle
@@ -10,6 +11,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
@@ -37,21 +39,12 @@ class LoginFragment : Fragment() {
         }
 
         auth = Firebase.auth // Initialize Firebase Auth
-//        // Clear focus and close keyboard when the user presses the "Done" or "Next" button on the keyboard
-//        binding.passwordTextInput.editText?.setOnEditorActionListener { v, actionId, event ->
-//            if (actionId == EditorInfo.IME_ACTION_DONE || actionId == EditorInfo.IME_ACTION_NEXT) {
-//                // Clear focus
-//                v.clearFocus()
-//
-//                // Close keyboard
-//                val imm = v.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-//                imm.hideSoftInputFromWindow(v.windowToken, 0)
-//
-//                true
-//            } else {
-//                false
-//            }
-//        }
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                findNavController().navigate(R.id.action_loginFragment_to_homePage)
+            }
+
+        })
 
         return binding.root
     }

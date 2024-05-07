@@ -38,9 +38,6 @@ class HomePageFragment: Fragment() {
             findNavController().navigate(R.id.action_homePage_to_Register)
         }
 
-        binding.buttonAdmin.setOnClickListener{
-            findNavController().navigate(R.id.action_homePage_to_addLocationFragment)
-        }
         auth = Firebase.auth // Initialize Firebase Auth
         return binding.root
     }
@@ -48,8 +45,10 @@ class HomePageFragment: Fragment() {
         super.onStart()
         // Check if user is signed in (non-null) and update UI accordingly.
         val currentUser = auth.currentUser
+
         if (currentUser != null) {
             navigateToHomePage()
+
         }
     }
     private fun navigateToHomePage() {

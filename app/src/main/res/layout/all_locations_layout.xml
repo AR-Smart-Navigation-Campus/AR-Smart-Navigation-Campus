@@ -30,26 +30,7 @@
             android:scaleType="centerCrop"
             app:srcCompat="@drawable/hitmap55" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="163dp"
-            android:orientation="vertical">
 
-            <Button
-                android:id="@+id/btnNavBack"
-                android:layout_width="123dp"
-                android:layout_height="41dp"
-                android:layout_margin="5dp"
-                android:hint="Nav Back" />
-
-
-            <Button
-                android:id="@+id/btnAdminBack"
-                android:layout_width="wrap_content"
-                android:layout_height="37dp"
-                android:layout_margin="5dp"
-                android:hint="Admin Back" />
-        </LinearLayout>
 
     </LinearLayout>
 

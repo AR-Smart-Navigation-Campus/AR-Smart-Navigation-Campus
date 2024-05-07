@@ -41,13 +41,7 @@ class AllLocationsFragment : Fragment() {
         // Setup RecyclerView
         setupRecyclerView()
         // Setup back button click listener
-        binding.btnAdminBack.setOnClickListener {
-            binding.searchEditText.text.clear()
-            findNavController().navigate(R.id.action_allLocationsFragments_to_addLocationFragment)
-        }
-        binding.btnNavBack.setOnClickListener {
-            findNavController().navigate(R.id.action_allLocationsFragments_to_StartNav)
-        }
+
         return binding.root
     }
 

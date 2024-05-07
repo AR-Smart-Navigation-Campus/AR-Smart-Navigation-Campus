@@ -58,7 +58,7 @@ class AddLocationFragment: Fragment() {
         binding.imageBtn.setOnClickListener { handleImageBtnClick() }
         binding.btnViewList.setOnClickListener { handleViewListClick() }
         binding.btnBack.setOnClickListener{
-            findNavController().navigate(R.id.action_addLocationFragment_to_homePage)
+            findNavController().popBackStack()
         }
     }
 
