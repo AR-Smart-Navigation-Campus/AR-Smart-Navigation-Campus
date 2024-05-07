@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
@@ -96,12 +97,13 @@ class RegisterFragment : Fragment() {
     }
 
     private fun togglePassError(isError: Boolean){
+        val password= binding.regConfirmPasswordTextInput
         if(isError) {
-            binding.regConfirmPasswordTextInput.boxStrokeColor =
+           password.boxStrokeColor =
                 ContextCompat.getColor(requireContext(), R.color.red)
-            binding.regConfirmPasswordTextInput.hintTextColor =
+            password.hintTextColor =
                 ContextCompat.getColorStateList(requireContext(), R.color.red)
-            binding.regConfirmPasswordTextInput.setStartIconTintList(
+            password.setStartIconTintList(
                 ColorStateList.valueOf(
                     ContextCompat.getColor(
                         requireContext(), R.color.red
@@ -109,12 +111,14 @@ class RegisterFragment : Fragment() {
                 )
             )
             binding.passError.visibility = View.VISIBLE
+            val shakeAnimation= AnimationUtils.loadAnimation(context, R.anim.vibrate)
+            password.startAnimation(shakeAnimation)
         }else{
-            binding.regConfirmPasswordTextInput.boxStrokeColor =
+            password.boxStrokeColor =
                 ContextCompat.getColor(requireContext(), R.color.black)
-            binding.regConfirmPasswordTextInput.hintTextColor =
+            password.hintTextColor =
                 ContextCompat.getColorStateList(requireContext(), R.color.black)
-            binding.regConfirmPasswordTextInput.setStartIconTintList(
+            password.setStartIconTintList(
                 ColorStateList.valueOf(
                     ContextCompat.getColor(
                         requireContext(), R.color.black
@@ -126,12 +130,14 @@ class RegisterFragment : Fragment() {
     }
 
     private fun toggleValidationError(isError: Boolean){
+        val email=binding.regEmailTextInput
+        val password=binding.regPasswordTextInput
         if(isError) {
-            binding.regEmailTextInput.boxStrokeColor =
+            email.boxStrokeColor =
                 ContextCompat.getColor(requireContext(), R.color.red)
-            binding.regEmailTextInput.hintTextColor =
+            email.hintTextColor =
                 ContextCompat.getColorStateList(requireContext(), R.color.red)
-            binding.regEmailTextInput.setStartIconTintList(
+            email.setStartIconTintList(
                 ColorStateList.valueOf(
                     ContextCompat.getColor(
                         requireContext(), R.color.red
@@ -139,17 +145,20 @@ class RegisterFragment : Fragment() {
                 )
             )
             binding.regError.visibility = View.VISIBLE
-            binding.regPasswordTextInput.boxStrokeColor =
+           password.boxStrokeColor =
                 ContextCompat.getColor(requireContext(), R.color.red)
-            binding.regPasswordTextInput.hintTextColor =
+            password.hintTextColor =
                 ContextCompat.getColorStateList(requireContext(), R.color.red)
-            binding.regPasswordTextInput.setStartIconTintList(
+            password.setStartIconTintList(
                 ColorStateList.valueOf(
                     ContextCompat.getColor(
                         requireContext(), R.color.red
                     )
                 )
             )
+            val shakeAnimation= AnimationUtils.loadAnimation(context, R.anim.vibrate)
+            password.startAnimation(shakeAnimation)
+            email.startAnimation(shakeAnimation)
         }else{
             binding.regEmailTextInput.boxStrokeColor =
                 ContextCompat.getColor(requireContext(), R.color.black)

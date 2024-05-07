@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
@@ -107,6 +108,9 @@ class LoginFragment : Fragment() {
                     )
                 )
             )
+            val shakeAnimation= AnimationUtils.loadAnimation(context, R.anim.vibrate)
+            email.startAnimation(shakeAnimation)
+            password.startAnimation(shakeAnimation)
         } else {
             email.boxStrokeColor =
                 ContextCompat.getColor(requireContext(), R.color.black)

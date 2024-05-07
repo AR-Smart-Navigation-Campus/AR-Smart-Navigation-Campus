@@ -56,12 +56,12 @@
         <action
             android:id="@+id/action_addLocationFragment_to_Nav"
             app:destination="@id/Nav"
-            app:enterAnim="@anim/from_left"
-            app:exitAnim="@anim/from_right"
-            app:popEnterAnim="@anim/from_right"
-            app:popExitAnim="@anim/to_left"
-            app:popUpTo="@id/Nav"
-            app:popUpToInclusive="true" />
+            app:enterAnim="@anim/from_down"
+            app:exitAnim="@anim/to_up"
+            app:popEnterAnim="@anim/to_up"
+            app:popExitAnim="@anim/to_up"
+            app:popUpTo="@id/addItemFragment"
+            app:popUpToInclusive="false" />
     </fragment>
     <fragment
         android:id="@+id/detailLocationInfo"
@@ -74,7 +74,10 @@
             app:enterAnim="@anim/from_right"
             app:exitAnim="@anim/to_left"
             app:popEnterAnim="@anim/to_left"
-            app:popExitAnim="@anim/to_left" />
+            app:popExitAnim="@anim/to_left"
+            app:popUpTo="@id/allLocationsFragments"
+            app:popUpToInclusive="true"/>
+
     </fragment>
     <fragment
         android:id="@+id/homePage"
@@ -161,7 +164,13 @@
             app:popExitAnim="@anim/to_left" />
         <action
             android:id="@+id/action_Nav_to_addItemFragment"
-            app:destination="@id/addItemFragment" />
+            app:destination="@id/addItemFragment"
+            app:enterAnim="@anim/from_up"
+            app:exitAnim="@anim/to_down"
+            app:popEnterAnim="@anim/to_down"
+            app:popExitAnim="@anim/to_down"
+            app:popUpTo="@id/StartNav"
+            app:popUpToInclusive="true"/>
     </fragment>
     <fragment
         android:id="@+id/News"

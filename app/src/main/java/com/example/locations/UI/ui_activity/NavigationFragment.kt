@@ -2,6 +2,7 @@ package com.example.locations.UI.ui_activity
 
 import android.annotation.SuppressLint
 import android.content.DialogInterface
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -32,7 +33,10 @@ class NavigationFragment : Fragment() {
         }
 
         binding.btnNews.setOnClickListener {
-            findNavController().navigate(R.id.action_Nav_to_News)
+            val url="https://www.hit.ac.il/about/news"
+            val intent=Intent(Intent.ACTION_VIEW)
+            intent.data= android.net.Uri.parse(url)
+            startActivity(intent)
         }
         binding.btnBack.setOnClickListener {
             auth = Firebase.auth
