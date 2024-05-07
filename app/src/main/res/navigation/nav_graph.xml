@@ -171,6 +171,14 @@
             app:popExitAnim="@anim/to_down"
             app:popUpTo="@id/StartNav"
             app:popUpToInclusive="true"/>
+
+        <action
+            android:id="@+id/action_Nav_to_homepage"
+            app:destination="@id/homePage"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/to_left"
+            app:popExitAnim="@anim/to_left" />
     </fragment>
     <fragment
         android:id="@+id/News"

@@ -50,7 +50,7 @@
          />
 
     <Button
-        android:id="@+id/btnBack"
+        android:id="@+id/btnLogout"
         android:layout_width="120dp"
         android:layout_height="43dp"
         android:layout_marginTop="20dp"
