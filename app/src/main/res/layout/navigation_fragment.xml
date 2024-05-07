@@ -7,15 +7,29 @@
     android:background="@drawable/background"
     tools:context="com.example.locations.UI.ui_activity.NavigationFragment">
 
+
+    <Button
+        android:id="@+id/buttonAdmin"
+        android:layout_width="175dp"
+        android:layout_height="42dp"
+        android:backgroundTint="@color/btnsAndInput"
+        android:text="Admin Manager"
+        android:textColor="@color/black"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
     <Button
         android:id="@+id/btnStartNav"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:backgroundTint="@color/white"
+       android:layout_marginTop="20dp"
+        android:backgroundTint="@color/btnsAndInput"
         android:text="Start Navigation"
         android:textColor="@color/black"
-        app:layout_constraintBottom_toTopOf="@+id/btnNews"
+        app:layout_constraintTop_toBottomOf="@+id/buttonAdmin"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         tools:backgroundTint="@color/white"
@@ -25,30 +39,28 @@
         android:id="@+id/btnNews"
         android:layout_width="120dp"
         android:layout_height="43dp"
-        android:layout_marginBottom="104dp"
-        android:backgroundTint="@color/white"
+        android:layout_marginTop="20dp"
+        android:backgroundTint="@color/btnsAndInput"
         android:text="Newsletter"
         android:textColor="@color/black"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnStartNav"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         tools:backgroundTint="@color/white"
-        tools:ignore="MissingConstraints" />
+         />
 
     <Button
-        android:id="@+id/btnBack"
+        android:id="@+id/btnLogout"
         android:layout_width="120dp"
         android:layout_height="43dp"
-        android:layout_marginBottom="40dp"
-        android:backgroundTint="@color/white"
-        android:text="Back"
+        android:layout_marginTop="20dp"
+        android:backgroundTint="@color/btnsAndInput"
+        android:text="Logout"
         android:textColor="@color/black"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnNews"
-        app:layout_constraintVertical_bias="0.714"
         tools:backgroundTint="@color/white"
-        tools:ignore="MissingConstraints" />
+         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

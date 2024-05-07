@@ -54,14 +54,14 @@
             app:popUpTo="@id/allLocationsFragments"
             app:popUpToInclusive="true" />
         <action
-            android:id="@+id/action_addLocationFragment_to_homePage"
-            app:destination="@id/homePage"
-            app:enterAnim="@anim/from_left"
-            app:exitAnim="@anim/to_right"
-            app:popEnterAnim="@anim/from_right"
-            app:popExitAnim="@anim/to_left"
-            app:popUpTo="@id/homePage"
-            app:popUpToInclusive="true" />
+            android:id="@+id/action_addLocationFragment_to_Nav"
+            app:destination="@id/Nav"
+            app:enterAnim="@anim/from_down"
+            app:exitAnim="@anim/to_up"
+            app:popEnterAnim="@anim/to_up"
+            app:popExitAnim="@anim/to_up"
+            app:popUpTo="@id/addItemFragment"
+            app:popUpToInclusive="false" />
     </fragment>
     <fragment
         android:id="@+id/detailLocationInfo"
@@ -74,20 +74,16 @@
             app:enterAnim="@anim/from_right"
             app:exitAnim="@anim/to_left"
             app:popEnterAnim="@anim/to_left"
-            app:popExitAnim="@anim/to_left" />
+            app:popExitAnim="@anim/to_left"
+            app:popUpTo="@id/allLocationsFragments"
+            app:popUpToInclusive="true"/>
+
     </fragment>
     <fragment
         android:id="@+id/homePage"
         android:name="com.example.locations.UI.ui_activity.HomePageFragment"
         android:label="HomePageFragment"
         tools:layout="@layout/home_page">
-        <action
-            android:id="@+id/action_homePage_to_addLocationFragment"
-            app:destination="@id/addItemFragment"
-            app:enterAnim="@anim/from_right"
-            app:exitAnim="@anim/to_left"
-            app:popEnterAnim="@anim/to_left"
-            app:popExitAnim="@anim/to_left" />
         <action
             android:id="@+id/action_homePage_to_loginFragment"
             app:destination="@id/Login"
@@ -102,6 +98,9 @@
             app:exitAnim="@anim/to_left"
             app:popEnterAnim="@anim/to_left"
             app:popExitAnim="@anim/to_left" />
+        <action
+            android:id="@+id/action_homePage_to_Nav"
+            app:destination="@id/Nav" />
     </fragment>
     <fragment
         android:id="@+id/Login"
@@ -111,10 +110,11 @@
         <action
             android:id="@+id/action_loginFragment_to_homePage"
             app:destination="@id/homePage"
-            app:enterAnim="@anim/from_right"
-            app:exitAnim="@anim/to_left"
-            app:popEnterAnim="@anim/to_left"
-            app:popExitAnim="@anim/to_left" />
+            app:enterAnim="@anim/from_left"
+            app:exitAnim="@anim/to_right"
+            app:popEnterAnim="@anim/to_right"
+            app:popExitAnim="@anim/to_right"
+             />
         <action
             android:id="@+id/action_LoginFragment_to_Nav"
             app:destination="@id/Nav"
@@ -131,10 +131,10 @@
         <action
             android:id="@+id/action_RegisterFragment_to_homePage"
             app:destination="@id/homePage"
-            app:enterAnim="@anim/from_right"
-            app:exitAnim="@anim/to_left"
-            app:popEnterAnim="@anim/to_left"
-            app:popExitAnim="@anim/to_left" />
+            app:enterAnim="@anim/from_left"
+            app:exitAnim="@anim/to_right"
+            app:popEnterAnim="@anim/to_right"
+            app:popExitAnim="@anim/to_right" />
         <action
             android:id="@+id/action_RegisterFragment_to_Nav"
             app:destination="@id/Nav"
@@ -162,6 +162,23 @@
             app:exitAnim="@anim/to_left"
             app:popEnterAnim="@anim/to_left"
             app:popExitAnim="@anim/to_left" />
+        <action
+            android:id="@+id/action_Nav_to_addItemFragment"
+            app:destination="@id/addItemFragment"
+            app:enterAnim="@anim/from_up"
+            app:exitAnim="@anim/to_down"
+            app:popEnterAnim="@anim/to_down"
+            app:popExitAnim="@anim/to_down"
+            app:popUpTo="@id/StartNav"
+            app:popUpToInclusive="true"/>
+
+        <action
+            android:id="@+id/action_Nav_to_homepage"
+            app:destination="@id/homePage"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/to_left"
+            app:popExitAnim="@anim/to_left" />
     </fragment>
     <fragment
         android:id="@+id/News"
@@ -171,10 +188,12 @@
         <action
             android:id="@+id/action_News_to_Nav"
             app:destination="@id/Nav"
-            app:enterAnim="@anim/from_right"
-            app:exitAnim="@anim/to_left"
-            app:popEnterAnim="@anim/to_left"
-            app:popExitAnim="@anim/to_left" />
+            app:enterAnim="@anim/from_left"
+            app:exitAnim="@anim/to_right"
+            app:popEnterAnim="@anim/to_right"
+            app:popExitAnim="@anim/to_right"
+            app:popUpTo="@id/Nav"
+            app:popUpToInclusive="true"/>
     </fragment>
     <fragment
         android:id="@+id/StartNav"
@@ -184,10 +203,12 @@
         <action
             android:id="@+id/action_StartNav_to_Nav"
             app:destination="@id/Nav"
-            app:enterAnim="@anim/from_right"
-            app:exitAnim="@anim/to_left"
-            app:popEnterAnim="@anim/to_left"
-            app:popExitAnim="@anim/to_left" />
+            app:enterAnim="@anim/from_left"
+            app:exitAnim="@anim/to_right"
+            app:popEnterAnim="@anim/to_right"
+            app:popExitAnim="@anim/to_right"
+            app:popUpTo="@id/Nav"
+            app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_StartNav_to_Map"
             app:destination="@id/Map"

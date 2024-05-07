@@ -3,11 +3,14 @@ package com.example.locations.Admin.all_location.single_location
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.content.res.ColorStateList
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -16,6 +19,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.locations.Admin.all_location.AdminViewModel
 import com.example.locations.R
 import com.example.locations.databinding.AddLocationBinding
+import com.google.android.material.textfield.TextInputEditText
 
 // AddLocationFragment is a Fragment that allows the user to add a new location entry.
 class AddLocationFragment: Fragment() {
@@ -48,6 +52,9 @@ class AddLocationFragment: Fragment() {
             viewModel.updateAzimuth(azimuth)
         }
         setupView()
+
+
+
         return binding.root
     }
 
@@ -55,25 +62,64 @@ class AddLocationFragment: Fragment() {
     private fun setupView() {
         checkAndRequestLocationPermission()
         binding.btnSavePlace.setOnClickListener { handleSavePlaceClick() }
-        binding.imageBtn.setOnClickListener { handleImageBtnClick() }
+        binding.resultImg.setOnClickListener { handleImageBtnClick() }
         binding.btnViewList.setOnClickListener { handleViewListClick() }
-        binding.btnBack.setOnClickListener{
-            findNavController().navigate(R.id.action_addLocationFragment_to_homePage)
-        }
+        binding.btnBack.setOnClickListener{ handleBackClick()}
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                handleBackClick()
+            }
+
+        })
+    }
+    private fun handleBackClick() {
+        findNavController().navigate(R.id.action_addLocationFragment_to_Nav)
     }
 
     // Handle the click on the save place button.
     private fun handleSavePlaceClick() {
-        val text = binding.placeName.text.toString()
-        val location = binding.textView.text.toString()
+        val textLayout = binding.placeNameEditText
+        val text = textLayout.editText?.text.toString()
+        val location = binding.coordText.text.toString()
         val imageUri = imageUri?.toString() ?: ""
-        viewModel.updateLocation(location)
-        viewModel.addUserInput(text)
-        viewModel.addEntry(imageUri)
-        updateUIWithLatestEntry()
-        binding.placeName.text.clear()
-    }
+        if(text.isEmpty()){
+            toggleNameError(true)
+        }else{
+            toggleNameError(false)
+            viewModel.updateLocation(location)
+            viewModel.addUserInput(text)
+            viewModel.addEntry(imageUri)
+            updateUIWithLatestEntry()
+        }
 
+
+    }
+    private fun toggleNameError(isError:Boolean){
+        val textLayout = binding.placeNameEditText
+       if(isError){
+           textLayout.boxStrokeColor = ContextCompat.getColor(requireContext(), R.color.red)
+           textLayout.hintTextColor = ContextCompat.getColorStateList(requireContext(), R.color.red)
+           textLayout.setStartIconTintList(
+               ColorStateList.valueOf(
+                   ContextCompat.getColor(
+                       requireContext(), R.color.red
+                   )
+               )
+           )
+           val shakeAnimation= AnimationUtils.loadAnimation(context, R.anim.vibrate)
+           textLayout.startAnimation(shakeAnimation)
+       }else{
+           textLayout.boxStrokeColor = ContextCompat.getColor(requireContext(), R.color.btnsAndInput)
+           textLayout.hintTextColor = ContextCompat.getColorStateList(requireContext(), R.color.btnsAndInput)
+           textLayout.setStartIconTintList(
+               ColorStateList.valueOf(
+                   ContextCompat.getColor(
+                       requireContext(), R.color.btnsAndInput
+                   )
+               )
+           )
+       }
+    }
     // Handle the click on the image button.
     private fun handleImageBtnClick() {
         pickImageLauncher.launch(arrayOf("image/*"))
@@ -107,18 +153,19 @@ class AddLocationFragment: Fragment() {
 
     // Update the UI with the latest entry.
     private fun updateUIWithLatestEntry() {
-        val text = binding.placeName.text.toString()
-        val location = binding.textView.text.toString()
+        val text = binding.placeNameEditText.editText?.text.toString()
+        val location = binding.coordText.text.toString()
         val azimuth = viewModel.azimuth.value.toString()
         binding.nameView.text = text
         binding.coordinatesView.text = location
         binding.azimuthView.text = azimuth
+        binding.placeNameEditText.editText?.setText("")
         //NO NEED TO UPDATE IMAGE
     }
 
     // Get location updates.
     private fun getLocationUpdates() {
-        viewModel.address.observe(viewLifecycleOwner) { binding.textView.text = it }
+        viewModel.address.observe(viewLifecycleOwner) { binding.coordText.text = it }
     }
 
     // Start listening for azimuth updates.

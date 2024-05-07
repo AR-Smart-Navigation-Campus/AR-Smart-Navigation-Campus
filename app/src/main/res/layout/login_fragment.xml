@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background"
+    android:background="@color/background_white"
     tools:context="com.example.locations.UI.LoginFragment">
 
     <Button
@@ -13,87 +13,95 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="7dp"
         android:layout_marginTop="5dp"
-        android:backgroundTint="@color/white"
+        android:backgroundTint="@color/btnsAndInput"
         android:text="home page"
         android:textColor="@color/black"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints" />
 
-    <EditText
-        android:id="@+id/editTextTextEmailAddress"
+    <TextView
+        android:id="@+id/login_error"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="21dp"
-        android:autofillHints=""
-        android:backgroundTint="@color/white"
-        android:ems="10"
-        android:inputType="textEmailAddress"
-        android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="@+id/button21"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/button21"
-        tools:ignore="LabelFor,MissingConstraints" />
+        android:textColor="@color/red"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:text="*Invalid email or password, please try again"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/email_text_input"
+        app:layout_constraintStart_toStartOf="parent" />
 
-    <EditText
-        android:id="@+id/editTextText2"
-        android:layout_width="wrap_content"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/email_text_input"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="9dp"
-        android:layout_marginEnd="19dp"
-        android:backgroundTint="@color/white"
-        android:ems="10"
-        android:inputType="text"
-        android:textColor="@color/white"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/button22"
-        app:layout_constraintTop_toTopOf="@+id/button22"
-        tools:ignore="MissingConstraints" />
-
-    <Button
-        android:id="@+id/button22"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="5dp"
-        android:backgroundTint="@color/white"
-        android:text="Password"
-        android:textColor="@color/black"
-        app:layout_constraintEnd_toStartOf="@+id/editTextText2"
-        app:layout_constraintHorizontal_chainStyle="packed"
+        android:hint="Email"
+        app:errorTextColor="@color/red"
+        app:errorIconTint="@color/red"
+        app:boxStrokeErrorColor="@color/red"
+        app:startIconTint="@color/black"
+        app:cursorColor="@color/black"
+        app:startIconDrawable="@drawable/email"
+        android:layout_marginTop="300dp"
+        app:boxStrokeColor="@color/black"
+        app:boxBackgroundColor="@color/btnsAndInput"
+        app:errorTextAppearance="@color/black"
+        android:textColorHint="@color/black"
+        app:hintTextColor="@color/black"
+        android:imeOptions="actionDone"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button21"
-        tools:backgroundTint="@color/white"
-        tools:ignore="MissingConstraints" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:inputType="textEmailAddress"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/password_text_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Password"
+        app:cursorColor="@color/black"
+        app:startIconTint="@color/black"
+        app:errorIconTint="@color/red"
+        app:errorTextColor="@color/red"
+        app:boxStrokeErrorColor="@color/red"
+        app:startIconDrawable="@drawable/password_lock"
+        app:endIconMode="password_toggle"
+        android:imeOptions="actionDone"
+        android:layout_marginTop="10dp"
+        app:boxStrokeColor="@color/black"
+        app:boxBackgroundColor="@color/btnsAndInput"
+        android:textColorHint="@color/black"
+        app:hintTextColor="@color/black"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/email_text_input">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:inputType="textPassword"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Button
-        android:id="@+id/buttonlogin"
+        android:id="@+id/confirm_login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="11dp"
-        android:layout_marginBottom="26dp"
-        android:backgroundTint="@color/white"
-        android:checkable="true"
+        android:backgroundTint="@color/btnsAndInput"
+        android:textColor="@color/black"
         android:text="Login"
-        android:textColor="@color/black"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/editTextText2"
-        tools:backgroundTint="@color/white"
-        tools:ignore="MissingConstraints" />
-
-    <Button
-        android:id="@+id/button21"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="125dp"
-        android:backgroundTint="@color/white"
-        android:text="Username"
-        android:textColor="@color/black"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/editTextTextEmailAddress"
-        app:layout_constraintHorizontal_chainStyle="packed"
+        android:layout_marginTop="15dp"
+        app:layout_constraintTop_toBottomOf="@+id/password_text_input"
         app:layout_constraintStart_toStartOf="parent"
-        tools:backgroundTint="@color/white"
-        tools:ignore="MissingConstraints" />
-
+        app:layout_constraintEnd_toEndOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
