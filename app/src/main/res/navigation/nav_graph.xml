@@ -90,14 +90,18 @@
             app:enterAnim="@anim/from_right"
             app:exitAnim="@anim/to_left"
             app:popEnterAnim="@anim/to_left"
-            app:popExitAnim="@anim/to_left" />
+            app:popExitAnim="@anim/to_left"
+            app:popUpTo="@id/homePage"
+            app:popUpToInclusive="true"/>
         <action
             android:id="@+id/action_homePage_to_Register"
             app:destination="@id/Register"
             app:enterAnim="@anim/from_right"
             app:exitAnim="@anim/to_left"
             app:popEnterAnim="@anim/to_left"
-            app:popExitAnim="@anim/to_left" />
+            app:popExitAnim="@anim/to_left"
+            app:popUpTo="@id/homePage"
+            app:popUpToInclusive="true"/>
         <action
             android:id="@+id/action_homePage_to_Nav"
             app:destination="@id/Nav" />
@@ -116,6 +120,14 @@
             app:popExitAnim="@anim/to_right"
              />
         <action
+            android:id="@+id/action_LoginFragment_to_Register"
+            app:destination="@id/Register"
+            app:enterAnim="@anim/from_down"
+            app:exitAnim="@anim/to_up"
+            app:popEnterAnim="@anim/to_up"
+            app:popExitAnim="@anim/to_up"/>
+
+        <action
             android:id="@+id/action_LoginFragment_to_Nav"
             app:destination="@id/Nav"
             app:enterAnim="@anim/from_right"
@@ -128,6 +140,14 @@
         android:name="com.example.locations.UI.RegisterFragment"
         android:label="RegisterFragment"
         tools:layout="@layout/register_fragment">
+        <action
+            android:id="@+id/action_RegisterFragment_to_LoginFragment"
+            app:destination="@id/Login"
+            app:enterAnim="@anim/from_up"
+            app:exitAnim="@anim/to_down"
+            app:popEnterAnim="@anim/to_down"
+            app:popExitAnim="@anim/to_down" />
+
         <action
             android:id="@+id/action_RegisterFragment_to_homePage"
             app:destination="@id/homePage"

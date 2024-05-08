@@ -36,7 +36,9 @@ class RegisterFragment : Fragment() {
             findNavController().navigate(R.id.action_RegisterFragment_to_homePage)
         }
 
-
+        binding.siginInButton.setOnClickListener{
+            findNavController().navigate(R.id.action_RegisterFragment_to_LoginFragment)
+        }
         binding.confirmRegister.setOnClickListener {
             view?.let { it1 -> regFunc(it1) }
         }

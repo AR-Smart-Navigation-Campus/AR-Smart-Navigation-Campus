@@ -38,7 +38,9 @@ class LoginFragment : Fragment() {
         binding.confirmLogin.setOnClickListener{
             view?.let { it1 -> loginFunc(it1) }
         }
-
+        binding.registerButton.setOnClickListener{
+            findNavController().navigate(R.id.action_LoginFragment_to_Register)
+        }
         auth = Firebase.auth // Initialize Firebase Auth
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
