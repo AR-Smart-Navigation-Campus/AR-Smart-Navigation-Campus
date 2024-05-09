@@ -19,6 +19,7 @@ import com.example.locations.databinding.HomePageBinding
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
+import java.util.Calendar
 
 class HomePageFragment: Fragment() {
     lateinit var binding : HomePageBinding
@@ -67,9 +68,15 @@ class HomePageFragment: Fragment() {
             Navigation.findNavController(it).navigate(R.id.action_homePage_to_Nav)
         }
     }
-    private fun welcomeMessage(){
-        val welcomeMessage = "Hello,             Sign In or Create Your Account Today"
-        val textView=binding.welcomeText
+    private fun welcomeMessage() {
+        val currentHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
+        val welcomeMessage = when {
+            currentHour < 12 -> "Good Morning, Sign In or Create Your Account"
+            currentHour < 18 -> "Good Afternoon, Sign In or Create Your Account"
+            else -> "Good Evening, Sign In or Create Your Account"
+        }
+
+        val textView = binding.welcomeText
         val handler = Handler(Looper.getMainLooper())
         var index = 0
 
@@ -78,11 +85,10 @@ class HomePageFragment: Fragment() {
                 if (index < welcomeMessage.length) {
                     textView.text = textView.text.toString() + welcomeMessage[index]
                     index++
-                    handler.postDelayed(this, 30) // delay of 500ms
+                    handler.postDelayed(this, 25) // delay of 30ms
                 }
             }
         }
-
         handler.post(runnable)
     }
 }
