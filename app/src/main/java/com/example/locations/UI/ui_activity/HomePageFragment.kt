@@ -1,11 +1,15 @@
 package com.example.locations.UI.ui_activity
 
+import android.annotation.SuppressLint
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.view.WindowManager
+import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
@@ -15,6 +19,7 @@ import com.example.locations.databinding.HomePageBinding
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
+import java.util.Calendar
 
 class HomePageFragment: Fragment() {
     lateinit var binding : HomePageBinding
@@ -29,7 +34,7 @@ class HomePageFragment: Fragment() {
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
             window.statusBarColor = ContextCompat.getColor(requireContext(), androidx.cardview.R.color.cardview_dark_background)
 
-
+        welcomeMessage()
         binding.buttonLogin.setOnClickListener {
             findNavController().navigate(R.id.action_homePage_to_loginFragment)
         }
@@ -39,6 +44,13 @@ class HomePageFragment: Fragment() {
         }
 
         auth = Firebase.auth // Initialize Firebase Auth
+
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,object : OnBackPressedCallback(true) {
+            @SuppressLint("ResourceAsColor")
+            override fun handleOnBackPressed() {
+                requireActivity().finish()
+            }
+        })
         return binding.root
     }
     public override fun onStart() {
@@ -55,5 +67,28 @@ class HomePageFragment: Fragment() {
         view?.let {
             Navigation.findNavController(it).navigate(R.id.action_homePage_to_Nav)
         }
+    }
+    private fun welcomeMessage() {
+        val currentHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
+        val welcomeMessage = when {
+            currentHour < 12 -> "Good Morning, Sign In or Create Your Account"
+            currentHour < 18 -> "Good Afternoon, Sign In or Create Your Account"
+            else -> "Good Evening, Sign In or Create Your Account"
+        }
+
+        val textView = binding.welcomeText
+        val handler = Handler(Looper.getMainLooper())
+        var index = 0
+
+        val runnable = object : Runnable {
+            override fun run() {
+                if (index < welcomeMessage.length) {
+                    textView.text = textView.text.toString() + welcomeMessage[index]
+                    index++
+                    handler.postDelayed(this, 25) // delay of 30ms
+                }
+            }
+        }
+        handler.post(runnable)
     }
 }
