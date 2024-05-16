@@ -8,15 +8,15 @@
     android:orientation="vertical"
     android:layout_margin="16dp">
 
-    <Button
+    <TextView
         android:id="@+id/btnBack"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/btnsAndInput"
-        android:text="Back"
-        android:textColor="@color/black"
+        android:drawableStart="@drawable/baseline_arrow_forward_ios_24"
+        android:drawableTint="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"/>
+
 
     <TextView
         android:id="@+id/coordText"
@@ -115,20 +115,6 @@
    </com.google.android.material.textfield.TextInputLayout>
 
     <Button
-        android:id="@+id/btnViewList"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="View List"
-        android:textColor="@color/black"
-        android:padding="10dp"
-        android:layout_marginTop="20dp"
-        android:backgroundTint="@color/btnsAndInput"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/btnSavePlace"
-        app:layout_constraintTop_toBottomOf="@+id/place_name_edit_text"
-        app:layout_constraintHorizontal_chainStyle="spread"/>
-
-    <Button
         android:id="@+id/btnSavePlace"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -137,9 +123,25 @@
         android:textColor="@color/black"
         android:padding="10dp"
         android:layout_marginTop="20dp"
-        app:layout_constraintStart_toEndOf="@+id/btnViewList"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/btnViewList"
+        app:layout_constraintTop_toBottomOf="@+id/place_name_edit_text"
+        app:layout_constraintHorizontal_chainStyle="spread"/>
+
+    <Button
+        android:id="@+id/btnViewList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="View List"
+        android:textColor="@color/black"
+        android:padding="10dp"
+        android:layout_marginTop="20dp"
+        android:backgroundTint="@color/btnsAndInput"
+        app:layout_constraintStart_toEndOf="@id/btnSavePlace"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/place_name_edit_text" />
+
+
 
 
 

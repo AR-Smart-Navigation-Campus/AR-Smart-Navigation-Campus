@@ -6,7 +6,11 @@
     android:layout_height="match_parent"
     android:background="@drawable/background"
     tools:context="com.example.locations.UI.RegisterFragment">
-
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:backgroundTint="@color/background_white">
+    </androidx.cardview.widget.CardView>
     <TextView
         android:id="@+id/button_homepage"
         android:layout_width="wrap_content"
@@ -55,6 +59,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Register"
+                android:textColor="@color/white"
                 android:textSize="40dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -194,6 +199,7 @@ a password of at least 6 characters"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Already have an account?"
+                android:textColor="@color/white"
                 android:textSize="20dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"/>

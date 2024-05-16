@@ -7,6 +7,12 @@
     android:background="@drawable/background"
     tools:context="com.example.locations.UI.LoginFragment">
 
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:backgroundTint="@color/background_white">
+    </androidx.cardview.widget.CardView>
+
     <TextView
         android:id="@+id/button_homepage"
         android:layout_width="wrap_content"
@@ -15,6 +21,7 @@
         android:layout_marginTop="5dp"
         android:padding="5dp"
         android:drawableStart="@drawable/baseline_arrow_back_ios_24"
+        android:drawableTint="@color/black"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
     <androidx.cardview.widget.CardView
@@ -57,6 +64,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Sign in"
+                android:textColor="@color/white"
                 android:textSize="40dp"
                 android:textStyle="italic"
                 app:layout_constraintStart_toStartOf="parent"
@@ -147,11 +155,22 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/password_text_input" />
 
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/CustomProgressBar"
+                android:layout_marginTop="10dp"
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@id/confirm_login"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
             <TextView
                 android:id="@+id/register_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Dont have an account?"
+                android:textColor="@color/white"
                 android:textSize="20dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"/>
@@ -168,8 +187,11 @@
                 app:layout_constraintStart_toEndOf="@id/register_text"
                 app:layout_constraintBottom_toBottomOf="parent" />
 
-
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.cardview.widget.CardView>
+
+
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -33,7 +33,7 @@ class LoginFragment : Fragment() {
         binding = LoginFragmentBinding.inflate(inflater, container, false)
 
         binding.buttonHomepage.setOnClickListener {
-            findNavController().navigate(R.id.action_loginFragment_to_homePage)
+           returnToHome()
         }
         binding.confirmLogin.setOnClickListener{
             view?.let { it1 -> loginFunc(it1) }
@@ -44,12 +44,15 @@ class LoginFragment : Fragment() {
         auth = Firebase.auth // Initialize Firebase Auth
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                findNavController().navigate(R.id.action_loginFragment_to_homePage)
+              returnToHome()
             }
 
         })
 
         return binding.root
+    }
+    private fun returnToHome(){
+        findNavController().navigate(R.id.action_loginFragment_to_homePage)
     }
     public override fun onStart() {
         super.onStart()
@@ -68,11 +71,12 @@ class LoginFragment : Fragment() {
        val txtEmail=binding.emailTextInput.editText?.text.toString()
         val txtPass=binding.passwordTextInput.editText?.text.toString()
         if (txtEmail.isNotEmpty() && txtPass.isNotEmpty()) {
+            binding.progressBar.visibility = View.VISIBLE
             auth.signInWithEmailAndPassword(txtEmail, txtPass)
                 .addOnCompleteListener(requireActivity()) { task ->
+                    binding.progressBar.visibility = View.GONE
                     if (task.isSuccessful) {
                         toggleValidationError(false)
-                        Toast.makeText(requireContext(), "Login Success!", Toast.LENGTH_SHORT).show()
                         navigateToHomePage()
                     } else {
                         toggleValidationError(true)

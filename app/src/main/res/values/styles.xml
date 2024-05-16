@@ -10,4 +10,7 @@
         <!-- Use this to change the color of the buttons -->
         <item name="colorAccent">#000000</item>
     </style>
+    <style name="CustomProgressBar" parent="Widget.AppCompat.ProgressBar">
+        <item name="android:indeterminateTint">@color/white</item>
+    </style>
 </resources>
