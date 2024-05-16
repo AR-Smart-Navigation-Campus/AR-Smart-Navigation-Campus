@@ -11,6 +11,8 @@ import com.bumptech.glide.Glide
 import com.example.locations.Admin.all_location.AdminViewModel
 import com.example.locations.R
 import com.example.locations.databinding.DetailLocationInfoBinding
+import com.google.firebase.Firebase
+import com.google.firebase.auth.auth
 
 // Fragment class for the detail view of a location
 class DetailLocationInfo : Fragment() {
@@ -39,9 +41,21 @@ class DetailLocationInfo : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.chosenItem.observe(viewLifecycleOwner){
+            val auth= Firebase.auth
+            val currentUser=auth.currentUser?.email.toString()
+            val admin="navigationproject2024@gmail.com"
+            val coords=   binding.locationLocation
+            val azimuth= binding.locationAzimuth
             binding.locationName.text = it.text
-            binding.locationLocation.text = it.location
-            binding.locationAzimuth.text = it.azimuth
+            coords.text = it.location
+            azimuth.text = it.azimuth
+            if(currentUser==admin) {
+                coords.visibility=View.VISIBLE
+                azimuth.visibility=View.VISIBLE
+            }else{
+                binding.description.visibility=View.VISIBLE
+            }
+
             Glide.with(binding.root).load(it.img).circleCrop().into(binding.itemDetailImage)
         }
     }

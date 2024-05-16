@@ -95,6 +95,9 @@ private fun returnToAdd(){
          adapter = LocationAdapter(allLocations, object : LocationAdapter.ItemListener {
              // Handle item click
             override fun onItemClick(index: Int) {
+                 viewModel.setLocation(allLocations[index])
+                 setupAdapter(allLocations)
+                 binding.searchEditTextLayout.editText?.text?.clear()
                  findNavController().navigate(R.id.action_allLocationsFragments_to_AR)
             }
              // Handle item long click
