@@ -52,13 +52,14 @@
                 app:layout_constraintTop_toBottomOf="@+id/azimuthTextView"
                 app:layout_constraintStart_toStartOf="parent"/>
 
-        <ImageView
+        <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/buildingImage"
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:contentDescription="location image"
             android:layout_marginLeft="190dp"
             android:src="@mipmap/ic_launcher"
+            app:shapeAppearanceOverlay="@style/RoundedImageView"
             app:layout_constraintStart_toEndOf="@+id/locationTextView"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
