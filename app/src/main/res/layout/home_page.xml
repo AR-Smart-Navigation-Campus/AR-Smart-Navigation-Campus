@@ -7,6 +7,12 @@
     android:id="@+id/back_ground"
     android:background="@drawable/background"
     tools:context=".UI.ui_activity.HomePageFragment">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:backgroundTint="@color/background_white">
+    </androidx.cardview.widget.CardView>
     <androidx.cardview.widget.CardView
         android:layout_width="120dp"
         android:layout_height="100dp"
@@ -49,6 +55,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text=""
+                android:textColor="@color/white"
                 android:textSize="40dp"
                 android:textStyle="italic"
                 app:layout_constraintTop_toTopOf="parent"
@@ -83,4 +90,5 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.cardview.widget.CardView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

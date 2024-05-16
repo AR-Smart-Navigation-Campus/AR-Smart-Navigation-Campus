@@ -13,9 +13,9 @@
         <action
             android:id="@+id/action_allLocationsFragments_to_addLocationFragment"
             app:destination="@id/addItemFragment"
-            app:enterAnim="@anim/from_right"
-            app:exitAnim="@anim/to_left"
-            app:popEnterAnim="@anim/from_right"
+            app:enterAnim="@anim/from_left"
+            app:exitAnim="@anim/to_right"
+            app:popEnterAnim="@anim/to_right"
             app:popExitAnim="@anim/to_right" />
         <action
             android:id="@+id/action_allLocationsFragments_to_detailLocationInfo"
@@ -47,9 +47,9 @@
         <action
             android:id="@+id/action_addLocationFragment_to_allLocationsFragments"
             app:destination="@id/allLocationsFragments"
-            app:enterAnim="@anim/from_left"
-            app:exitAnim="@anim/to_right"
-            app:popEnterAnim="@anim/from_right"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/to_left"
             app:popExitAnim="@anim/to_left"
             app:popUpTo="@id/allLocationsFragments"
             app:popUpToInclusive="true" />

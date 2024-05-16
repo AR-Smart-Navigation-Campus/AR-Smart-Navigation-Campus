@@ -20,6 +20,7 @@ import com.google.firebase.auth.auth
 class NavigationFragment : Fragment() {
     private lateinit var binding : NavigationFragmentBinding
     private lateinit var auth: FirebaseAuth
+    private var admin="navigationproject2024@gmail.com"
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -98,7 +99,7 @@ class NavigationFragment : Fragment() {
         super.onStart()
         auth = Firebase.auth
         val currentUser = auth.currentUser
-        if(currentUser!=null && currentUser.email== "navigationproject2024@gmail.com"){
+        if(currentUser!=null && currentUser.email== admin){
             binding.buttonAdmin.visibility = View.VISIBLE
             binding.buttonAdmin.setOnClickListener {
                 findNavController().navigate(R.id.action_Nav_to_addItemFragment)

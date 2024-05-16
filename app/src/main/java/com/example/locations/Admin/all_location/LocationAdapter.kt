@@ -8,6 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.locations.Admin.all_location.model.LocationData
 import com.example.locations.databinding.LocationItemBinding
+import com.google.firebase.Firebase
+import com.google.firebase.auth.auth
 
 // Adapter for the RecyclerView in AllLocationsFragment
 class LocationAdapter(
@@ -47,9 +49,19 @@ RecyclerView.Adapter<LocationAdapter.LocationViewHolder>() {
 
         // Bind the location data to the item view
         fun bind(location: LocationData) {
-            binding.buildingName.text = location.text
-            binding.locationTextView.text = location.location
-            binding.azimuthTextView.text = location.azimuth
+            val auth=Firebase.auth
+            val currentUser=auth.currentUser?.email.toString()
+            val admin="navigationproject2024@gmail.com"
+            val coords=binding.locationTextView
+            val azimuth=binding.azimuthTextView
+            coords.append(location.location)
+            azimuth.append(location.azimuth)
+            binding.buildingName.text=location.text
+            if(currentUser==admin) {
+            azimuth.visibility=View.VISIBLE
+                coords.visibility=View.VISIBLE
+            }
+
             Glide.with(binding.root).load(location.img).circleCrop().into(binding.buildingImage)
         }
     }

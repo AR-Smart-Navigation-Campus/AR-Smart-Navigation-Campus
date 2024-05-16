@@ -33,7 +33,7 @@ class RegisterFragment : Fragment() {
     ): View {
         binding = RegisterFragmentBinding.inflate(inflater, container, false)
         binding.buttonHomepage.setOnClickListener {
-            findNavController().navigate(R.id.action_RegisterFragment_to_homePage)
+            returnToHome()
         }
 
         binding.siginInButton.setOnClickListener{
@@ -44,12 +44,15 @@ class RegisterFragment : Fragment() {
         }
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                findNavController().navigate(R.id.action_RegisterFragment_to_homePage)
+                returnToHome()
             }
 
         })
         return binding.root
 
+    }
+    private fun returnToHome(){
+        findNavController().navigate(R.id.action_RegisterFragment_to_homePage)
     }
     override fun onStart() {
         super.onStart()
