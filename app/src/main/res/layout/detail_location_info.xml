@@ -77,17 +77,28 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/location_name" />
 
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/item_detail_image"
-            android:layout_width="300dp"
-            android:layout_height="300dp"
-            android:contentDescription="location image"
-            android:src="@mipmap/ic_launcher"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:shapeAppearanceOverlay="@style/RoundedImageView" />
+     <androidx.cardview.widget.CardView
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:backgroundTint="@color/modal_window"
+         app:layout_constraintStart_toStartOf="parent"
+         app:layout_constraintEnd_toEndOf="parent"
+         app:layout_constraintBottom_toBottomOf="parent">
+
+         <com.google.android.material.imageview.ShapeableImageView
+             android:id="@+id/item_detail_image"
+             android:layout_width="match_parent"
+             android:layout_height="500dp"
+             android:contentDescription="location image"
+             android:layout_marginTop="25sp"
+             android:layout_marginBottom="25sp"
+             android:src="@mipmap/ic_launcher"
+             app:layout_constraintBottom_toBottomOf="parent"
+             app:layout_constraintEnd_toEndOf="parent"
+             app:layout_constraintStart_toStartOf="parent"
+             app:layout_constraintBaseline_toBottomOf="parent"
+             app:shapeAppearanceOverlay="@style/RoundedImageView" />
+     </androidx.cardview.widget.CardView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -56,7 +56,7 @@ class DetailLocationInfo : Fragment() {
                 binding.description.visibility=View.VISIBLE
             }
 
-            Glide.with(binding.root).load(it.img).circleCrop().into(binding.itemDetailImage)
+            Glide.with(binding.root).load(it.img).into(binding.itemDetailImage)
         }
     }
 

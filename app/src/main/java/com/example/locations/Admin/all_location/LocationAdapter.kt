@@ -62,7 +62,7 @@ RecyclerView.Adapter<LocationAdapter.LocationViewHolder>() {
                 coords.visibility=View.VISIBLE
             }
 
-            Glide.with(binding.root).load(location.img).circleCrop().into(binding.buildingImage)
+            Glide.with(binding.root).load(location.img).into(binding.buildingImage)
         }
     }
 
