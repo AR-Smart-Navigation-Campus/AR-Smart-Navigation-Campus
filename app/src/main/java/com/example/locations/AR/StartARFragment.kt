@@ -15,19 +15,18 @@ import com.example.locations.R
 import com.example.locations.databinding.StartArFragmentBinding
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
-import com.google.ar.core.Anchor
 import com.google.ar.core.Plane
-import com.google.ar.core.Pose
 import com.google.ar.core.TrackingState
-import com.google.ar.sceneform.AnchorNode
 import com.google.ar.sceneform.Node
 import com.google.ar.sceneform.math.Vector3
 import com.google.ar.sceneform.assets.RenderableSource
 import com.google.ar.sceneform.math.Quaternion
 import com.google.ar.sceneform.rendering.ModelRenderable
-import com.google.ar.sceneform.rendering.Renderable
 import com.google.ar.sceneform.ux.ArFragment
 
+/**
+ * Fragment class for the AR view.
+ */
 class StartARFragment : Fragment() {
 
     private val adminViewModel:  AdminViewModel by activityViewModels()
@@ -35,50 +34,62 @@ class StartARFragment : Fragment() {
     private lateinit var binding : StartArFragmentBinding
     private lateinit var arFragment: ArFragment
     private var isModelPlaced = false
+    private lateinit var arrowNode: Node
+    private lateinit var targetLocation: Location
+    private lateinit var myLocation: Location
 
+    // Inflate the layout
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
-        binding = StartArFragmentBinding.inflate(inflater, container, false)
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity()) // Get the fused location provider client
+        binding = StartArFragmentBinding.inflate(inflater, container, false) // Inflate the layout
         binding.btnBack.setOnClickListener {
             findNavController().popBackStack()
         }
         return binding.root
     }
 
+    // Load the AR fragment and show the plane discovery controller
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding = StartArFragmentBinding.bind(view)
-        arFragment = childFragmentManager.findFragmentById(R.id.sceneView) as ArFragment
-        arFragment.planeDiscoveryController.show()
+        binding = StartArFragmentBinding.bind(view) // Get the binding object
+        arFragment = childFragmentManager.findFragmentById(R.id.sceneView) as ArFragment // Get the AR fragment
+        arFragment.planeDiscoveryController.show() // Show the plane discovery controller
+        arrowNode = Node() // Create a new node for the arrow model
 
+        // Add an update listener to the AR scene view
         arFragment.arSceneView.scene.addOnUpdateListener {
             if (isModelPlaced) {
-                arFragment.arSceneView.planeRenderer.isVisible = false
+                arFragment.arSceneView.planeRenderer.isVisible = false // Hide the plane renderer
+                targetLocation.let { location ->
+                val camera = arFragment.arSceneView.scene.camera // Get the camera
+                val cameraPos = camera.worldPosition // Get the camera position
+
+                // Calculate direction from camera to target location
+                val direction = Vector3.subtract(location.toVector3(), cameraPos).normalized()
+
+                // Calculate rotation quaternion to point the arrow towards target location
+                val rotation = Quaternion.lookRotation(direction, Vector3.up())
+
+                // Update arrow node position and rotation
+                arrowNode.worldRotation = rotation
+                }
                 return@addOnUpdateListener
             }
-            val frame = arFragment.arSceneView.arFrame
+            val frame = arFragment.arSceneView.arFrame // Get the AR frame
             if (frame != null) {
-                val planes = frame.getUpdatedTrackables(Plane::class.java)
+                val planes = frame.getUpdatedTrackables(Plane::class.java) // Get the updated planes
                 for (plane in planes) {
                     if (plane.trackingState == TrackingState.TRACKING) {
-                        val pose = Pose.makeTranslation(0f, -1.5f, -2f) // Change this value based on where you want to place the object
-                        val anchor = plane.createAnchor(pose)
-                        val modelUri = Uri.parse("models/direction_arrow.glb")
-                        var targetLocation = Location("provider")
-                        var myLocation = Location("provider")
-                        val node = Node()
 
-
-                        adminViewModel.chosenItem.observe(viewLifecycleOwner) { location->
-                            targetLocation  = createLocation(location.location)
+                        adminViewModel.chosenItem.observe(viewLifecycleOwner) { location ->
+                            targetLocation = createLocation(location.location) // Create a Location object from the location
                         }
-
 
                         adminViewModel.address.observe(viewLifecycleOwner) { address ->
-                            myLocation = createLocation(address)
+                            myLocation = createLocation(address) // Create a Location object from the address
                         }
 
-                        placeObject(arFragment, anchor, modelUri, node,targetLocation, myLocation)
+                        loadArrowModel(arFragment, arrowNode, targetLocation, myLocation) // Load the arrow model
                         break
                     }
                 }
@@ -86,46 +97,46 @@ class StartARFragment : Fragment() {
         }
     }
 
+    // Set the position and rotation of the model
     private fun setModelPosition(node: Node, targetLocation:Location, myLocation: Location) {
+        val bearing = myLocation.bearingTo(targetLocation)// Calculate the bearing to the target location
+        val bearingInRad = Math.toRadians(bearing.toDouble()) * 10// Convert the bearing to radians
+        val rotation = Quaternion.axisAngle(Vector3(0f, 1f, 0f), (-bearingInRad).toFloat())// Create a quaternion for the rotation
 
-        // Calculate the bearing to the target location
-        val bearing = myLocation.bearingTo(targetLocation)
-        // Convert the bearing to radians
-        val bearingInRad = Math.toRadians(bearing.toDouble()) * 10
-        // Create a quaternion for the rotation
-        val rotation = Quaternion.axisAngle(Vector3(0f, 1f, 0f), (-bearingInRad).toFloat())
 
-        // Set the local rotation of the model
-        node.localRotation = rotation
-
-        // Set the world position of the model to the world position of the camera, but with a fixed y-coordinate
-        node.worldPosition = node.parent?.worldPosition?.let { Vector3(it.x, -2f, node.parent?.worldPosition!!.z) }
+        node.localRotation = rotation // Set the local rotation of the model
+        node.localPosition = Vector3(0f, -1f, -2f) // 2 meter in front of the camera
     }
 
-    private fun placeObject(
+    // Load the arrow model and attach it to the camera
+    private fun loadArrowModel(
         fragment: ArFragment,
-        anchor: Anchor,
-        modelUri: Uri,
         node: Node,
         locationData: Location,
         address: Location
     ) {
+        val modelUri = Uri.parse("models/direction_arrow.glb")
         ModelRenderable.builder()
             .setSource(
                 fragment.context,
                 RenderableSource.builder()
                     .setSource(fragment.context, modelUri, RenderableSource.SourceType.GLB)
                     .setRecenterMode(RenderableSource.RecenterMode.ROOT)
-                    .setScale(0.3f)
+                    .setScale(0.2f)
                     .build()
             )
-            .setRegistryId(modelUri)
+            .setRegistryId(modelUri) // Set the registry ID of the model
             .build()
             .thenAccept { renderable ->
                 Log.d("StartARFragment", "Model loaded successfully")
-                node.setParent(fragment.arSceneView.scene.camera)
-                setModelPosition(node, locationData, address)
-                addNodeToScene(fragment, anchor, renderable , node)
+                arrowNode.apply {
+                    this.renderable = renderable // Set the renderable of the node
+                    arFragment.arSceneView.scene.addChild(this) // Add the node to the scene
+                }
+
+                node.setParent(fragment.arSceneView.scene.camera) // Attach the node to the camera
+                setModelPosition(node, locationData, address) // Set the position of the model
+                isModelPlaced = true // Set the flag to true
             }
             .exceptionally { throwable ->
                 Log.e("StartARFragment", "Error loading model", throwable)
@@ -133,18 +144,7 @@ class StartARFragment : Fragment() {
             }
     }
 
-    private fun addNodeToScene(
-        fragment: ArFragment,
-        anchor: Anchor,
-        renderable: Renderable,
-        node: Node
-    ) {
-        val anchorNode = AnchorNode(anchor)
-        node.setParent(anchorNode)
-        node.renderable = renderable
-        fragment.arSceneView.scene.addChild(node)
-        isModelPlaced = true
-    }
+    // Create a Location object from a string
     private fun createLocation(location:String): Location {
         val coordinates = location.split(",")
         Location("provider").apply {
@@ -152,5 +152,10 @@ class StartARFragment : Fragment() {
             longitude = coordinates[1].toDouble()
             return this
         }
+    }
+
+    // Convert a Location object to a Vector3 object
+    private fun Location.toVector3(): Vector3 {
+        return Vector3(this.latitude.toFloat(), 0f, this.longitude.toFloat())
     }
 }
