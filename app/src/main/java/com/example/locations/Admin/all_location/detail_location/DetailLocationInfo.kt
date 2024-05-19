@@ -16,6 +16,7 @@ import com.google.firebase.auth.auth
 
 // Fragment class for the detail view of a location
 class DetailLocationInfo : Fragment() {
+
     // Binding object instance corresponding to the detail_location_info.xml layout
     private var _binding : DetailLocationInfoBinding? = null
     private val binding get() = _binding!!
@@ -53,10 +54,10 @@ class DetailLocationInfo : Fragment() {
                 coords.visibility=View.VISIBLE
                 azimuth.visibility=View.VISIBLE
             }else{
-                binding.description.visibility=View.VISIBLE
+                binding.description.visibility=View.VISIBLE // Show the description text view
             }
 
-            Glide.with(binding.root).load(it.img).circleCrop().into(binding.itemDetailImage)
+            Glide.with(binding.root).load(it.img).circleCrop().into(binding.itemDetailImage) // Load the image into the image view
         }
     }
 
