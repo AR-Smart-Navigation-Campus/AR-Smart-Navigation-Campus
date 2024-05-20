@@ -73,17 +73,17 @@ class StartARFragment : Fragment() {
                 }
                 arFragment.arSceneView.planeRenderer.isVisible = false // Hide the plane renderer
                 targetLocation.let { location ->
-                val camera = arFragment.arSceneView.scene.camera // Get the camera
-                val cameraPos = camera.worldPosition // Get the camera position
+                    val camera = arFragment.arSceneView.scene.camera // Get the camera
+                    val cameraPos = camera.worldPosition // Get the camera position
 
-                // Calculate direction from camera to target location
-                val direction = Vector3.subtract(location.toVector3(), cameraPos).normalized()
+                    // Calculate direction from camera to target location
+                    val direction = Vector3.subtract(location.toVector3(), cameraPos).normalized()
 
-                // Calculate rotation quaternion to point the arrow towards target location
-                val rotation = Quaternion.lookRotation(direction, Vector3.up())
+                    // Calculate rotation quaternion to point the arrow towards target location
+                    val rotation = Quaternion.lookRotation(direction, Vector3.up())
 
-                // Update arrow node position and rotation
-                arrowNode.worldRotation = rotation
+                    // Update arrow node position and rotation
+                    arrowNode.worldRotation = rotation
                 }
                 return@addOnUpdateListener
             }

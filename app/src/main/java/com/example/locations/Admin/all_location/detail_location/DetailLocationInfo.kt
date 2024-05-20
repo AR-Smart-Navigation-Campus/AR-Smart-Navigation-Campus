@@ -47,7 +47,7 @@ class DetailLocationInfo : Fragment() {
             val admin="navigationproject2024@gmail.com"
             val coords=   binding.locationLocation
             val azimuth= binding.locationAzimuth
-            binding.locationName.text = it.text
+            binding.locationName.text = it.name
             coords.text = it.location
             azimuth.text = it.azimuth
             if(currentUser==admin) {
@@ -57,7 +57,7 @@ class DetailLocationInfo : Fragment() {
                 binding.description.visibility=View.VISIBLE // Show the description text view
             }
 
-            Glide.with(binding.root).load(it.img).circleCrop().into(binding.itemDetailImage) // Load the image into the image view
+            Glide.with(binding.root).load(it.imgUrl).circleCrop().into(binding.itemDetailImage) // Load the image into the image view
         }
     }
 

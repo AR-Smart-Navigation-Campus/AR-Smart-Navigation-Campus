@@ -1,6 +1,7 @@
 package com.example.locations.Admin.all_location
 
 import android.annotation.SuppressLint
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -49,6 +50,7 @@ RecyclerView.Adapter<LocationAdapter.LocationViewHolder>() {
 
         // Bind the location data to the item view
         fun bind(location: LocationData) {
+            Log.d("LocationAdapter", "$location")
             val auth=Firebase.auth
             val currentUser=auth.currentUser?.email.toString()
             val admin="navigationproject2024@gmail.com"
@@ -56,13 +58,13 @@ RecyclerView.Adapter<LocationAdapter.LocationViewHolder>() {
             val azimuth=binding.azimuthTextView
             coords.append(location.location)
             azimuth.append(location.azimuth)
-            binding.buildingName.text=location.text
+            binding.buildingName.text=location.name
             if(currentUser==admin) {
             azimuth.visibility=View.VISIBLE
                 coords.visibility=View.VISIBLE
             }
 
-            Glide.with(binding.root).load(location.img).circleCrop().into(binding.buildingImage)
+            Glide.with(binding.root).load(location.imgUrl).circleCrop().into(binding.buildingImage)
         }
     }
 
