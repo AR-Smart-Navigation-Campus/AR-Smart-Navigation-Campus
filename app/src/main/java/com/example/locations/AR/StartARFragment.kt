@@ -67,7 +67,7 @@ class StartARFragment : Fragment() {
                         // Remove the arrow model from the scene
                         arrowNode.renderable = null
                         isModelPlaced = false
-                        Toast.makeText(requireContext(), "You have reached the destination", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), "You have reached your destination", Toast.LENGTH_SHORT).show()
                         findNavController().popBackStack()
                     }
                 }
