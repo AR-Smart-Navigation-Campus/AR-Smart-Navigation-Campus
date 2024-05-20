@@ -59,10 +59,7 @@ class AdminViewModel(application: Application) : AndroidViewModel(application) {
 
     }
 
-    // Deletes an entry from the database and JSON file
-    fun deleteEntry(locationData: LocationData){
-        //TODO: delete the entry from the database
-    }
+
 
 //    // Sets the selected LocationData object
    fun setLocation(it: LocationData) {

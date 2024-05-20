@@ -12,7 +12,9 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.locations.R
 import com.example.locations.Admin.all_location.model.LocationData
 import com.example.locations.databinding.AllLocationsLayoutBinding
@@ -88,6 +90,32 @@ class AllLocationsFragment : Fragment() {
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
     }
 
+    // Setup item touch helper for RecyclerView
+    private fun setupItemTouchHelper(currentUser:String) {
+        ItemTouchHelper(object : ItemTouchHelper.Callback() {
+            // Setup movement flags for RecyclerView
+            override fun getMovementFlags(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder): Int{
+                return if(currentUser==admin) {
+                    makeFlag(
+                        ItemTouchHelper.ACTION_STATE_SWIPE,
+                        ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
+                    )
+                }else{
+                    0
+                }
+            }
+            // Handle move event
+            override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder) = false
+            // Handle swipe event
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                if(currentUser==admin) {
+                    val location =
+                        (binding.recyclerView.adapter as LocationAdapter).itemAt(viewHolder.adapterPosition)
+                }
+            }
+        }).attachToRecyclerView(binding.recyclerView)
+    }
+
     private fun setupSearchEditText() {
         binding.searchEditText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
@@ -97,6 +125,7 @@ class AllLocationsFragment : Fragment() {
             override fun afterTextChanged(s: Editable) {}
         })
     }
+
 
     private fun filterBuilding(query: String) {
         if (!::adapter.isInitialized) return
