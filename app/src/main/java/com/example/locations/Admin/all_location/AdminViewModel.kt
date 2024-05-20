@@ -1,117 +1,71 @@
 package com.example.locations.Admin.all_location
 
 import android.app.Application
+import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.liveData
+import androidx.lifecycle.viewModelScope
 import com.example.locations.Admin.all_location.model.LocationData
-import com.example.locations.Admin.all_location.model.LocationRepository
+import com.example.locations.Admin.all_location.single_location.AddLocationFragment
 import com.example.locations.Admin.all_location.single_location.LocationUpdatesLiveData
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
-import java.io.File
-import java.io.FileReader
-import java.io.FileWriter
+import com.google.firebase.Firebase
+import com.google.firebase.firestore.firestore
+import kotlinx.coroutines.launch
 
 // AdminViewModel class that extends AndroidViewModel and provides LiveData objects for the UI to observe.
 class AdminViewModel(application: Application) : AndroidViewModel(application) {
+    private val db = Firebase.firestore
 
-    // LiveData object for the list of LocationData objects
-    private val _chosenItem  = MutableLiveData<LocationData>()
-    // LiveData object for the selected LocationData object
-    val chosenItem : LiveData<LocationData> get() = _chosenItem
-    // LocationRepository object to interact with the database
-    private val repository = LocationRepository(application)
-    // LiveData object for the list of LocationData objects
-    val locationData : LiveData<List<LocationData>>? = repository.getLocations()
+    private val _locationData = MutableLiveData<List<LocationData>>()
+    val locationData: LiveData<List<LocationData>> get() = _locationData
+
+    private val _chosenItem = MutableLiveData<LocationData>()
+    val chosenItem: LiveData<LocationData> get() = _chosenItem
+
+    init {
+        fetchLocations()
+    }
+
+    private fun fetchLocations() {
+        db.collection("buildings").addSnapshotListener { snapshot, error ->
+            if (error != null) {
+                Log.d("Firestore", "Error getting documents: ", error)
+                return@addSnapshotListener
+            }
+
+            if (snapshot != null && !snapshot.isEmpty) {
+                val locations = snapshot.toObjects(LocationData::class.java)
+                Log.d("Firestore", "Locations: $locations")
+                _locationData.postValue(locations)
+            } else {
+                Log.d("Firestore", "No locations found")
+            }
+        }
+    }
+
 
 
     // Adds a new entry to the database and JSON file
     fun addEntry(imageUri: String) {
 
-        // Generate a unique id
+//        // Generate a unique id
         val uniqueId = System.currentTimeMillis()
+      val newEntry = LocationData(id = uniqueId ,location = location.value!!, name = userInput.value!!, azimuth = _azimuth.value.toString(), imgUrl = imageUri)
+        AddLocationFragment().saveBuildingToFirestore(newEntry)
 
-        val newEntry = LocationData(id = uniqueId ,location = location.value!!, text = userInput.value!!, azimuth = _azimuth.value.toString(), img = imageUri)
-        repository.addLocation(newEntry)
 
-        // Define the file
-        val file = File(getApplication<Application>().filesDir, "locationData.json")
-
-        // Initialize an empty list of LocationData
-        val gson = Gson()
-        val existingEntries: MutableList<LocationData> = mutableListOf()
-
-        // Check if the file exists
-        if (file.exists()) {
-            // Read the existing JSON string from the file
-            val existingJson = FileReader(file).readText()
-
-            // Convert the existing JSON string to a list of LocationData objects
-            val type = object : TypeToken<List<LocationData>>() {}.type
-            existingEntries.addAll(gson.fromJson(existingJson, type))
-        }
-
-        // Add the new entry to the list
-        existingEntries.add(newEntry)
-
-        // Convert the updated list back to a JSON string
-        val updatedJson = gson.toJson(existingEntries)
-
-        // Write the updated JSON string back to the file
-        FileWriter(file).use { it.write(updatedJson) }
     }
 
     // Deletes an entry from the database and JSON file
     fun deleteEntry(locationData: LocationData){
-        repository.deleteLocation(locationData)
-
-        // Define the file
-        val file = File(getApplication<Application>().filesDir, "locationData.json")
-
-        // Initialize an empty list of LocationData
-        val existingEntries: MutableList<LocationData> = mutableListOf()
-
-        // Check if the file exists
-        if (file.exists()) {
-            // Read the existing JSON string from the file
-            val gson = Gson()
-            val existingJson = FileReader(file).readText()
-
-            // Convert the existing JSON string to a list of LocationData objects
-            val type = object : TypeToken<List<LocationData>>() {}.type
-            existingEntries.addAll(gson.fromJson(existingJson, type))
-
-            // Find the entry with the same id and remove it from the list
-            val iterator = existingEntries.iterator()
-            while (iterator.hasNext()) {
-                val entry = iterator.next()
-                if (entry.id == locationData.id) {
-                    iterator.remove()
-                    break
-                }
-            }
-
-            // If the list is empty after removal, delete the file
-            if (existingEntries.isEmpty()) {
-                file.delete()
-            } else {
-                // Convert the updated list back to a JSON string
-                val updatedJson = gson.toJson(existingEntries)
-
-                // Write the updated JSON string back to the file
-                FileWriter(file).use { it.write(updatedJson) }
-            }
-        }
+        //TODO: delete the entry from the database
     }
 
-    // Deletes all entries from the database and JSON file
-    fun deleteAll() {
-        repository.deleteAll()
-    }
-
-    // Sets the selected LocationData object
-    fun setLocation(it: LocationData) {
+//    // Sets the selected LocationData object
+   fun setLocation(it: LocationData) {
         _chosenItem.value = it
     }
 

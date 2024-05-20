@@ -6,10 +6,12 @@ import android.content.pm.PackageManager
 import android.content.res.ColorStateList
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
@@ -18,9 +20,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.locations.Admin.all_location.AdminViewModel
+import com.example.locations.Admin.all_location.model.LocationData
 import com.example.locations.R
 import com.example.locations.databinding.AddLocationBinding
-import com.google.android.material.textfield.TextInputEditText
+import com.google.firebase.Firebase
+import com.google.firebase.firestore.firestore
 
 // AddLocationFragment is a Fragment that allows the user to add a new location entry.
 class AddLocationFragment: Fragment() {
@@ -87,13 +91,42 @@ class AddLocationFragment: Fragment() {
             toggleNameError(true)
         }else{
             toggleNameError(false)
+            val building=LocationData(
+                id=System.currentTimeMillis(),
+                location=location,
+                name = text,
+                azimuth=binding.azimuthView.text.toString(),
+                imgUrl=imageUri
+            )
             viewModel.updateLocation(location)
             viewModel.addUserInput(text)
             viewModel.addEntry(imageUri)
             updateUIWithLatestEntry()
+
+
+         //   saveBuildingToFirestore(building)
         }
+    }
+    public fun saveBuildingToFirestore(building: LocationData) {
+        val db = Firebase.firestore
 
+        val buildingData = hashMapOf(
+            "id" to building.id,
+            "name" to building.name,
+            "location" to building.location,
+            "azimuth" to building.azimuth,
+            "imgUrl" to building.imgUrl
+        )
 
+        db.collection("buildings")
+            .add(buildingData)
+            .addOnSuccessListener { documentReference ->
+               // Toast.makeText(requireContext(), "$building", Toast.LENGTH_SHORT).show()
+                Log.d("Firestore", "DocumentSnapshot added with ID: ${documentReference.id}")
+            }
+            .addOnFailureListener { e ->
+                Log.w("Firestore", "Error adding document", e)
+            }
     }
     private fun toggleNameError(isError:Boolean){
         val textLayout = binding.placeNameEditText
@@ -187,4 +220,6 @@ class AddLocationFragment: Fragment() {
         super.onDestroyView()
         _binding = null
     }
+
 }
+
