@@ -7,7 +7,6 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -20,7 +19,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.locations.R
 import com.example.locations.Admin.all_location.model.LocationData
 import com.example.locations.databinding.AllLocationsLayoutBinding
-import com.google.ar.sceneform.rendering.Color
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
@@ -118,13 +116,13 @@ private fun returnToAdd(){
         ItemTouchHelper(object : ItemTouchHelper.Callback() {
             // Setup movement flags for RecyclerView
             override fun getMovementFlags(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder): Int{
-                if(currentUser==admin) {
-              return makeFlag(
-                    ItemTouchHelper.ACTION_STATE_SWIPE,
-                    ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
-                )
+                return if(currentUser==admin) {
+                    makeFlag(
+                        ItemTouchHelper.ACTION_STATE_SWIPE,
+                        ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
+                    )
                 }else{
-                    return 0
+                    0
                 }
             }
             // Handle move event

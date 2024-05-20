@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -59,6 +60,17 @@ class StartARFragment : Fragment() {
         // Add an update listener to the AR scene view
         arFragment.arSceneView.scene.addOnUpdateListener {
             if (isModelPlaced) {
+                // Check if the current location is within 3 meters of the target location
+                if (::myLocation.isInitialized && ::targetLocation.isInitialized) {
+                    val distance = myLocation.distanceTo(targetLocation)
+                    if (distance <= 3) {
+                        // Remove the arrow model from the scene
+                        arrowNode.renderable = null
+                        isModelPlaced = false
+                        Toast.makeText(requireContext(), "You have reached the destination", Toast.LENGTH_SHORT).show()
+                        findNavController().popBackStack()
+                    }
+                }
                 arFragment.arSceneView.planeRenderer.isVisible = false // Hide the plane renderer
                 targetLocation.let { location ->
                 val camera = arFragment.arSceneView.scene.camera // Get the camera

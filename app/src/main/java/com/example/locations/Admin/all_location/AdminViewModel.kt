@@ -105,11 +105,6 @@ class AdminViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    // Deletes all entries from the database and JSON file
-    fun deleteAll() {
-        repository.deleteAll()
-    }
-
     // Sets the selected LocationData object
     fun setLocation(it: LocationData) {
         _chosenItem.value = it
