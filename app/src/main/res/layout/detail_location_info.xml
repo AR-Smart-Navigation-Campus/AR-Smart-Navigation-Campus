@@ -47,7 +47,6 @@
             android:text="Location"
             android:textColor="@color/gray"
             android:textSize="20sp"
-            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/location_name" />
@@ -58,7 +57,6 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:text="Azimuth"
-            android:visibility="gone"
             android:textColor="@color/gray"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -92,18 +90,6 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.cardview.widget.CardView>
-
-
-
-<!--    <Button-->
-<!--        android:id="@+id/btn_back"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="Back to Main"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="@+id/location_name"-->
-<!--        app:layout_constraintVertical_bias="0.989"-->
-<!--        tools:layout_editor_absoluteX="38dp" />-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 
