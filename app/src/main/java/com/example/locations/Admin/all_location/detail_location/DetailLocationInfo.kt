@@ -50,13 +50,11 @@ class DetailLocationInfo : Fragment() {
             binding.locationName.text = it.name
             coords.text = it.location
             azimuth.text = it.azimuth
-            if(currentUser==admin) {
-                coords.visibility=View.VISIBLE
-                azimuth.visibility=View.VISIBLE
-            }else{
-                binding.description.visibility=View.VISIBLE // Show the description text view
+            if(currentUser!=admin) {
+                coords.visibility=View.GONE
+                azimuth.visibility=View.GONE
+                //binding.description.visibility=View.VISIBLE // Show the description text view  //DO WE NEED THIS?
             }
-
             Glide.with(binding.root).load(it.imgUrl).circleCrop().into(binding.itemDetailImage) // Load the image into the image view
         }
     }

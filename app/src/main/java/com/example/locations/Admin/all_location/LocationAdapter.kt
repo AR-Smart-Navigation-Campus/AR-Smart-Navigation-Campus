@@ -12,7 +12,10 @@ import com.example.locations.databinding.LocationItemBinding
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 
-// Adapter for the RecyclerView in AllLocationsFragment
+/**
+ * Adapter for the RecyclerView in AllLocationsFragment
+ */
+
 class LocationAdapter(
     // List of locations to display
     private var locationList: List<LocationData>,
@@ -33,38 +36,37 @@ RecyclerView.Adapter<LocationAdapter.LocationViewHolder>() {
 
         // Set click listeners for the item view
         init {
-            binding.root.setOnClickListener(this)
-            binding.root.setOnLongClickListener(this)
+            binding.root.setOnClickListener(this) // Handle item click event
+            binding.root.setOnLongClickListener(this) // Handle item long click event
         }
 
         // Handle item click event
         override fun onClick(v: View?) {
-            callBack.onItemClick(adapterPosition)
+            callBack.onItemClick(adapterPosition) // Notify the callback
         }
 
         // Handle item long click event
         override fun onLongClick(v: View?): Boolean {
-            callBack.onItemLongClicked(adapterPosition)
+            callBack.onItemLongClicked(adapterPosition) // Notify the callback
             return true
         }
 
         // Bind the location data to the item view
         fun bind(location: LocationData) {
-            Log.d("LocationAdapter", "$location")
             val auth=Firebase.auth
             val currentUser=auth.currentUser?.email.toString()
             val admin="navigationproject2024@gmail.com"
-            val coords=binding.locationTextView
-            val azimuth=binding.azimuthTextView
-            coords.append(location.location)
-            azimuth.append(location.azimuth)
             binding.buildingName.text=location.name
-            if(currentUser==admin) {
-            azimuth.visibility=View.VISIBLE
-                coords.visibility=View.VISIBLE
-            }
-
             Glide.with(binding.root).load(location.imgUrl).circleCrop().into(binding.buildingImage)
+            val coords=   binding.locationTextView
+            val azimuth= binding.azimuthTextView
+            coords.text = location.location
+            azimuth.text = location.azimuth
+            if(currentUser!=admin) {
+                coords.visibility=View.GONE
+                azimuth.visibility=View.GONE
+
+            }
         }
     }
 

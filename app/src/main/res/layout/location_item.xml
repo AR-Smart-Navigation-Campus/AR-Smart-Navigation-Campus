@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:cardUseCompatPadding="true"
@@ -9,58 +10,57 @@
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/locationItemLayout"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        >
+        android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/buildingName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:layout_marginTop="10dp"
-                android:text="name"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
-
-            <TextView
-                android:id="@+id/azimuthTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="5dp"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="Azimuth : "
-                android:textSize="16sp"
-                app:layout_constraintTop_toBottomOf="@+id/buildingName"
-                app:layout_constraintStart_toStartOf="parent"/>
-
-            <TextView
-                android:id="@+id/locationTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                android:layout_marginTop="10dp"
-                android:gravity="center"
-                android:text="location : "
-                android:textSize="16sp"
-                app:layout_constraintTop_toBottomOf="@+id/azimuthTextView"
-                app:layout_constraintStart_toStartOf="parent"/>
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/buildingImage"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
             android:contentDescription="location image"
-            android:layout_marginLeft="190dp"
             android:src="@mipmap/ic_launcher"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             app:shapeAppearanceOverlay="@style/RoundedImageView"
-            app:layout_constraintStart_toEndOf="@+id/locationTextView"
-            app:layout_constraintTop_toTopOf="parent" />
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/locationTextView"
+            android:layout_width="262dp"
+            android:layout_height="21dp"
+            android:layout_weight="1"
+            android:text="location : "
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/buildingName"
+            app:layout_constraintVertical_bias="0.777"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/azimuthTextView"
+            android:layout_width="261dp"
+            android:layout_height="23dp"
+            android:layout_weight="1"
+            android:text="Azimuth : "
+            android:textSize="16sp"
+            app:layout_constraintBottom_toTopOf="@+id/locationTextView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/buildingName"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/buildingName"
+            android:layout_width="278dp"
+            android:layout_height="27dp"
+            android:text="name"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="MissingConstraints" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>
