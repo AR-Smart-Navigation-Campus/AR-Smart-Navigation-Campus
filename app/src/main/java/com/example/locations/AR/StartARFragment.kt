@@ -24,6 +24,7 @@ import com.google.ar.sceneform.assets.RenderableSource
 import com.google.ar.sceneform.math.Quaternion
 import com.google.ar.sceneform.rendering.ModelRenderable
 import com.google.ar.sceneform.ux.ArFragment
+import kotlin.math.cos
 
 /**
  * Fragment class for the AR view.
@@ -71,20 +72,11 @@ class StartARFragment : Fragment() {
                         findNavController().popBackStack()
                     }
                 }
+
+               // Update arrow node position and rotation
+                updateArrowNode()
+
                 arFragment.arSceneView.planeRenderer.isVisible = false // Hide the plane renderer
-                targetLocation.let { location ->
-                    val camera = arFragment.arSceneView.scene.camera // Get the camera
-                    val cameraPos = camera.worldPosition // Get the camera position
-
-                    // Calculate direction from camera to target location
-                    val direction = Vector3.subtract(location.toVector3(), cameraPos).normalized()
-
-                    // Calculate rotation quaternion to point the arrow towards target location
-                    val rotation = Quaternion.lookRotation(direction, Vector3.up())
-
-                    // Update arrow node position and rotation
-                    arrowNode.worldRotation = rotation
-                }
                 return@addOnUpdateListener
             }
             val frame = arFragment.arSceneView.arFrame // Get the AR frame
@@ -109,23 +101,40 @@ class StartARFragment : Fragment() {
         }
     }
 
+    private fun updateArrowNode() {
+        if (::myLocation.isInitialized && ::targetLocation.isInitialized) {
+            val camera = arFragment.arSceneView.scene.camera // Get the camera
+            val cameraPos = camera.worldPosition // Get the camera position
+
+
+            val targetVec = targetLocation.toVector3()
+            val myLocationVec = myLocation.toVector3()
+
+            // Calculate direction from curr location to target location
+            val direction = Vector3.subtract(targetVec, myLocationVec).normalized()
+
+            // Calculate rotation quaternion to point the arrow towards target location
+            val rotation = Quaternion.lookRotation(direction, Vector3.up())
+
+            // Update arrow node position and rotation
+            arrowNode.worldRotation = rotation
+            //arrowNode.worldPosition = cameraPos
+        }
+    }
+
     // Set the position and rotation of the model
     private fun setModelPosition(node: Node, targetLocation:Location, myLocation: Location) {
         val bearing = myLocation.bearingTo(targetLocation)// Calculate the bearing to the target location
-        val bearingInRad = Math.toRadians(bearing.toDouble()) * 10// Convert the bearing to radians
+        val bearingInRad = Math.toRadians(bearing.toDouble()) * 100000// Convert the bearing to radians
         val rotation = Quaternion.axisAngle(Vector3(0f, 1f, 0f), (-bearingInRad).toFloat())// Create a quaternion for the rotation
-
+        Log.d("StartARFragment", "curr location: $myLocation")
 
         node.localRotation = rotation // Set the local rotation of the model
         node.localPosition = Vector3(0f, -1f, -2f) // 2 meter in front of the camera
     }
 
     // Load the arrow model and attach it to the camera
-    private fun loadArrowModel(
-        fragment: ArFragment,
-        node: Node,
-        locationData: Location,
-        address: Location
+    private fun loadArrowModel(fragment: ArFragment, node: Node, locationData: Location, address: Location
     ) {
         val modelUri = Uri.parse("models/direction_arrow.glb")
         ModelRenderable.builder()
@@ -140,12 +149,10 @@ class StartARFragment : Fragment() {
             .setRegistryId(modelUri) // Set the registry ID of the model
             .build()
             .thenAccept { renderable ->
-                Log.d("StartARFragment", "Model loaded successfully")
                 arrowNode.apply {
                     this.renderable = renderable // Set the renderable of the node
                     arFragment.arSceneView.scene.addChild(this) // Add the node to the scene
                 }
-
                 node.setParent(fragment.arSceneView.scene.camera) // Attach the node to the camera
                 setModelPosition(node, locationData, address) // Set the position of the model
                 isModelPlaced = true // Set the flag to true
@@ -155,6 +162,7 @@ class StartARFragment : Fragment() {
                 null
             }
     }
+
 
     // Create a Location object from a string
     private fun createLocation(location:String): Location {
