@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="white_blue">#5B73FF</color>
+    <color name="btnsAndInput">#8FFFFFFF</color>
+    <color name="red">#DAEA0000</color>
+    <color name="background_white">#A9D1D1D1</color>
+    <color name="blue_link">#319DF3</color>
+    <color name="modal_window">#A3313131</color>
+    <color name="gray">#494646</color>
+</resources>

@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">ArNavigator</string>
+    <string name="register">Register</string>
+    <string name="login">Login</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="scan">Scan</string>
+    <string name="home_page">home page</string>
+</resources>
