@@ -25,7 +25,7 @@ class LocationUpdatesLiveData(context:Context) : LiveData<String>() {
 
     // Location request object specifying update interval and priority.
     private val locationRequest =
-        LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY,TimeUnit.SECONDS.toMillis(1)).build()
+        LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY,TimeUnit.SECONDS.toMillis(2)).build()
 
     //Location callback to receive location updates from the FusedLocationProviderClient.
     private val locationCallback = object  : LocationCallback(){

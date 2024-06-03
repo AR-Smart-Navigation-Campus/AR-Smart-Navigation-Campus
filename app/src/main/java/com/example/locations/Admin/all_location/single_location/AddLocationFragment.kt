@@ -168,7 +168,9 @@ class AddLocationFragment: Fragment() {
 
     // Get location updates.
     private fun getLocationUpdates() {
-        viewModel.address.observe(viewLifecycleOwner) { binding.coordText.text = it }
+        viewModel.address.observe(viewLifecycleOwner) {
+            binding.coordText.text = it
+        }
     }
 
     // Start listening for azimuth updates.

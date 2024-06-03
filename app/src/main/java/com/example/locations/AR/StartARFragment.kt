@@ -24,7 +24,6 @@ import com.google.ar.sceneform.assets.RenderableSource
 import com.google.ar.sceneform.math.Quaternion
 import com.google.ar.sceneform.rendering.ModelRenderable
 import com.google.ar.sceneform.ux.ArFragment
-import kotlin.math.cos
 
 /**
  * Fragment class for the AR view.
@@ -39,6 +38,7 @@ class StartARFragment : Fragment() {
     private lateinit var arrowNode: Node
     private lateinit var targetLocation: Location
     private lateinit var myLocation: Location
+
 
     // Inflate the layout
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -58,12 +58,24 @@ class StartARFragment : Fragment() {
         arFragment.planeDiscoveryController.show() // Show the plane discovery controller
         arrowNode = Node() // Create a new node for the arrow model
 
+        adminViewModel.chosenItem.observe(viewLifecycleOwner) { location ->
+            targetLocation = createLocation(location.location) // Create a Location object from the location
+        }
+
+        adminViewModel.address.observe(viewLifecycleOwner) { address ->
+            myLocation = createLocation(address) // Create a Location object from the address
+        }
         // Add an update listener to the AR scene view
         arFragment.arSceneView.scene.addOnUpdateListener {
             if (isModelPlaced) {
                 // Check if the current location is within 3 meters of the target location
                 if (::myLocation.isInitialized && ::targetLocation.isInitialized) {
                     val distance = myLocation.distanceTo(targetLocation)
+                    adminViewModel.chosenItem.observe(viewLifecycleOwner) { location ->
+                        val locationName = location.name
+                        binding.Navigating.text = "Navigating to: ${locationName}" // Set the text of the navigating TextView
+                        binding.distance.text = "Distance to ${locationName}: ${distance.toInt()} meters" // Set the text of the distance TextView
+                    }
                     if (distance <= 3) {
                         // Remove the arrow model from the scene
                         arrowNode.renderable = null
@@ -84,15 +96,6 @@ class StartARFragment : Fragment() {
                 val planes = frame.getUpdatedTrackables(Plane::class.java) // Get the updated planes
                 for (plane in planes) {
                     if (plane.trackingState == TrackingState.TRACKING) {
-
-                        adminViewModel.chosenItem.observe(viewLifecycleOwner) { location ->
-                            targetLocation = createLocation(location.location) // Create a Location object from the location
-                        }
-
-                        adminViewModel.address.observe(viewLifecycleOwner) { address ->
-                            myLocation = createLocation(address) // Create a Location object from the address
-                        }
-
                         loadArrowModel(arFragment, arrowNode, targetLocation, myLocation) // Load the arrow model
                         break
                     }
