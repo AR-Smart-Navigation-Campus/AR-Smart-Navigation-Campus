@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="16dp"
+    android:background="@color/baby_blue"
+    android:orientation="vertical"
+    tools:context=".Admin.all_location.single_location.AddLocationFragment">
+
+
+    <TextView
+        android:id="@+id/btnBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="4dp"
+        android:drawableStart="@drawable/baseline_arrow_back_ios_24"
+        android:drawableTint="@color/white"
+        app:layout_constraintBottom_toTopOf="@+id/coordText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/coordText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
+        android:text="Location 1.5"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toTopOf="@+id/pick_img_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnBack" />
+
+    <TextView
+        android:id="@+id/pick_img_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginBottom="15dp"
+        android:text="Pick an image"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/card_view"
+        app:layout_constraintStart_toStartOf="@+id/coordText"
+        app:layout_constraintTop_toBottomOf="@+id/coordText" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_view"
+        android:layout_width="200dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="21dp"
+        app:cardCornerRadius="50dp"
+        app:layout_constraintBottom_toTopOf="@+id/nameView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/pick_img_text">
+
+        <ImageView
+            android:id="@+id/result_img"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/camera" />
+
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/nameView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="27dp"
+        android:layout_marginBottom="21dp"
+        android:text="Name"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/coordinatesView"
+        app:layout_constraintEnd_toEndOf="@+id/coordinatesView"
+        app:layout_constraintTop_toBottomOf="@+id/card_view" />
+
+    <TextView
+        android:id="@+id/coordinatesView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:text="Coordinates"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/azimuthView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/nameView" />
+
+    <TextView
+        android:id="@+id/azimuthView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="17dp"
+        android:layout_marginBottom="25dp"
+        android:text="Azimuth"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/place_name_edit_text"
+        app:layout_constraintStart_toStartOf="@+id/coordinatesView"
+        app:layout_constraintTop_toBottomOf="@+id/coordinatesView" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/place_name_edit_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="21dp"
+
+        android:hint="Enter place name"
+        app:boxStrokeColor="@color/btnsAndInput"
+        app:hintTextColor="@color/btnsAndInput"
+        app:layout_constraintBottom_toTopOf="@+id/btnViewList"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/azimuthView"
+        app:startIconDrawable="@drawable/ic_house">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/btnSavePlace"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="21dp"
+        android:layout_marginEnd="1dp"
+        android:backgroundTint="@color/medium_blue"
+        android:padding="10dp"
+        android:text="Save data"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toStartOf="@+id/btnViewList"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/place_name_edit_text" />
+
+    <Button
+        android:id="@+id/btnViewList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="60dp"
+        android:backgroundTint="@color/medium_blue"
+        android:padding="10dp"
+        android:text="View List"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btnSavePlace"
+        app:layout_constraintTop_toBottomOf="@+id/place_name_edit_text" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
