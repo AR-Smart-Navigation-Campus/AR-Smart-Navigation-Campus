@@ -92,9 +92,15 @@ class StartARFragment : Fragment() {
                         adminViewModel.address.observe(viewLifecycleOwner) { address ->
                             myLocation = createLocation(address) // Create a Location object from the address
                         }
+                        if(::myLocation.isInitialized) {
+                            loadArrowModel(arFragment, arrowNode, targetLocation, myLocation) // Load the arrow model
+                            break
+                        } else {
+                            findNavController().popBackStack()
+                            Toast.makeText(requireContext(), "failed", Toast.LENGTH_SHORT).show()
 
-                        loadArrowModel(arFragment, arrowNode, targetLocation, myLocation) // Load the arrow model
-                        break
+                        }
+
                     }
                 }
             }
