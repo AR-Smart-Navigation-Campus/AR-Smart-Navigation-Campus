@@ -181,4 +181,8 @@ class StartARFragment : Fragment() {
     private fun Location.toVector3(): Vector3 {
         return Vector3(this.latitude.toFloat(), 0f, this.longitude.toFloat())
     }
+
+    fun test(){
+        Log.d("StartARFragment", "test")
+    }
 }
