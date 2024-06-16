@@ -24,13 +24,6 @@ import com.google.ar.sceneform.assets.RenderableSource
 import com.google.ar.sceneform.math.Quaternion
 import com.google.ar.sceneform.rendering.ModelRenderable
 import com.google.ar.sceneform.ux.ArFragment
-import kotlin.math.abs
-import kotlin.math.atan2
-import kotlin.math.cos
-import kotlin.math.ln
-import kotlin.math.sin
-import kotlin.math.sqrt
-import kotlin.math.tan
 
 /**
  * Fragment class for the AR view.
@@ -93,8 +86,15 @@ class StartARFragment : Fragment() {
                         findNavController().popBackStack()
                     }
                 }
-               // Update arrow node position and rotation
-                updateArrowNode()
+                adminViewModel.chosenItem.observe(viewLifecycleOwner) { location ->
+                    targetLocation = createLocation(location.location) // Create a Location object from the location
+                    locationName = location.name
+                }
+
+                adminViewModel.address.observe(viewLifecycleOwner) { address ->
+                    myLocation = createLocation(address) // Create a Location object from the address
+                }
+                updateArrowNode() // Update the arrow node
                 arFragment.arSceneView.planeRenderer.isVisible = false // Hide the plane renderer
                 return@addOnUpdateListener
             }
