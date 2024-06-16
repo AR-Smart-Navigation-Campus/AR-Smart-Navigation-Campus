@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.ColorStateList
+import android.location.Location
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -169,7 +170,12 @@ class AddLocationFragment: Fragment() {
     // Get location updates.
     private fun getLocationUpdates() {
         viewModel.address.observe(viewLifecycleOwner) {
-            binding.coordText.text = it
+            val data = it.split(",")
+            val latitude = data[0]
+            val longitude = data[1]
+            val accuracy = data[2].toFloat()
+            binding.coordText.text = "${latitude} , ${longitude}"
+            binding.accuracy.text = "Accuracy: ${accuracy} meters"
         }
     }
 

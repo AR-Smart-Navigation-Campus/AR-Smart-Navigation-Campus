@@ -48,8 +48,8 @@ class DetailLocationInfo : Fragment() {
             val coords=   binding.locationLocation
             val azimuth= binding.locationAzimuth
             binding.locationName.text = it.name
-            coords.text = it.location
-            azimuth.text = it.azimuth
+            coords.text = "Location: ${it.location}"
+            azimuth.text = "Azimuth: ${it.azimuth}"
             if(currentUser!=admin) {
                 coords.visibility=View.GONE
                 azimuth.visibility=View.GONE
