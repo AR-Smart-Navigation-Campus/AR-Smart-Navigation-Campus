@@ -24,6 +24,13 @@ import com.google.ar.sceneform.assets.RenderableSource
 import com.google.ar.sceneform.math.Quaternion
 import com.google.ar.sceneform.rendering.ModelRenderable
 import com.google.ar.sceneform.ux.ArFragment
+import kotlin.math.abs
+import kotlin.math.atan2
+import kotlin.math.cos
+import kotlin.math.ln
+import kotlin.math.sin
+import kotlin.math.sqrt
+import kotlin.math.tan
 
 /**
  * Fragment class for the AR view.
@@ -35,9 +42,11 @@ class StartARFragment : Fragment() {
     private lateinit var binding : StartArFragmentBinding
     private lateinit var arFragment: ArFragment
     private var isModelPlaced = false
+    private var isDestinationReached = false
     private lateinit var arrowNode: Node
     private lateinit var targetLocation: Location
     private lateinit var myLocation: Location
+    private lateinit var locationName: String
 
 
     // Inflate the layout
@@ -60,6 +69,7 @@ class StartARFragment : Fragment() {
 
         adminViewModel.chosenItem.observe(viewLifecycleOwner) { location ->
             targetLocation = createLocation(location.location) // Create a Location object from the location
+            locationName = location.name
         }
 
         adminViewModel.address.observe(viewLifecycleOwner) { address ->
@@ -68,31 +78,28 @@ class StartARFragment : Fragment() {
         // Add an update listener to the AR scene view
         arFragment.arSceneView.scene.addOnUpdateListener {
             if (isModelPlaced) {
-                // Check if the current location is within 3 meters of the target location
+                // Check if the current location is within 5 meters of the target location
                 if (::myLocation.isInitialized && ::targetLocation.isInitialized) {
                     val distance = myLocation.distanceTo(targetLocation)
-                    adminViewModel.chosenItem.observe(viewLifecycleOwner) { location ->
-                        val locationName = location.name
-                        binding.Navigating.text = "Navigating to: ${locationName}" // Set the text of the navigating TextView
-                        binding.distance.text = "Distance to ${locationName}: ${distance.toInt()} meters" // Set the text of the distance TextView
-                    }
-                    if (distance <= 3) {
+                    binding.Navigating.text = "Navigating to: ${locationName}" // Set the text of the navigating TextView
+                    binding.distance.text = "Distance to ${locationName}: ${distance.toInt()} meters" // Set the text of the distance TextView
+                    if (distance <= 5) {
                         // Remove the arrow model from the scene
+                        arrowNode.isEnabled = false
                         arrowNode.renderable = null
                         isModelPlaced = false
+                        isDestinationReached = true
                         Toast.makeText(requireContext(), "You have reached your destination", Toast.LENGTH_SHORT).show()
                         findNavController().popBackStack()
                     }
                 }
-
                // Update arrow node position and rotation
                 updateArrowNode()
-
                 arFragment.arSceneView.planeRenderer.isVisible = false // Hide the plane renderer
                 return@addOnUpdateListener
             }
             val frame = arFragment.arSceneView.arFrame // Get the AR frame
-            if (frame != null) {
+            if (frame != null && !isModelPlaced && !isDestinationReached) {
                 val planes = frame.getUpdatedTrackables(Plane::class.java) // Get the updated planes
                 for (plane in planes) {
                     if (plane.trackingState == TrackingState.TRACKING) {
@@ -106,32 +113,31 @@ class StartARFragment : Fragment() {
 
     private fun updateArrowNode() {
         if (::myLocation.isInitialized && ::targetLocation.isInitialized) {
-            val camera = arFragment.arSceneView.scene.camera // Get the camera
-            val cameraPos = camera.worldPosition // Get the camera position
-
-
             val targetVec = targetLocation.toVector3()
             val myLocationVec = myLocation.toVector3()
-
             // Calculate direction from curr location to target location
             val direction = Vector3.subtract(targetVec, myLocationVec).normalized()
-
             // Calculate rotation quaternion to point the arrow towards target location
             val rotation = Quaternion.lookRotation(direction, Vector3.up())
-
-            // Update arrow node position and rotation
+            // Update arrow node rotation
+            arrowNode.localRotation = rotation
             arrowNode.worldRotation = rotation
-            //arrowNode.worldPosition = cameraPos
         }
     }
 
     // Set the position and rotation of the model
     private fun setModelPosition(node: Node, targetLocation:Location, myLocation: Location) {
-        val bearing = myLocation.bearingTo(targetLocation)// Calculate the bearing to the target location
-        val bearingInRad = Math.toRadians(bearing.toDouble()) * 100000// Convert the bearing to radians
-        val rotation = Quaternion.axisAngle(Vector3(0f, 1f, 0f), (-bearingInRad).toFloat())// Create a quaternion for the rotation
-        Log.d("StartARFragment", "curr location: $myLocation")
+        //val bearing = myLocation.bearingTo(targetLocation)// Calculate the bearing to the target location
+        //val bearingInRad = Math.toRadians(bearing.toDouble())// Convert the bearing to radians
+        //val rotation = Quaternion.axisAngle(Vector3(0f, 1f, 0f), bearingInRad.toFloat())// Create a quaternion for the rotation
 
+        val targetVec = targetLocation.toVector3()
+        val myLocationVec = myLocation.toVector3()
+        // Calculate direction from curr location to target location
+        val direction = Vector3.subtract(targetVec, myLocationVec).normalized()
+        // Calculate rotation quaternion to point the arrow towards target location
+        val rotation = Quaternion.lookRotation(direction, Vector3.up())
+        // Update arrow node position and rotation
         node.localRotation = rotation // Set the local rotation of the model
         node.localPosition = Vector3(0f, -1f, -2f) // 2 meter in front of the camera
     }
@@ -182,7 +188,4 @@ class StartARFragment : Fragment() {
         return Vector3(this.latitude.toFloat(), 0f, this.longitude.toFloat())
     }
 
-    fun test(){
-        Log.d("StartARFragment", "test")
-    }
 }

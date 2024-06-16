@@ -60,8 +60,8 @@ RecyclerView.Adapter<LocationAdapter.LocationViewHolder>() {
             Glide.with(binding.root).load(location.imgUrl).circleCrop().into(binding.buildingImage)
             val coords=   binding.locationTextView
             val azimuth= binding.azimuthTextView
-            coords.text = location.location
-            azimuth.text = location.azimuth
+            coords.text = "Location: ${location.location}"
+            azimuth.text = "Azimuth: ${location.azimuth}"
             if(currentUser!=admin) {
                 coords.visibility=View.GONE
                 azimuth.visibility=View.GONE
