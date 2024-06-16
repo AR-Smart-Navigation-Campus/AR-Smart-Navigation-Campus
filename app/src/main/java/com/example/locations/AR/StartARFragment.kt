@@ -24,6 +24,8 @@ import com.google.ar.sceneform.assets.RenderableSource
 import com.google.ar.sceneform.math.Quaternion
 import com.google.ar.sceneform.rendering.ModelRenderable
 import com.google.ar.sceneform.ux.ArFragment
+import java.util.Timer
+import java.util.TimerTask
 import kotlin.math.abs
 import kotlin.math.atan2
 import kotlin.math.cos
@@ -89,8 +91,19 @@ class StartARFragment : Fragment() {
                         arrowNode.renderable = null
                         isModelPlaced = false
                         isDestinationReached = true
-                        Toast.makeText(requireContext(), "You have reached your destination", Toast.LENGTH_SHORT).show()
-                        findNavController().popBackStack()
+                        //Toast.makeText(requireContext(), "You have reached your destination", Toast.LENGTH_SHORT).show()
+                        val timer = Timer()
+                        timer?.schedule(object : TimerTask() {
+                            override fun run() {
+                                activity?.runOnUiThread {
+                                    //findNavController().navigate(R.id.action_AR_to_Nav)
+                                    findNavController().popBackStack()
+                                }
+                            }
+
+                        }, 3000)
+
+                        binding.arrivelCardView.visibility = View.VISIBLE
                     }
                 }
                // Update arrow node position and rotation
