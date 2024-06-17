@@ -7,7 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -22,8 +22,12 @@ import com.google.ar.sceneform.Node
 import com.google.ar.sceneform.math.Vector3
 import com.google.ar.sceneform.assets.RenderableSource
 import com.google.ar.sceneform.math.Quaternion
+import com.google.ar.sceneform.rendering.Color
 import com.google.ar.sceneform.rendering.ModelRenderable
+import com.google.ar.sceneform.rendering.ViewRenderable
 import com.google.ar.sceneform.ux.ArFragment
+import java.util.Timer
+import java.util.TimerTask
 
 /**
  * Fragment class for the AR view.
@@ -46,8 +50,11 @@ class StartARFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity()) // Get the fused location provider client
         binding = StartArFragmentBinding.inflate(inflater, container, false) // Inflate the layout
-        binding.btnBack.setOnClickListener {
-            findNavController().popBackStack()
+        binding.navigateAgainBtn.setOnClickListener {
+            findNavController().navigate(R.id.action_AR_to_StartNav)
+        }
+        binding.exitBtn.setOnClickListener {
+            activity?.finishAffinity()
         }
         return binding.root
     }
@@ -58,6 +65,7 @@ class StartARFragment : Fragment() {
         binding = StartArFragmentBinding.bind(view) // Get the binding object
         arFragment = childFragmentManager.findFragmentById(R.id.sceneView) as ArFragment // Get the AR fragment
         arFragment.planeDiscoveryController.show() // Show the plane discovery controller
+        val textView = TextView(context)
         arrowNode = Node() // Create a new node for the arrow model
 
         adminViewModel.chosenItem.observe(viewLifecycleOwner) { location ->
@@ -75,15 +83,27 @@ class StartARFragment : Fragment() {
                 if (::myLocation.isInitialized && ::targetLocation.isInitialized) {
                     val distance = myLocation.distanceTo(targetLocation)
                     binding.Navigating.text = "Navigating to: ${locationName}" // Set the text of the navigating TextView
-                    binding.distance.text = "Distance to ${locationName}: ${distance.toInt()} meters" // Set the text of the distance TextView
+                    textView.text = "${distance.toInt()} meters"
+                    ViewRenderable.builder()
+                        .setView(context, textView)
+                        .build()
+                        .thenAccept { viewRenderable: ViewRenderable ->
+                            val textNode = Node()
+                            textNode.renderable = viewRenderable
+                            textNode.setParent(arrowNode)
+                            textNode.localPosition = Vector3(0f, 0.1f, 0f) // Add a small offset to avoid Z-fighting
+                        }
+                        .exceptionally { throwable: Throwable ->
+                            Log.e("StartARFragment", "Error creating view renderable", throwable)
+                            null
+                        }
                     if (distance <= 5) {
                         // Remove the arrow model from the scene
                         arrowNode.isEnabled = false
                         arrowNode.renderable = null
                         isModelPlaced = false
                         isDestinationReached = true
-                        Toast.makeText(requireContext(), "You have reached your destination", Toast.LENGTH_SHORT).show()
-                        findNavController().popBackStack()
+                        binding.arrivelCardView.visibility = View.VISIBLE
                     }
                 }
                 adminViewModel.chosenItem.observe(viewLifecycleOwner) { location ->
@@ -116,7 +136,7 @@ class StartARFragment : Fragment() {
             val targetVec = targetLocation.toVector3()
             val myLocationVec = myLocation.toVector3()
             // Calculate direction from curr location to target location
-            val direction = Vector3.subtract(targetVec, myLocationVec).normalized()
+            val direction = Vector3.subtract(targetVec,myLocationVec ).normalized()
             // Calculate rotation quaternion to point the arrow towards target location
             val rotation = Quaternion.lookRotation(direction, Vector3.up())
             // Update arrow node rotation
@@ -138,8 +158,8 @@ class StartARFragment : Fragment() {
         // Calculate rotation quaternion to point the arrow towards target location
         val rotation = Quaternion.lookRotation(direction, Vector3.up())
         // Update arrow node position and rotation
-        node.localRotation = rotation // Set the local rotation of the model
         node.localPosition = Vector3(0f, -1f, -2f) // 2 meter in front of the camera
+        node.localRotation = rotation // Set the local rotation of the model
     }
 
     // Load the arrow model and attach it to the camera

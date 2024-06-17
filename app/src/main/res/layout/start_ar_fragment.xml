@@ -26,18 +26,10 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
-
-
-            <TextView
-                android:id="@+id/distance"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:hint="Distance:"
-                android:textSize="20sp"
-                android:textStyle="bold" />
         </LinearLayout>
 
-        <fragment
+
+                <fragment
             android:id="@+id/sceneView"
             android:name="com.google.ar.sceneform.ux.ArFragment"
             android:layout_width="match_parent"
@@ -46,17 +38,71 @@
             tools:layout_editor_absoluteY="0dp" />
     </LinearLayout>
 
+    <androidx.cardview.widget.CardView
+        android:id="@+id/arrivel_card_view"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        app:cardCornerRadius="15dp"
+        app:cardElevation="8dp"
+        android:visibility="gone"
+        app:cardBackgroundColor="@color/modal_window"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
 
-    <Button
-        android:id="@+id/btnBack"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="470dp"
+            android:background="@color/modal_window"
+            android:padding="16dp">
+
+            <TextView
+                android:id="@+id/arrived_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="You have arrived!"
+                android:textSize="30dp"
+                android:textColor="@color/white"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <Button
+                android:id="@+id/exitBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Exit"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/arrived_text"
+                tools:layout_editor_absoluteX="16dp"
+                android:layout_margin="25dp"/>
+
+            <Button
+                android:id="@+id/navigate_againBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nevigate Agian"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/exitBtn"
+                android:layout_margin="25dp"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/text_on_model"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:layout_marginBottom="16dp"
-        android:text="Back"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:background="@android:color/transparent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:ignore="MissingConstraints" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
