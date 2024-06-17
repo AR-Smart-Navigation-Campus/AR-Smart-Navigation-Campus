@@ -89,7 +89,6 @@ class AllLocationsFragment : Fragment() {
             override fun onItemClick(index: Int) {
                 viewModel.setLocation(allLocations[index])
                 binding.searchEditTextLayout.editText?.text?.clear()
-                Log.d("AllLocationsFragment", "recycler location: ${allLocations[index].location}")
                 findNavController().navigate(R.id.action_allLocationsFragments_to_AR)
             }
 

@@ -269,5 +269,12 @@
         android:name="com.example.locations.AR.StartARFragment"
         android:label="AR"
         tools:layout="@layout/start_ar_fragment">
+        <action
+            android:id="@+id/action_AR_to_StartNav"
+            app:destination="@id/StartNav"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/to_left"
+            app:popExitAnim="@anim/to_left" />
     </fragment>
 </navigation>
