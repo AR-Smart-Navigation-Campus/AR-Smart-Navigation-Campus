@@ -85,15 +85,18 @@ class AddLocationFragment: Fragment() {
         val textLayout = binding.placeNameEditText
         val text = textLayout.editText?.text.toString()
         val location = binding.coordText.text.toString()
-        val imageUri = imageUri?.toString() ?: ""
         if(text.isEmpty()){
             toggleNameError(true)
         }else{
             toggleNameError(false)
             viewModel.updateLocation(location)
             viewModel.addUserInput(text)
-            viewModel.addEntry(imageUri)
-            updateUIWithLatestEntry()
+            imageUri?.let { uri ->
+                viewModel.addEntry(uri)
+                updateUIWithLatestEntry()
+            } ?: run {
+                Toast.makeText(context, "Please select an image", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
@@ -137,7 +140,8 @@ class AddLocationFragment: Fragment() {
     // Handle the image pick.
     private fun handleImagePick(uri: Uri) {
         binding.resultImg.setImageURI(uri)
-        requireActivity().contentResolver.takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        val takeFlags: Int = Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+        requireActivity().contentResolver.takePersistableUriPermission(uri, takeFlags)
         imageUri = uri
     }
 
