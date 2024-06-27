@@ -86,10 +86,8 @@ class StartARFragment : Fragment() {
         }
 
         adminViewModel.address.observe(viewLifecycleOwner) { address ->
-            val data = address.split(",")
-            val latitude = data[0]
-            val longitude = data[1]
-            accuracy = data[2].toFloat()
+            val (latitude, longitude, currAccuracy) = extractData(address) // Extract the data from the address
+            accuracy = currAccuracy
             myLocation = createLocation("$latitude,$longitude") // Create a Location object from the address
         }
         // Add an update listener to the AR scene view
@@ -106,19 +104,17 @@ class StartARFragment : Fragment() {
                     textRenderer(textViewDistance,textDistance, Vector3(2f, 1.9f, 0f) , 22) // Render the text on the screen
                     textRenderer(textViewDestination,text, Vector3(2f, 2f, 0f) , 35) // Render the text on the screen
 
-                    if (distance <= 6) {
+                    if (distance < 6) {
                         // Remove the arrow model from the scene
-                        arrowNode.isEnabled = false
-                        arrowNode.renderable = null
+                        arrowNode.isEnabled = false // Disable the arrow node
+                        arrowNode.renderable = null // Set the renderable of the arrow node to null
                         isModelPlaced = false
                         isDestinationReached = true
                         binding.arrivelCardView.visibility = View.VISIBLE // Show the arrival card
                     }
                     adminViewModel.address.observe(viewLifecycleOwner) { address ->
-                        val data = address.split(",")
-                        val latitude = data[0]
-                        val longitude = data[1]
-                        accuracy = data[2].toFloat()
+                        val (latitude, longitude, currAccuracy) = extractData(address) // Extract the data from the address
+                        accuracy = currAccuracy
                         myLocation = createLocation("$latitude,$longitude") // Create a Location object from the address
                     }
 
@@ -133,6 +129,7 @@ class StartARFragment : Fragment() {
                 val planes = frame.getUpdatedTrackables(Plane::class.java) // Get the updated planes
                 for (plane in planes) {
                     if (plane.trackingState == TrackingState.TRACKING) {
+                        binding.Navigating.text = "Navigating to: ${locationName}"
                         binding.myLocation.text = "accuracy: $accuracy"
                         if (accuracy>5.0){
                             continue // Skip the plane if the accuracy is greater than 5 meters
@@ -150,10 +147,13 @@ class StartARFragment : Fragment() {
     // Update the arrow node
     private fun updateArrowNode() {
         if (::myLocation.isInitialized && ::targetLocation.isInitialized) {
-            val direction = calculateDirection(myLocation, targetLocation) // Calculate the direction to the target location
+            val direction = calculateDirectionVector(myLocation, targetLocation) // Calculate the direction to the target location
             val rotation = Quaternion.lookRotation(direction, Vector3.up()) // Calculate the rotation of the arrow model
 
+            Log.d("ARFragment", "myLocation: ${myLocation.latitude}, ${myLocation.longitude}")
+            Log.d("ARFragment", "targetLocation: ${targetLocation.latitude}, ${targetLocation.longitude}")
             Log.d("ARFragment", "Direction: $direction, Rotation: $rotation")
+
 
             arrowNode.worldRotation = rotation // Update arrow node rotation
         }
@@ -207,28 +207,21 @@ class StartARFragment : Fragment() {
         }
     }
 
-    // Calculate the direction from one location to another
-    private fun calculateDirection(from: Location, to: Location): Vector3 {
-//        val fromVector = gpsToLocal(from, from)
-//        val toVector = gpsToLocal(from, to)
-//        return Vector3.subtract(toVector, fromVector).normalized()
-        val toVector = gpsToLocal(from, to)
-        return toVector.normalized()
+    // Calculate the direction to the target location
+    private fun calculateBearing(from: Location, to: Location): Float {
+        val bearing = from.bearingTo(to) // Calculate the bearing to the target location
+        return (bearing + 360) % 360 // Normalize the bearing
     }
 
-    // Convert GPS coordinates to local coordinates
-    private fun gpsToLocal(myLocation: Location, targetLocation: Location): Vector3 {
-        val distance = myLocation.distanceTo(targetLocation) // distance in meters
-        val bearing = Math.toRadians(myLocation.bearingTo(targetLocation).toDouble()) // bearing in radians
+    // Calculate the direction to the target location
+    private fun calculateDirectionVector(myLocation: Location, targetLocation: Location): Vector3 {
+        val bearing = calculateBearing(myLocation, targetLocation) // Calculate the bearing to the target location
+        val bearingRadians = Math.toRadians(bearing.toDouble()) // Convert the bearing to radians
 
-        val x = distance * sin(bearing).toFloat() // calculate the x coordinate
-        val z = distance * cos(bearing).toFloat() // calculate the z coordinate
+        val x = cos(bearingRadians).toFloat() // Calculate the x component of the direction vector
+        val z = sin(bearingRadians).toFloat() // Calculate the z component of the direction vector
 
-        val result = Vector3(x, 0f, z)
-
-        Log.d("ARFragment", "gpsToLocal - Distance: $distance, Bearing: $bearing, Result: $result")
-
-        return result
+        return Vector3(x, 0f, z).normalized()
     }
 
     // Render text on the screen
@@ -263,5 +256,14 @@ class StartARFragment : Fragment() {
                 Log.e("StartARFragment", "Error creating view renderable", throwable)
                 null
             }
+    }
+
+    // Extract the data from the address
+    private fun extractData(data: String): Triple<String, String, Float> {
+        val splitData = data.split(",")
+        val latitude = splitData[0]
+        val longitude = splitData[1]
+        val accuracy = splitData[2].toFloat()
+        return Triple(latitude, longitude, accuracy) // Return the extracted data
     }
 }

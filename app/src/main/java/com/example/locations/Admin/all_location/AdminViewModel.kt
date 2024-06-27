@@ -11,6 +11,7 @@ import com.example.locations.Admin.all_location.single_location.LocationUpdatesL
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
+import java.util.Locale
 import java.util.UUID
 
 /**
@@ -56,7 +57,6 @@ class AdminViewModel(application: Application) : AndroidViewModel(application) {
     fun deleteEntry(location: LocationData) {
         deleteBuildingFromFirestore(location.id)
     }
-
 
 
     //Sets the selected LocationData object

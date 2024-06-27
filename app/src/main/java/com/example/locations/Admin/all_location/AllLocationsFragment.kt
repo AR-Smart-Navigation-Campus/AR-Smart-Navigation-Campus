@@ -30,7 +30,7 @@ class AllLocationsFragment : Fragment() {
 
     private var _binding: AllLocationsLayoutBinding? = null
     private val binding get() = _binding!!
-
+    private var locationsList: List<LocationData> = listOf()
     private lateinit var auth: FirebaseAuth
     private val admin = "navigationproject2024@gmail.com"
     private val viewModel: AdminViewModel by activityViewModels()
@@ -78,6 +78,7 @@ class AllLocationsFragment : Fragment() {
     // Setup RecyclerView
     private fun setupRecyclerView(currentUser: String) {
         viewModel.locationData.observe(viewLifecycleOwner) { allLocations ->
+            locationsList = allLocations
             setupAdapter(allLocations) // Setup adapter for RecyclerView
             setupItemTouchHelper(currentUser) // Setup item touch helper for RecyclerView
         }
@@ -87,13 +88,13 @@ class AllLocationsFragment : Fragment() {
     private fun setupAdapter(allLocations: List<LocationData>) {
         adapter = LocationAdapter(allLocations, object : LocationAdapter.ItemListener {
             override fun onItemClick(index: Int) {
-                viewModel.setLocation(allLocations[index])
+                viewModel.setLocation(adapter.currentList[index])
                 binding.searchEditTextLayout.editText?.text?.clear()
                 findNavController().navigate(R.id.action_allLocationsFragments_to_AR)
             }
 
             override fun onItemLongClicked(index: Int) {
-                viewModel.setLocation(allLocations[index]) // Set location entry
+                viewModel.setLocation(adapter.currentList[index]) // Set location entry
                 binding.searchEditTextLayout.editText?.text?.clear()
                 findNavController().navigate(R.id.action_allLocationsFragments_to_detailLocationInfo)
             }
@@ -144,14 +145,12 @@ class AllLocationsFragment : Fragment() {
     // Filter building based on query
     private fun filterBuilding(query: String) {
         if (!::adapter.isInitialized) return
-        viewModel.locationData.observe(viewLifecycleOwner) { allLocations ->
-            val filteredList = if (query.isNotEmpty()) {
-                allLocations.filter { it.name.lowercase(Locale.getDefault()).contains(query.lowercase(Locale.getDefault())) }
-            } else {
-                allLocations
-            }
-            adapter.updateData(filteredList) // Update adapter with filtered data
+        val filteredList = if (query.isNotEmpty()) {
+            locationsList.filter { it.name.lowercase(Locale.getDefault()).contains(query.lowercase(Locale.getDefault())) }
+        } else {
+            locationsList
         }
+        adapter.updateData(filteredList) // Update adapter with filtered data
     }
 
     // Destroy view binding
