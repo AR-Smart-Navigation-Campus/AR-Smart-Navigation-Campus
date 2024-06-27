@@ -17,12 +17,12 @@ import com.google.firebase.auth.auth
  */
 
 class LocationAdapter(
-    // List of locations to display
-    private var locationList: List<LocationData>,
-    // Callback to handle item click and long click events
-    val callBack: ItemListener
+    private var locationList: List<LocationData>, // List of locations to display
+    val callBack: ItemListener // Callback to handle item click and long click events
 ) :
 RecyclerView.Adapter<LocationAdapter.LocationViewHolder>() {
+
+    var currentList: List<LocationData> = locationList
 
     // Interface for item click and long click events
     interface ItemListener {
@@ -71,7 +71,7 @@ RecyclerView.Adapter<LocationAdapter.LocationViewHolder>() {
     }
 
     // Get location at a specific position
-    fun itemAt(position: Int) = locationList[position]
+    fun itemAt(position: Int) = currentList[position]
 
     // Create new views (invoked by the layout manager)
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LocationViewHolder {
@@ -82,17 +82,17 @@ RecyclerView.Adapter<LocationAdapter.LocationViewHolder>() {
 
     // Bind location to ViewHolder
     override fun onBindViewHolder(holder: LocationViewHolder, position: Int) {
-        val currentItem = locationList[position]
+        val currentItem = currentList[position]
         holder.bind(currentItem)
     }
 
     // Get the size of location list
-    override fun getItemCount() = locationList.size
+    override fun getItemCount() = currentList.size
 
     // Update the location list and notify the adapter to refresh the RecyclerView
     @SuppressLint("NotifyDataSetChanged")
     fun updateData(newList: List<LocationData>) {
-        locationList = newList
+        currentList = newList
         notifyDataSetChanged()
     }
 }
