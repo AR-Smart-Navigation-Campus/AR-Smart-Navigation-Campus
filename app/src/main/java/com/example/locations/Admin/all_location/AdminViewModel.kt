@@ -1,6 +1,7 @@
 package com.example.locations.Admin.all_location
 
 import android.app.Application
+import android.location.Location
 import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
@@ -82,6 +83,16 @@ class AdminViewModel(application: Application) : AndroidViewModel(application) {
     // Updates the current location with the provided value
     fun updateLocation(location: String) {
         _location.value = location
+    }
+
+    // Create a Location object from a string
+    fun createLocation(location:String): Location {
+        val coordinates = location.split(",") // Split the string by comma
+        Location("provider").apply {
+            latitude = coordinates[0].toDouble() // Set the latitude
+            longitude = coordinates[1].toDouble() // Set the longitude
+            return this
+        }
     }
 
 //////////////////////////////////////////////////////////////////////////////
