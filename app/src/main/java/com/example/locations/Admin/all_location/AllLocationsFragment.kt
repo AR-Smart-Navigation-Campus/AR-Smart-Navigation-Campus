@@ -78,8 +78,9 @@ class AllLocationsFragment : Fragment() {
     // Setup RecyclerView
     private fun setupRecyclerView(currentUser: String) {
         viewModel.locationData.observe(viewLifecycleOwner) { allLocations ->
-            locationsList = allLocations
-            setupAdapter(allLocations) // Setup adapter for RecyclerView
+            val sortedLocations = allLocations.sortedBy { it.name }
+            locationsList = sortedLocations
+            setupAdapter(sortedLocations) // Setup adapter for RecyclerView
             setupItemTouchHelper(currentUser) // Setup item touch helper for RecyclerView
         }
     }
@@ -122,10 +123,10 @@ class AllLocationsFragment : Fragment() {
             override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder) = false // Unused
             // Handle swipe event
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                if(currentUser==admin) {
-                    val location = (binding.recyclerView.adapter as LocationAdapter).itemAt(viewHolder.adapterPosition) // Get location entry
-                    viewModel.deleteEntry(location) // Delete location entry
-                }
+//                if(currentUser==admin) {
+//                    val location = (binding.recyclerView.adapter as LocationAdapter).itemAt(viewHolder.adapterPosition) // Get location entry
+//                    viewModel.deleteEntry(location) // Delete location entry
+//                }
             }
         }).attachToRecyclerView(binding.recyclerView) // Attach item touch helper to RecyclerView
     }

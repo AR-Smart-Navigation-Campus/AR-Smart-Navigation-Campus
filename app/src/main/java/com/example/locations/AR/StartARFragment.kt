@@ -81,14 +81,14 @@ class StartARFragment : Fragment() {
         arrowNode = Node() // Create a new node for the arrow model
 
         adminViewModel.chosenItem.observe(viewLifecycleOwner) { location ->
-            targetLocation = createLocation(location.location) // Create a Location object from the location
+            targetLocation = adminViewModel.createLocation(location.location) // Create a Location object from the location
             locationName = location.name // Get the name of the location
         }
 
         adminViewModel.address.observe(viewLifecycleOwner) { address ->
             val (latitude, longitude, currAccuracy) = extractData(address) // Extract the data from the address
             accuracy = currAccuracy
-            myLocation = createLocation("$latitude,$longitude") // Create a Location object from the address
+            myLocation = adminViewModel.createLocation("$latitude,$longitude") // Create a Location object from the address
         }
         // Add an update listener to the AR scene view
         arFragment.arSceneView.scene.addOnUpdateListener {
@@ -115,7 +115,7 @@ class StartARFragment : Fragment() {
                     adminViewModel.address.observe(viewLifecycleOwner) { address ->
                         val (latitude, longitude, currAccuracy) = extractData(address) // Extract the data from the address
                         accuracy = currAccuracy
-                        myLocation = createLocation("$latitude,$longitude") // Create a Location object from the address
+                        myLocation = adminViewModel.createLocation("$latitude,$longitude") // Create a Location object from the address
                     }
 
                     updateArrowNode() // Update the arrow node
@@ -196,16 +196,6 @@ class StartARFragment : Fragment() {
                         null
                     }
             }
-
-    // Create a Location object from a string
-    private fun createLocation(location:String): Location {
-        val coordinates = location.split(",") // Split the string by comma
-        Location("provider").apply {
-            latitude = coordinates[0].toDouble() // Set the latitude
-            longitude = coordinates[1].toDouble() // Set the longitude
-            return this
-        }
-    }
 
     // Calculate the direction to the target location
     private fun calculateBearing(from: Location, to: Location): Float {
