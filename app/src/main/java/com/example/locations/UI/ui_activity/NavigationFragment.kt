@@ -1,16 +1,23 @@
 package com.example.locations.UI.ui_activity
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.content.DialogInterface
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import com.example.locations.Admin.all_location.AdminViewModel
 import com.example.locations.R
 import com.example.locations.databinding.NavigationFragmentBinding
 import com.google.firebase.Firebase
@@ -18,9 +25,14 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
 
 class NavigationFragment : Fragment() {
+
+    private val viewModel: AdminViewModel by activityViewModels() // Instance of AdminViewModel to access the data
     private lateinit var binding : NavigationFragmentBinding
     private lateinit var auth: FirebaseAuth
     private var admin="navigationproject2024@gmail.com"
+
+    // Register a launcher for requesting location permission.
+    private val locationRequestLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { handleLocationPermissionResult(it) }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -92,6 +104,9 @@ class NavigationFragment : Fragment() {
                 alertDialog.show()
             }
         })
+
+        checkAndRequestLocationPermission()
+
         return binding.root
     }
 
@@ -107,4 +122,16 @@ class NavigationFragment : Fragment() {
         }
     }
 
+    // Check and request location permission.
+    private fun checkAndRequestLocationPermission() {
+        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            locationRequestLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+        }
+    }
+
+    // Handle the location permission result.
+    private fun handleLocationPermissionResult(isGranted: Boolean) {
+        if (isGranted)
+            Toast.makeText(requireContext(), "Location permission granted", Toast.LENGTH_SHORT).show()
+    }
 }

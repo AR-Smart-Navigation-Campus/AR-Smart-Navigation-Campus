@@ -32,7 +32,6 @@ class AdminViewModel(application: Application) : AndroidViewModel(application) {
     private val _chosenItem = MutableLiveData<LocationData>() // MutableLiveData object for the selected LocationData object
     val chosenItem: LiveData<LocationData> get() = _chosenItem // LiveData object for the selected LocationData object
 
-
     init {
         fetchLocations()
     }

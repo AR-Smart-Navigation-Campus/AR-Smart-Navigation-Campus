@@ -25,19 +25,20 @@ import com.example.locations.Admin.all_location.AdminViewModel
 import com.example.locations.R
 import com.example.locations.databinding.AddLocationBinding
 
-// AddLocationFragment is a Fragment that allows the user to add a new location entry.
+/**
+ * AddLocationFragment is a Fragment that allows the user to add a new location entry
+ */
 class AddLocationFragment: Fragment() {
+
     // View binding
     private var _binding: AddLocationBinding? = null
     private val binding get() = _binding!!
-    // Uri of the image selected by the user.
-    private var imageUri: Uri? = null
 
-    // Instance of AdminViewModel to access the data.
-    private val viewModel: AdminViewModel by activityViewModels()
+    private var imageUri: Uri? = null // Uri of the image selected by the user
 
-    // Instance of AzimuthSensorManager to get azimuth updates.
-    private lateinit var azimuthSensorManager: AzimuthSensorManager
+    private val viewModel: AdminViewModel by activityViewModels() // Instance of AdminViewModel to access the data
+
+    private lateinit var azimuthSensorManager: AzimuthSensorManager // Instance of AzimuthSensorManager to get azimuth updates.
 
     // Register a launcher for picking an image.
     private val pickImageLauncher = registerForActivityResult(ActivityResultContracts.OpenDocument()) {
@@ -45,26 +46,23 @@ class AddLocationFragment: Fragment() {
             handleImagePick(it)
         }
     }
-    // Register a launcher for requesting location permission.
-    private val locationRequestLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { handleLocationPermissionResult(it) }
 
     // Create the view.
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = AddLocationBinding.inflate(inflater, container, false)
-        // Initialize AzimuthSensorManager and set azimuth update listener.
+
+        // Initialize AzimuthSensorManager and set azimuth update listener
         azimuthSensorManager = AzimuthSensorManager(requireContext()) { azimuth ->
             viewModel.updateAzimuth(azimuth)
         }
         setupView()
-
-
 
         return binding.root
     }
 
     // Set up the view.
     private fun setupView() {
-        checkAndRequestLocationPermission()
+        getLocationUpdates()
         binding.btnSavePlace.setOnClickListener { handleSavePlaceClick() }
         binding.resultImg.setOnClickListener { handleImageBtnClick() }
         binding.btnViewList.setOnClickListener { handleViewListClick() }
@@ -143,20 +141,6 @@ class AddLocationFragment: Fragment() {
         val takeFlags: Int = Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
         requireActivity().contentResolver.takePersistableUriPermission(uri, takeFlags)
         imageUri = uri
-    }
-
-    // Handle the location permission result.
-    private fun handleLocationPermissionResult(isGranted: Boolean) {
-        if (isGranted) getLocationUpdates()
-    }
-
-    // Check and request location permission.
-    private fun checkAndRequestLocationPermission() {
-        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            getLocationUpdates()
-        } else {
-            locationRequestLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
-        }
     }
 
     // Update the UI with the latest entry.
