@@ -95,11 +95,16 @@ class StartARFragment : Fragment() {
             if (isModelPlaced) {
                 // Check if the current location is within 5 meters of the target location
                 if (::myLocation.isInitialized && ::targetLocation.isInitialized) {
-                    val distance = myLocation.distanceTo(targetLocation) // Calculate the distance to the target location
-                    binding.Navigating.text = "Navigating to: ${targetLocation.latitude} , ${targetLocation.longitude}" // Set the text of the navigating TextView
-                    binding.myLocation.text = "current: ${myLocation.latitude} , ${myLocation.longitude}"
-
-                    val textDistance = "${distance.toInt()} meters"
+                    var distance = myLocation.distanceTo(targetLocation) // Calculate the distance to the target location
+                    var textDistance = ""
+                    if(distance.toInt()>=1000){
+                        distance /= 1000
+                        val formattedDistance = String.format("%.1f", distance)
+                        textDistance = "$formattedDistance Km"
+                    }
+                    else{
+                        textDistance = "${distance.toInt()} meters"
+                    }
                     val text = locationName
                     textRenderer(textViewDistance,textDistance, Vector3(2f, 1.9f, 0f) , 22) // Render the text on the screen
                     textRenderer(textViewDestination,text, Vector3(2f, 2f, 0f) , 35) // Render the text on the screen
@@ -149,12 +154,6 @@ class StartARFragment : Fragment() {
         if (::myLocation.isInitialized && ::targetLocation.isInitialized) {
             val direction = calculateDirectionVector(myLocation, targetLocation) // Calculate the direction to the target location
             val rotation = Quaternion.lookRotation(direction, Vector3.up()) // Calculate the rotation of the arrow model
-
-            Log.d("ARFragment", "myLocation: ${myLocation.latitude}, ${myLocation.longitude}")
-            Log.d("ARFragment", "targetLocation: ${targetLocation.latitude}, ${targetLocation.longitude}")
-            Log.d("ARFragment", "Direction: $direction, Rotation: $rotation")
-
-
             arrowNode.worldRotation = rotation // Update arrow node rotation
         }
     }
@@ -162,15 +161,13 @@ class StartARFragment : Fragment() {
     // Set the position of the model
     private fun setModelPosition() {
         arrowNode.localPosition = Vector3(0f, -1f, -2f) // 2 meter in front of the camera
-        Log.d("ARFragment", "setModelPosition - Position: ${arrowNode.localPosition}")
         updateArrowNode()
-
     }
 
     // Load the arrow model and attach it to the camera
     private fun loadArrowModel(fragment: ArFragment, node: Node, locationData: Location, address: Location
     ) {
-                val modelUri = Uri.parse("models/direction_arrow.glb")
+                val modelUri = Uri.parse("models/direction_arrow.glb") // URI of the arrow model
                 ModelRenderable.builder()
                     .setSource(
                         fragment.context,

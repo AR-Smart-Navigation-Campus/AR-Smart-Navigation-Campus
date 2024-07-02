@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -123,10 +124,20 @@ class AllLocationsFragment : Fragment() {
             override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder) = false // Unused
             // Handle swipe event
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-//                if(currentUser==admin) {
-//                    val location = (binding.recyclerView.adapter as LocationAdapter).itemAt(viewHolder.adapterPosition) // Get location entry
-//                    viewModel.deleteEntry(location) // Delete location entry
-//                }
+                if(currentUser==admin) {
+                    binding.confirmDeleteCardView.visibility = View.VISIBLE // Show confirm delete card view
+                    binding.btnConfirmDelete.setOnClickListener {
+                        binding.confirmDeleteCardView.visibility = View.GONE // Hide confirm delete card view
+                        val location =
+                            (binding.recyclerView.adapter as LocationAdapter).itemAt(viewHolder.adapterPosition) // Get location entry
+                        viewModel.deleteEntry(location) // Delete location entry
+                        Toast.makeText(requireContext(), "Location deleted successfully", Toast.LENGTH_SHORT).show()
+                    }
+                    binding.btnCancleDelete.setOnClickListener {
+                        binding.confirmDeleteCardView.visibility = View.GONE // Hide confirm delete card view
+                        adapter.notifyItemChanged(viewHolder.adapterPosition) // Notify item changed
+                    }
+                }
             }
         }).attachToRecyclerView(binding.recyclerView) // Attach item touch helper to RecyclerView
     }
