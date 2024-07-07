@@ -46,17 +46,17 @@ class NavigationFragment : Fragment() {
         }
 
         binding.btnNews.setOnClickListener {
-            val url="https://www.hit.ac.il/about/news"
+            val url="https://www.hit.ac.il/news/"
             val intent=Intent(Intent.ACTION_VIEW)
             intent.data= android.net.Uri.parse(url)
             startActivity(intent)
         }
         binding.btnLogout.setOnClickListener {
             val alertDialog = AlertDialog.Builder(requireContext(), R.style.AlertDialogCustom)
-                .setTitle("Confirm Logout")
-                .setMessage("Are you sure you want to logout?")
-                .setPositiveButton("Yes", null)
-                .setNegativeButton("No", null)
+                .setTitle(getString(R.string.confirm_logout))
+                .setMessage(getString(R.string.logout_msg_text))
+                .setPositiveButton(getString(R.string.yes), null)
+                .setNegativeButton(getString(R.string.no), null)
                 .create()
             alertDialog.window?.setBackgroundDrawableResource(R.drawable.dialog_background)
             alertDialog.setOnShowListener {
@@ -82,10 +82,10 @@ class NavigationFragment : Fragment() {
             @SuppressLint("ResourceAsColor")
             override fun handleOnBackPressed() {
                 val alertDialog = AlertDialog.Builder(requireContext(), R.style.AlertDialogCustom)
-                    .setTitle("Confirm Exit")
-                    .setMessage("Are you sure you want to exit?")
-                    .setPositiveButton("Yes", null)
-                    .setNegativeButton("No", null)
+                    .setTitle(getString(R.string.confirm_exit))
+                    .setMessage(getString(R.string.exit_msg_text))
+                    .setPositiveButton(getString(R.string.yes), null)
+                    .setNegativeButton(getString(R.string.no), null)
                     .create()
                 alertDialog.window?.setBackgroundDrawableResource(R.drawable.dialog_background)
                 alertDialog.setOnShowListener {
@@ -132,6 +132,6 @@ class NavigationFragment : Fragment() {
     // Handle the location permission result.
     private fun handleLocationPermissionResult(isGranted: Boolean) {
         if (isGranted)
-            Toast.makeText(requireContext(), "Location permission granted", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), getString(R.string.location_permission_msg), Toast.LENGTH_SHORT).show()
     }
 }

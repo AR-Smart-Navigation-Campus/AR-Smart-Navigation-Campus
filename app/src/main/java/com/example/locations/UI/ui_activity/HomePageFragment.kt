@@ -71,9 +71,9 @@ class HomePageFragment: Fragment() {
     private fun welcomeMessage() {
         val currentHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
         val welcomeMessage = when {
-            currentHour < 12 -> "Good Morning, Sign In or Create Your Account"
-            currentHour < 18 -> "Good Afternoon, Sign In or Create Your Account"
-            else -> "Good Evening, Sign In or Create Your Account"
+            currentHour < 12 -> getString(R.string.morning_msg)
+            currentHour < 18 -> getString(R.string.afternoon_msg)
+            else -> getString(R.string.evening_msg)
         }
 
         val textView = binding.welcomeText
@@ -83,7 +83,10 @@ class HomePageFragment: Fragment() {
         val runnable = object : Runnable {
             override fun run() {
                 if (index < welcomeMessage.length) {
-                    textView.text = textView.text.toString() + welcomeMessage[index]
+                    textView.text = buildString {
+                        append(textView.text.toString())
+                        append(welcomeMessage[index])
+                    }
                     index++
                     handler.postDelayed(this, 25) // delay of 30ms
                 }

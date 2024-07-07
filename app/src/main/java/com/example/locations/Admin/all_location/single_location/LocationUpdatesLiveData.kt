@@ -31,7 +31,7 @@ class LocationUpdatesLiveData(context:Context) : LiveData<String>() {
     private val locationCallback = object  : LocationCallback(){
         override fun onLocationResult(p0: LocationResult) {
             p0.lastLocation?.let {
-                postValue("${it.latitude} , ${it.longitude} , ${it.accuracy}")
+                postValue("${it.latitude},${it.longitude},${it.accuracy}")
             }
         }
     }

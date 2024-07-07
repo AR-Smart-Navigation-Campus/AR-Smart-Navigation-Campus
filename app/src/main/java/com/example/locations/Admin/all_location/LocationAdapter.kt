@@ -5,9 +5,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat.getString
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.locations.Admin.all_location.model.LocationData
+import com.example.locations.R
 import com.example.locations.databinding.LocationItemBinding
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
@@ -18,7 +21,9 @@ import com.google.firebase.auth.auth
 
 class LocationAdapter(
     private var locationList: List<LocationData>, // List of locations to display
-    val callBack: ItemListener // Callback to handle item click and long click events
+    val callBack: ItemListener, // Callback to handle item click and long click events
+    private val viewModel: AdminViewModel // Add ViewModel as a constructor parameter
+
 ) :
 RecyclerView.Adapter<LocationAdapter.LocationViewHolder>() {
 
@@ -56,16 +61,24 @@ RecyclerView.Adapter<LocationAdapter.LocationViewHolder>() {
             val auth=Firebase.auth
             val currentUser=auth.currentUser?.email.toString()
             val admin="navigationproject2024@gmail.com"
-            binding.buildingName.text=location.name
+            val resId = viewModel.getLocationNameResId(location.name)
+            binding.buildingName.text = binding.root.context.getString(resId)
             Glide.with(binding.root).load(location.imgUrl).circleCrop().into(binding.buildingImage)
             val coords=   binding.locationTextView
             val azimuth= binding.azimuthTextView
-            coords.text = "Location: ${location.location}"
-            azimuth.text = "Azimuth: ${location.azimuth}"
+            val description= binding.descriptionTextView
+
+            val coordsText = binding.root.context.getString(R.string.coordinates) + ": " + location.location.replace("\\s+".toRegex(), "")
+            coords.text = coordsText
+            val azimuthText = binding.root.context.getString(R.string.azimuth) + ": " + location.azimuth
+            azimuth.text = azimuthText
+
             if(currentUser!=admin) {
                 coords.visibility=View.GONE
                 azimuth.visibility=View.GONE
-
+                val descriptionText =viewModel.getLocationDescriptionResId(location.description)
+                description.text = binding.root.context.getString(descriptionText)
+                description.visibility=View.VISIBLE
             }
         }
     }
@@ -95,4 +108,5 @@ RecyclerView.Adapter<LocationAdapter.LocationViewHolder>() {
         currentList = newList
         notifyDataSetChanged()
     }
+
 }

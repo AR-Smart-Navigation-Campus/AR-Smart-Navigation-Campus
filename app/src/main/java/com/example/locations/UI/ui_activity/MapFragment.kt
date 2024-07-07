@@ -1,7 +1,6 @@
 package com.example.locations.UI.ui_activity
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,7 +18,7 @@ class MapFragment : Fragment() {
     private val viewModel: AdminViewModel by activityViewModels()
     private val ar = R.id.action_MapFragment_to_AR
 
-    // Define your map's GPS boundaries (update these as needed)
+    // Define map's GPS boundaries
     companion object {
         const val MIN_LATITUDE = 32.0139
         const val MAX_LATITUDE = 32.015713
@@ -54,12 +53,11 @@ class MapFragment : Fragment() {
 
     // Find the location by name
     private fun findLocationByName(locationName: String) {
-        // Find the location by name
         viewModel.locationData.observe(viewLifecycleOwner) { allLocations ->
             if (allLocations.isEmpty()) {
                 Toast.makeText(
                     requireContext(),
-                    "Location data is not available",
+                    getString(R.string.no_locations_available),
                     Toast.LENGTH_SHORT
                 ).show()
                 return@observe
@@ -70,11 +68,11 @@ class MapFragment : Fragment() {
                 findNavController().navigate(ar)
                 Toast.makeText(
                     requireContext(),
-                    "Location found: ${location.name}",
+                    getString(R.string.location_found) +": " + location.name,
                     Toast.LENGTH_SHORT
                 ).show()
             } else {
-                Toast.makeText(requireContext(), "Location not found", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), getString(R.string.no_location_found), Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -82,27 +80,22 @@ class MapFragment : Fragment() {
 
     // Placeholder function to convert GPS coordinates to screen position
     private fun convertLatLngToScreenPosition() {
-        var x_coord = 0f
-        var y_coord = 0f
-
         viewModel.address.observe(viewLifecycleOwner) { address ->
             val myLocation = viewModel.createLocation(address)
             val mapWidth = binding.root.width
             val mapHeight = binding.root.height
 
-            x_coord =
-                (mapWidth * ((myLocation.longitude - MIN_LONGITUDE) / (MAX_LONGITUDE - MIN_LONGITUDE))).toFloat()
-            y_coord =
-                (mapHeight * (1 - (myLocation.latitude - MIN_LATITUDE) / (MAX_LATITUDE - MIN_LATITUDE))).toFloat()
+           val x_coord =
+                (mapWidth * ((myLocation.longitude - MIN_LONGITUDE) / (MAX_LONGITUDE - MIN_LONGITUDE))).toFloat() // Calculate the x coordinate
+           val y_coord =
+                (mapHeight * (1 - (myLocation.latitude - MIN_LATITUDE) / (MAX_LATITUDE - MIN_LATITUDE))).toFloat() // Calculate the y coordinate
 
+            // Check if the location is out of bounds
             if (myLocation.latitude < MIN_LATITUDE || myLocation.latitude > MAX_LATITUDE || myLocation.longitude < MIN_LONGITUDE || myLocation.longitude > MAX_LONGITUDE) {
-                Log.e("MapFragment", "Coordinates are out of bounds")
-                Toast.makeText(
-                    requireContext(),
-                    "Coordinates are out of bounds",
-                    Toast.LENGTH_SHORT
-                )
-                    .show()
+                binding.outOfBounds.visibility = View.VISIBLE
+            }
+            else {
+                binding.outOfBounds.visibility = View.GONE
             }
 
             binding.locationIcon.apply {
@@ -114,6 +107,7 @@ class MapFragment : Fragment() {
     }
 
 
+    // Set up button listeners
     private fun setupButtonListeners() {
         binding.buttonFichmanGate.setOnClickListener {
             findLocationByName("Fichman Gate")
@@ -149,7 +143,7 @@ class MapFragment : Fragment() {
         }
 
         binding.buttonbuilding5.setOnClickListener {
-            findLocationByName("Building 5-A")
+            findLocationByName("Building 5")
         }
 
         binding.buttonbuilding6.setOnClickListener {
@@ -190,7 +184,7 @@ class MapFragment : Fragment() {
         }
 
         binding.buttonstore.setOnClickListener {
-            findLocationByName("Materials Workshop")
+            findLocationByName("Materials Shop")
         }
 
         binding.btnBack.setOnClickListener {

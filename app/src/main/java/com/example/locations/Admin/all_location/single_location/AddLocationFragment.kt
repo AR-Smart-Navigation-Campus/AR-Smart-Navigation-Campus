@@ -1,14 +1,9 @@
 package com.example.locations.Admin.all_location.single_location
 
-import android.Manifest
-import android.annotation.SuppressLint
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.content.res.ColorStateList
-import android.location.Location
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,6 +22,10 @@ import com.example.locations.databinding.AddLocationBinding
 
 /**
  * AddLocationFragment is a Fragment that allows the user to add a new location entry
+ * to the database. The admin can enter the name of the location, select an image, and
+ * save the location. The admin can also view the list of all locations and go back to the
+ * home screen.
+ * The admin can also view the current location and azimuth.
  */
 class AddLocationFragment: Fragment() {
 
@@ -93,7 +92,7 @@ class AddLocationFragment: Fragment() {
                 viewModel.addEntry(uri)
                 updateUIWithLatestEntry()
             } ?: run {
-                Toast.makeText(context, "Please select an image", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, getString(R.string.select_image), Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -145,12 +144,17 @@ class AddLocationFragment: Fragment() {
 
     // Update the UI with the latest entry.
     private fun updateUIWithLatestEntry() {
-        val text = binding.placeNameEditText.editText?.text.toString()
+        val name = binding.placeNameEditText.editText?.text.toString()
         val location = binding.coordText.text.toString()
         val azimuth = viewModel.azimuth.value.toString()
-        binding.nameView.text = text
-        binding.coordinatesView.text = location
-        binding.azimuthView.text = azimuth
+
+        val nameText = getString(R.string.name) + ": " + name
+        binding.nameView.text = nameText
+        val coordsText = getString(R.string.coordinates) + ": " + location
+        binding.coordinatesView.text = coordsText
+        val azimuthText = getString(R.string.azimuth) + ": " + azimuth
+        binding.azimuthView.text = azimuthText
+
         binding.placeNameEditText.editText?.setText("")
         //NO NEED TO UPDATE IMAGE
     }
@@ -162,8 +166,10 @@ class AddLocationFragment: Fragment() {
             val latitude = data[0]
             val longitude = data[1]
             val accuracy = data[2].toFloat()
-            binding.coordText.text = "${latitude} , ${longitude}"
-            binding.accuracy.text = "Accuracy: ${accuracy} meters"
+            binding.coordText.text = "${latitude},${longitude}"
+
+            val accuracyText = getString(R.string.accuracy) + ": " + accuracy + " "+ getString(R.string.meters)
+            binding.accuracy.text = accuracyText
         }
     }
 

@@ -43,16 +43,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:layout_marginLeft="10dp"
-                android:drawableStart="@drawable/baseline_arrow_back_ios_24"
-                android:textSize="20dp"
+                android:layout_marginStart="10dp"
+                android:textSize="20sp"
+                app:drawableStartCompat="@drawable/baseline_arrow_back_ios_24"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"/>
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/searchEditTextLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Search"
+                android:hint="@string/search"
                 android:layout_marginTop="10dp"
                 app:boxStrokeColor="@color/gray"
                 app:hintTextColor="@color/gray"
@@ -99,13 +99,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:text="Are you sure you want to delete this location?"
-                android:textSize="18dp"
+                android:text="@string/are_you_sure_you_want_to_delete_this_location"
+                android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <LinearLayout
+                style="?android:attr/buttonBarStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -117,10 +118,11 @@
 
                 <Button
                     android:id="@+id/btnConfirmDelete"
+                    style="?android:attr/buttonBarButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="25dp"
-                    android:text="Yes"
+                    android:text="@string/yes"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/warning_text"
@@ -128,10 +130,11 @@
 
                 <Button
                     android:id="@+id/btnCancleDelete"
+                    style="?android:attr/buttonBarButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="25dp"
-                    android:text="No"
+                    android:text="@string/no"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/btnConfirmDelete" />
