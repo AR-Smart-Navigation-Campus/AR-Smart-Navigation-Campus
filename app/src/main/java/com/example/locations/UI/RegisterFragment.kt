@@ -87,7 +87,7 @@ class RegisterFragment : Fragment() {
                             toggleValidationError(false)
                             Toast.makeText(
                                 requireContext(),
-                                "Registration Success",
+                                getString(R.string.registration_success),
                                 Toast.LENGTH_LONG
                             ).show()
                             navigateToHomePage()

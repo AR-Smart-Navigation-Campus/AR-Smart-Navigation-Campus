@@ -38,7 +38,11 @@ class AllLocationsFragment : Fragment() {
     private lateinit var adapter: LocationAdapter
 
     // Create view
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         _binding = AllLocationsLayoutBinding.inflate(inflater, container, false)
 
         auth = FirebaseAuth.getInstance() // Get instance of Firebase authentication
@@ -47,15 +51,18 @@ class AllLocationsFragment : Fragment() {
 
         binding.btnBack.setOnClickListener { returnToAdd() }
 
-        val colorStateList = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.gray))
+        val colorStateList =
+            ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.gray))
         binding.searchEditTextLayout.defaultHintTextColor = colorStateList
 
         // Handle back press
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                returnToAdd()
-            }
-        })
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    returnToAdd()
+                }
+            })
 
         return binding.root
     }
@@ -100,41 +107,59 @@ class AllLocationsFragment : Fragment() {
                 binding.searchEditTextLayout.editText?.text?.clear()
                 findNavController().navigate(R.id.action_allLocationsFragments_to_detailLocationInfo)
             }
-        })
+        }, viewModel)
         binding.recyclerView.adapter = adapter // Set adapter for RecyclerView
-        binding.recyclerView.itemAnimator = DefaultItemAnimator() // Set item animator for RecyclerView
-        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext()) // Set layout manager for RecyclerView
+        binding.recyclerView.itemAnimator =
+            DefaultItemAnimator() // Set item animator for RecyclerView
+        binding.recyclerView.layoutManager =
+            LinearLayoutManager(requireContext()) // Set layout manager for RecyclerView
     }
 
     // Setup item touch helper for RecyclerView
-    private fun setupItemTouchHelper(currentUser:String) {
+    private fun setupItemTouchHelper(currentUser: String) {
         ItemTouchHelper(object : ItemTouchHelper.Callback() {
             // Setup movement flags for RecyclerView
-            override fun getMovementFlags(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder): Int{
-                return if(currentUser==admin) {
+            override fun getMovementFlags(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder
+            ): Int {
+                return if (currentUser == admin) {
                     makeFlag(
                         ItemTouchHelper.ACTION_STATE_SWIPE, // Swipe flag
                         ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT // Swipe direction
                     )
-                }else{
+                } else {
                     0
                 }
             }
+
             // Handle move event
-            override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder) = false // Unused
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ) = false // Unused
+
             // Handle swipe event
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                if(currentUser==admin) {
-                    binding.confirmDeleteCardView.visibility = View.VISIBLE // Show confirm delete card view
+                if (currentUser == admin) {
+                    binding.confirmDeleteCardView.visibility =
+                        View.VISIBLE // Show confirm delete card view
                     binding.btnConfirmDelete.setOnClickListener {
-                        binding.confirmDeleteCardView.visibility = View.GONE // Hide confirm delete card view
+                        binding.confirmDeleteCardView.visibility =
+                            View.GONE // Hide confirm delete card view
                         val location =
                             (binding.recyclerView.adapter as LocationAdapter).itemAt(viewHolder.adapterPosition) // Get location entry
                         viewModel.deleteEntry(location) // Delete location entry
-                        Toast.makeText(requireContext(), "Location deleted successfully", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            requireContext(),
+                            getString(R.string.delete_location_msg),
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                     binding.btnCancleDelete.setOnClickListener {
-                        binding.confirmDeleteCardView.visibility = View.GONE // Hide confirm delete card view
+                        binding.confirmDeleteCardView.visibility =
+                            View.GONE // Hide confirm delete card view
                         adapter.notifyItemChanged(viewHolder.adapterPosition) // Notify item changed
                     }
                 }
@@ -145,10 +170,18 @@ class AllLocationsFragment : Fragment() {
     // Setup search EditText
     private fun setupSearchEditText() {
         binding.searchEditText.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {} // Unused
+            override fun beforeTextChanged(
+                s: CharSequence,
+                start: Int,
+                count: Int,
+                after: Int
+            ) {
+            } // Unused
+
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 filterBuilding(s.toString()) // Filter building based on query
             }
+
             override fun afterTextChanged(s: Editable) {}
         })
     }
@@ -157,8 +190,15 @@ class AllLocationsFragment : Fragment() {
     // Filter building based on query
     private fun filterBuilding(query: String) {
         if (!::adapter.isInitialized) return
+        val currentLocale = Locale.getDefault()
         val filteredList = if (query.isNotEmpty()) {
-            locationsList.filter { it.name.lowercase(Locale.getDefault()).contains(query.lowercase(Locale.getDefault())) }
+            locationsList.filter { location ->
+                val locationNameLowercase = location.name.lowercase(currentLocale)
+                val queryLowercase = query.lowercase(currentLocale)
+                val locationNameLocalizedLowercase = getString(viewModel.getLocationNameResId(location.name)).lowercase(currentLocale)
+                locationNameLowercase.contains(queryLowercase) || locationNameLocalizedLowercase.contains(queryLowercase)
+            }
+            //locationsList.filter { it.name.lowercase(Locale.getDefault()).contains(query.lowercase(Locale.getDefault())) }
         } else {
             locationsList
         }

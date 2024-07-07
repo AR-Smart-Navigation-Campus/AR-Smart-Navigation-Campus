@@ -9,6 +9,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.locations.Admin.all_location.model.LocationData
 import com.example.locations.Admin.all_location.single_location.LocationUpdatesLiveData
+import com.example.locations.R
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
@@ -47,6 +48,7 @@ class AdminViewModel(application: Application) : AndroidViewModel(application) {
                 location = location.value!!,
                 name = userInput.value!!,
                 azimuth = azimuth.value.toString(),
+                description = "No description",
                 imgUrl = imageUrl
             )
             saveBuildingToFirestore(newEntry)
@@ -115,7 +117,6 @@ class AdminViewModel(application: Application) : AndroidViewModel(application) {
 
         if (snapshot != null && !snapshot.isEmpty) {
             val locations = snapshot.toObjects(LocationData::class.java)
-            Log.d("Firestore", "Locations: $locations")
             _locationData.postValue(locations)
         } else {
             Log.d("Firestore", "No locations found")
@@ -130,14 +131,12 @@ class AdminViewModel(application: Application) : AndroidViewModel(application) {
             "name" to building.name,
             "location" to building.location,
             "azimuth" to building.azimuth,
+            "description" to building.description,
             "imgUrl" to building.imgUrl
         )
 
         db.collection("buildings")
             .add(buildingData)
-            .addOnSuccessListener { documentReference ->
-                Log.d("Firestore", "DocumentSnapshot added with ID: ${documentReference.id}")
-            }
             .addOnFailureListener { e ->
                 Log.w("Firestore", "Error adding document", e)
             }
@@ -149,7 +148,6 @@ class AdminViewModel(application: Application) : AndroidViewModel(application) {
             for (document in result) {
                 if (document.data["id"] == id) {
                     db.collection("buildings").document(document.id).delete()
-                    Log.d("Firestore", "DocumentSnapshot successfully deleted!")
                 }
             }
         }
@@ -174,4 +172,54 @@ class AdminViewModel(application: Application) : AndroidViewModel(application) {
             }
     }
     //////////////////////////////////////////////////////////////////////////////
+
+    // Method to map location names to string resource IDs
+    fun getLocationNameResId(locationName: String): Int {
+        return when (locationName) {
+            "Cafeteria" -> R.string.cafeteria
+            "Fichman Gate" -> R.string.fichman_gate
+            "Hoffin Gate" -> R.string.hoffin_gate
+            "Golomb Gate" -> R.string.golomb_gate
+            "Building 1" -> R.string.building_1
+            "Building 2" -> R.string.building_2
+            "Building 3-A" -> R.string.building_3_A
+            "Building 3-B" -> R.string.building_3_B
+            "Building 4-Workshop" -> R.string.building_4_workshop
+            "Building 5" -> R.string.building_5
+            "Building 6" -> R.string.building_6
+            "Building 7" -> R.string.building_7
+            "Building 8-A" -> R.string.building_8_A
+            "Building 8-B" -> R.string.building_8_B
+            "Building 8-C" -> R.string.building_8_C
+            "Aguda" -> R.string.aguda
+            "Club" -> R.string.club
+            "Materials Shop" -> R.string.materials_shop
+            "Dorms" -> R.string.dorms
+            "Dorms Gate" -> R.string.dorms_gate
+            "Library" -> R.string.library
+            else -> R.string.unknown_location
+        }
+    }
+
+    // Method to map location names to string resource IDs
+    fun getLocationDescriptionResId(locationDescirption: String): Int {
+        return when (locationDescirption) {
+            "A student\\'s club in building 6" -> R.string.club_desc
+            "The student\\'s union in building 5" -> R.string.aguda_desc
+            "The first entrance to building 8" -> R.string.building_8_a_desc
+            "The second entrance to building 8" -> R.string.building_8_b_desc
+            "The third entrance to building 8" -> R.string.building_8_c_desc
+            "The first entrance to building 3" -> R.string.building_3_a_desc
+            "The second entrance to building 3" -> R.string.building_3_b_desc
+            "Student\\'s dorms near the parking lot and building 7" -> R.string.dorms_desc
+            "The closest gate to the dorms" -> R.string.dorms_gate_desc
+            "Top floor of building 5" -> R.string.library_desc
+            "The main entrance to HIT , in front of building 5" -> R.string.fichman_gate_desc
+            "A store near building 6 (floor -1)" -> R.string.store_desc
+            "A gate near building 8 and a parking lot" -> R.string.hoffin_gate_desc
+            "The rear gate of Hit , near building 1 and 2" -> R.string.golomb_gate_desc
+            "The main building in HIT" -> R.string.building_5_desc
+            else -> R.string.no_desc
+        }
+    }
 }

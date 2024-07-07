@@ -41,19 +41,25 @@ class DetailLocationInfo : Fragment() {
     // Set the text and image of the chosen item in the detail view
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.chosenItem.observe(viewLifecycleOwner){
+        viewModel.chosenItem.observe(viewLifecycleOwner){ it ->
             val auth= Firebase.auth
             val currentUser=auth.currentUser?.email.toString()
             val admin="navigationproject2024@gmail.com"
             val coords=   binding.locationLocation
             val azimuth= binding.locationAzimuth
-            binding.locationName.text = it.name
-            coords.text = "Location: ${it.location}"
-            azimuth.text = "Azimuth: ${it.azimuth}"
+            val description= binding.description
+
+            val resId = viewModel.getLocationNameResId(it.name)
+            binding.locationName.text = binding.root.context.getString(resId)
+            val coordsText = getString(R.string.coordinates) + ": " + it.location.replace("\\s+".toRegex(), "")
+            coords.text = coordsText
+            val azimuthText = getString(R.string.azimuth) + ": " + it.azimuth
+            azimuth.text = azimuthText
+            val descriptionText = viewModel.getLocationDescriptionResId(it.description)
+            description.text = binding.root.context.getString(descriptionText)
             if(currentUser!=admin) {
                 coords.visibility=View.GONE
                 azimuth.visibility=View.GONE
-                //binding.description.visibility=View.VISIBLE // Show the description text view  //DO WE NEED THIS?
             }
             Glide.with(binding.root).load(it.imgUrl).circleCrop().into(binding.itemDetailImage) // Load the image into the image view
         }

@@ -12,6 +12,7 @@ data class LocationData(
     val name: String ="",
     val location: String="",
     val azimuth: String="",
+    val description: String="",
     val imgUrl: String="",
 )
 

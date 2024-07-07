@@ -11,6 +11,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -39,8 +40,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
         </LinearLayout>
 
-
-                <fragment
+        <fragment
             android:id="@+id/sceneView"
             android:name="com.google.ar.sceneform.ux.ArFragment"
             android:layout_width="match_parent"
@@ -65,9 +65,9 @@
             android:id="@+id/loading_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Low accuracy, Please wait..."
+            android:text="@string/low_accuracy_please_wait"
             android:layout_margin="10dp"
-            android:textSize="20dp"
+            android:textSize="20sp"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -111,8 +111,8 @@
                 android:id="@+id/arrived_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="You have arrived!"
-                android:textSize="30dp"
+                android:text="@string/you_have_arrived"
+                android:textSize="30sp"
                 android:textColor="@color/white"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -123,7 +123,7 @@
                 android:id="@+id/exitBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Exit"
+                android:text="@string/exit"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/arrived_text"
@@ -134,7 +134,7 @@
                 android:id="@+id/navigate_againBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Nevigate Agian"
+                android:text="@string/nevigate_again"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/exitBtn"
