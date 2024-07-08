@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:id="@+id/back_ground"
     android:background="@drawable/background"
-    tools:context=".UI.ui_activity.HomePageFragment">
+    tools:context=".ui.ui_activity.HomePageFragment">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"

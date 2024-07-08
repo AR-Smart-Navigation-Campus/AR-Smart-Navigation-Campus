@@ -1,15 +1,12 @@
-package com.example.locations.UI
+package com.example.locations.ui.ui_activity
 
 import android.content.res.ColorStateList
 import android.os.Bundle
-import android.os.Parcelable
-import android.text.TextUtils
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
-import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
@@ -20,13 +17,17 @@ import com.example.locations.databinding.RegisterFragmentBinding
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
-import kotlinx.android.parcel.Parcelize
+
+/**
+ *  A fragment representing the registration screen.
+ */
 
 class RegisterFragment : Fragment() {
 
-
     private lateinit var binding: RegisterFragmentBinding
     private lateinit var auth: FirebaseAuth
+
+    // Inflate the layout for this fragment.
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -40,7 +41,7 @@ class RegisterFragment : Fragment() {
             findNavController().navigate(R.id.action_RegisterFragment_to_LoginFragment)
         }
         binding.confirmRegister.setOnClickListener {
-            view?.let { it1 -> regFunc(it1) }
+            view?.let { it1 -> regFunc() }
         }
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
@@ -51,9 +52,13 @@ class RegisterFragment : Fragment() {
         return binding.root
 
     }
+
+    // Return to the home page
     private fun returnToHome(){
         findNavController().navigate(R.id.action_RegisterFragment_to_homePage)
     }
+
+    // Check if the user is already logged in and navigate to the home page
     override fun onStart() {
         super.onStart()
         auth = Firebase.auth
@@ -63,17 +68,19 @@ class RegisterFragment : Fragment() {
         }
     }
 
+    // Navigate to the home page
     private fun navigateToHomePage() {
         Navigation.findNavController(requireView()).navigate(R.id.action_RegisterFragment_to_homePage)
     }
 
-    private fun regFunc(view: View) {
-        var email=binding.regEmailTextInput
-        var password=binding.regPasswordTextInput
-        var confirmPass=binding.regConfirmPasswordTextInput
-        var txtEmail = email.editText?.text.toString()
-        var txtPass =password.editText?.text.toString()
-        var txtConfirmPass = confirmPass.editText?.text.toString()
+    // Register a new user
+    private fun regFunc() {
+        val email=binding.regEmailTextInput
+        val password=binding.regPasswordTextInput
+        val confirmPass=binding.regConfirmPasswordTextInput
+        val txtEmail = email.editText?.text.toString()
+        val txtPass =password.editText?.text.toString()
+        val txtConfirmPass = confirmPass.editText?.text.toString()
 
         if (txtEmail.isNotEmpty() && txtPass.isNotEmpty()) {
             toggleValidationError(false)
@@ -101,6 +108,7 @@ class RegisterFragment : Fragment() {
         }
     }
 
+    // Toggle the error state of the password input field
     private fun togglePassError(isError: Boolean){
         val password= binding.regConfirmPasswordTextInput
         if(isError) {
@@ -134,6 +142,7 @@ class RegisterFragment : Fragment() {
         }
     }
 
+    // Toggle the error state of the email input field
     private fun toggleValidationError(isError: Boolean){
         val email=binding.regEmailTextInput
         val password=binding.regPasswordTextInput

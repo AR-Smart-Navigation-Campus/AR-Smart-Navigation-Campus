@@ -1,4 +1,4 @@
-package com.example.locations.Admin.all_location.single_location
+package com.example.locations.admin.all_location.single_location
 
 import android.content.Intent
 import android.content.res.ColorStateList
@@ -16,7 +16,7 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import com.example.locations.Admin.all_location.AdminViewModel
+import com.example.locations.admin.all_location.AdminViewModel
 import com.example.locations.R
 import com.example.locations.databinding.AddLocationBinding
 
@@ -73,6 +73,8 @@ class AddLocationFragment: Fragment() {
 
         })
     }
+
+    // Handle the click on the back button.
     private fun handleBackClick() {
         findNavController().navigate(R.id.action_addLocationFragment_to_Nav)
     }
@@ -88,6 +90,8 @@ class AddLocationFragment: Fragment() {
             toggleNameError(false)
             viewModel.updateLocation(location)
             viewModel.addUserInput(text)
+
+            // Check if imageUri is not null
             imageUri?.let { uri ->
                 viewModel.addEntry(uri)
                 updateUIWithLatestEntry()
@@ -97,6 +101,7 @@ class AddLocationFragment: Fragment() {
         }
     }
 
+    // Toggle the error state of the name text layout.
     private fun toggleNameError(isError:Boolean){
         val textLayout = binding.placeNameEditText
        if(isError){
@@ -123,6 +128,7 @@ class AddLocationFragment: Fragment() {
            )
        }
     }
+
     // Handle the click on the image button.
     private fun handleImageBtnClick() {
         pickImageLauncher.launch(arrayOf("image/*"))
@@ -155,18 +161,18 @@ class AddLocationFragment: Fragment() {
         val azimuthText = getString(R.string.azimuth) + ": " + azimuth
         binding.azimuthView.text = azimuthText
 
-        binding.placeNameEditText.editText?.setText("")
+        binding.placeNameEditText.editText?.text?.clear()
         //NO NEED TO UPDATE IMAGE
     }
 
     // Get location updates.
     private fun getLocationUpdates() {
-        viewModel.address.observe(viewLifecycleOwner) {
-            val data = it.split(",")
+        viewModel.address.observe(viewLifecycleOwner) { currLocation ->
+            val data = currLocation.split(",")
             val latitude = data[0]
             val longitude = data[1]
             val accuracy = data[2].toFloat()
-            binding.coordText.text = "${latitude},${longitude}"
+            "${latitude},${longitude}".also { binding.coordText.text = it } // Update the text view with the location
 
             val accuracyText = getString(R.string.accuracy) + ": " + accuracy + " "+ getString(R.string.meters)
             binding.accuracy.text = accuracyText

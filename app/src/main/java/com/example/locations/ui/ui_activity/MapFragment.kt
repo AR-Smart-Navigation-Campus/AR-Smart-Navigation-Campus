@@ -1,4 +1,4 @@
-package com.example.locations.UI.ui_activity
+package com.example.locations.ui.ui_activity
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,10 +8,14 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import com.example.locations.Admin.all_location.AdminViewModel
-import com.example.locations.Admin.all_location.model.LocationData
+import com.example.locations.admin.all_location.AdminViewModel
+import com.example.locations.admin.all_location.model.LocationData
 import com.example.locations.databinding.MapFragmentBinding
 import com.example.locations.R
+
+/**
+ *  MapFragment class that extends Fragment and provides functionality for the map screen.
+ */
 
 class MapFragment : Fragment() {
     private lateinit var binding: MapFragmentBinding
@@ -26,6 +30,7 @@ class MapFragment : Fragment() {
         const val MAX_LONGITUDE = 34.7743
     }
 
+    // Inflate the layout
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -188,6 +193,7 @@ class MapFragment : Fragment() {
         }
 
         binding.btnBack.setOnClickListener {
+            // Hide the location icon
             binding.locationIcon.apply {
                 visibility = View.GONE
                 x = 0f

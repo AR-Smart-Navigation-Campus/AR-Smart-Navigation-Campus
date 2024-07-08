@@ -1,4 +1,4 @@
-package com.example.locations.Admin.all_location.single_location
+package com.example.locations.admin.all_location.single_location
 
 import android.content.Context
 import android.hardware.Sensor
@@ -6,7 +6,12 @@ import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 
-// Class to manage the azimuth sensor
+/**
+ * AzimuthSensorManager class to manage sensor events for azimuth updates.
+ * @param context Context of the application
+ * @param onAzimuthChanged Function to be called when azimuth changes
+ */
+
 class AzimuthSensorManager(context: Context, private val onAzimuthChanged: (Float) -> Unit) {
 
     // SensorManager to access sensors
@@ -24,7 +29,7 @@ class AzimuthSensorManager(context: Context, private val onAzimuthChanged: (Floa
     private val sensorEventListener = object : SensorEventListener {
         // SensorEventListener to listen for sensor events
         override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
-            // Handle accuracy changes
+            // Not in use
         }
 
         override fun onSensorChanged(event: SensorEvent?) {
@@ -38,12 +43,12 @@ class AzimuthSensorManager(context: Context, private val onAzimuthChanged: (Floa
 
                 // If both gravity and geomagnetic values are available, calculate azimuth
                 if (gravity != null && geomagnetic != null) {
-                    val R = FloatArray(9)
-                    val I = FloatArray(9)
-                    val success = SensorManager.getRotationMatrix(R, I, gravity, geomagnetic)
+                    val r = FloatArray(9)
+                    val i = FloatArray(9)
+                    val success = SensorManager.getRotationMatrix(r, i, gravity, geomagnetic)
                     if (success) {
                         val orientation = FloatArray(3)
-                        SensorManager.getOrientation(R, orientation)
+                        SensorManager.getOrientation(r, orientation)
                         val azimuth = Math.toDegrees(orientation[0].toDouble()).toFloat()
                         // Call the onAzimuthChanged function with the calculated azimuth
                         onAzimuthChanged(azimuth)

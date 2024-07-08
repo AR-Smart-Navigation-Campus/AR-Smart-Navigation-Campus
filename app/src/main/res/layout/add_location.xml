@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".Admin.all_location.single_location.AddLocationFragment"
+    tools:context=".admin.all_location.single_location.AddLocationFragment"
     android:orientation="vertical"
     android:layout_margin="16dp">
 

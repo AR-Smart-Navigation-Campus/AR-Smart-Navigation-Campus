@@ -1,4 +1,4 @@
-package com.example.locations.Admin.all_location.detail_location
+package com.example.locations.admin.all_location.detail_location
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
-import com.example.locations.Admin.all_location.AdminViewModel
+import com.example.locations.admin.all_location.AdminViewModel
 import com.example.locations.R
 import com.example.locations.databinding.DetailLocationInfoBinding
 import com.google.firebase.Firebase
@@ -44,7 +44,6 @@ class DetailLocationInfo : Fragment() {
         viewModel.chosenItem.observe(viewLifecycleOwner){ it ->
             val auth= Firebase.auth
             val currentUser=auth.currentUser?.email.toString()
-            val admin="navigationproject2024@gmail.com"
             val coords=   binding.locationLocation
             val azimuth= binding.locationAzimuth
             val description= binding.description
@@ -57,7 +56,7 @@ class DetailLocationInfo : Fragment() {
             azimuth.text = azimuthText
             val descriptionText = viewModel.getLocationDescriptionResId(it.description)
             description.text = binding.root.context.getString(descriptionText)
-            if(currentUser!=admin) {
+            if(currentUser!= viewModel.admin) {
                 coords.visibility=View.GONE
                 azimuth.visibility=View.GONE
             }

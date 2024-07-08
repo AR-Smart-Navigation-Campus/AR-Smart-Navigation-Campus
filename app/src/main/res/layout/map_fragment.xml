@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/map_update"
     android:layoutDirection="ltr"
-    tools:context="com.example.locations.UI.ui_activity.MapFragment">
+    tools:context="com.example.locations.ui.ui_activity.MapFragment">
 
 
     <TextView

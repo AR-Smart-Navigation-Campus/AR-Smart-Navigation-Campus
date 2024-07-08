@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="732dp"
     android:background="@drawable/background"
-    tools:context=".Admin.all_location.AllLocationsFragment">
+    tools:context=".admin.all_location.AllLocationsFragment">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"

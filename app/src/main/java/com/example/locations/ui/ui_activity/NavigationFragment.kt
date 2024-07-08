@@ -1,8 +1,7 @@
-package com.example.locations.UI.ui_activity
+package com.example.locations.ui.ui_activity
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
@@ -17,23 +16,27 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import com.example.locations.Admin.all_location.AdminViewModel
+import com.example.locations.admin.all_location.AdminViewModel
 import com.example.locations.R
 import com.example.locations.databinding.NavigationFragmentBinding
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
 
+/**
+ * A fragment representing the navigation screen.
+ */
+
 class NavigationFragment : Fragment() {
 
     private val viewModel: AdminViewModel by activityViewModels() // Instance of AdminViewModel to access the data
     private lateinit var binding : NavigationFragmentBinding
     private lateinit var auth: FirebaseAuth
-    private var admin="navigationproject2024@gmail.com"
 
     // Register a launcher for requesting location permission.
     private val locationRequestLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { handleLocationPermissionResult(it) }
 
+    // Inflate the layout for this fragment.
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -110,11 +113,12 @@ class NavigationFragment : Fragment() {
         return binding.root
     }
 
+    // Check if the user is an admin and set the button visibility accordingly.
     override fun onStart() {
         super.onStart()
         auth = Firebase.auth
         val currentUser = auth.currentUser
-        if(currentUser!=null && currentUser.email== admin){
+        if(currentUser!=null && currentUser.email== viewModel.admin){
             binding.buttonAdmin.visibility = View.VISIBLE
             binding.buttonAdmin.setOnClickListener {
                 findNavController().navigate(R.id.action_Nav_to_addItemFragment)

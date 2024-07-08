@@ -1,4 +1,4 @@
-package com.example.locations.UI.ui_activity
+package com.example.locations.ui.ui_activity
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -21,39 +21,54 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
 import java.util.Calendar
 
-class HomePageFragment: Fragment() {
-    lateinit var binding : HomePageBinding
+/**
+ * Fragment class for the home page.
+ *
+ */
+
+class HomePageFragment : Fragment() {
+    lateinit var binding: HomePageBinding
     private lateinit var auth: FirebaseAuth
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    // Function to inflate the layout
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+
         binding = HomePageBinding.inflate(inflater, container, false)
-
-
-            val window: Window = requireActivity().window
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-            window.statusBarColor = ContextCompat.getColor(requireContext(), androidx.cardview.R.color.cardview_dark_background)
+        val window: Window = requireActivity().window
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+        window.statusBarColor = ContextCompat.getColor(
+            requireContext(),
+            androidx.cardview.R.color.cardview_dark_background
+        )
 
         welcomeMessage()
         binding.buttonLogin.setOnClickListener {
             findNavController().navigate(R.id.action_homePage_to_loginFragment)
         }
 
-        binding.buttonRegister.setOnClickListener{
+        binding.buttonRegister.setOnClickListener {
             findNavController().navigate(R.id.action_homePage_to_Register)
         }
 
         auth = Firebase.auth // Initialize Firebase Auth
 
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,object : OnBackPressedCallback(true) {
-            @SuppressLint("ResourceAsColor")
-            override fun handleOnBackPressed() {
-                requireActivity().finish()
-            }
-        })
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                @SuppressLint("ResourceAsColor")
+                override fun handleOnBackPressed() {
+                    requireActivity().finish()
+                }
+            })
         return binding.root
     }
-    public override fun onStart() {
+
+    // Function to check if the user is already logged in
+    override fun onStart() {
         super.onStart()
         // Check if user is signed in (non-null) and update UI accordingly.
         val currentUser = auth.currentUser
@@ -63,11 +78,15 @@ class HomePageFragment: Fragment() {
 
         }
     }
+
+    // Function to navigate to the home page
     private fun navigateToHomePage() {
         view?.let {
             Navigation.findNavController(it).navigate(R.id.action_homePage_to_Nav)
         }
     }
+
+    // Function to display a welcome message based on the current time
     private fun welcomeMessage() {
         val currentHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
         val welcomeMessage = when {

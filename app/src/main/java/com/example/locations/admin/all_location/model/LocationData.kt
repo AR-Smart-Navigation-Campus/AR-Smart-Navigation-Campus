@@ -1,6 +1,4 @@
-package com.example.locations.Admin.all_location.model
-
-import android.net.Uri
+package com.example.locations.admin.all_location.model
 
 // used for efficiently passing data between different Android components, such as activities, fragments, and services
 
