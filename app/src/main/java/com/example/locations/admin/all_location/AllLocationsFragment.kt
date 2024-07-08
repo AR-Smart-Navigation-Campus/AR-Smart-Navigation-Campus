@@ -1,10 +1,9 @@
-package com.example.locations.Admin.all_location
+package com.example.locations.admin.all_location
 
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,13 +18,13 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.locations.R
-import com.example.locations.Admin.all_location.model.LocationData
+import com.example.locations.admin.all_location.model.LocationData
 import com.example.locations.databinding.AllLocationsLayoutBinding
 import com.google.firebase.auth.FirebaseAuth
 import java.util.Locale
 
 /**
- * Fragment for displaying all locations
+ * Fragment for displaying all locations in a RecyclerView
  */
 class AllLocationsFragment : Fragment() {
 
@@ -33,7 +32,6 @@ class AllLocationsFragment : Fragment() {
     private val binding get() = _binding!!
     private var locationsList: List<LocationData> = listOf()
     private lateinit var auth: FirebaseAuth
-    private val admin = "navigationproject2024@gmail.com"
     private val viewModel: AdminViewModel by activityViewModels()
     private lateinit var adapter: LocationAdapter
 
@@ -123,7 +121,7 @@ class AllLocationsFragment : Fragment() {
                 recyclerView: RecyclerView,
                 viewHolder: RecyclerView.ViewHolder
             ): Int {
-                return if (currentUser == admin) {
+                return if (currentUser == viewModel.admin) {
                     makeFlag(
                         ItemTouchHelper.ACTION_STATE_SWIPE, // Swipe flag
                         ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT // Swipe direction
@@ -142,7 +140,7 @@ class AllLocationsFragment : Fragment() {
 
             // Handle swipe event
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                if (currentUser == admin) {
+                if (currentUser == viewModel.admin) {
                     binding.confirmDeleteCardView.visibility =
                         View.VISIBLE // Show confirm delete card view
                     binding.btnConfirmDelete.setOnClickListener {
@@ -190,15 +188,14 @@ class AllLocationsFragment : Fragment() {
     // Filter building based on query
     private fun filterBuilding(query: String) {
         if (!::adapter.isInitialized) return
-        val currentLocale = Locale.getDefault()
+        val currentLocale = Locale.getDefault() // Get current locale
         val filteredList = if (query.isNotEmpty()) {
             locationsList.filter { location ->
                 val locationNameLowercase = location.name.lowercase(currentLocale)
-                val queryLowercase = query.lowercase(currentLocale)
-                val locationNameLocalizedLowercase = getString(viewModel.getLocationNameResId(location.name)).lowercase(currentLocale)
-                locationNameLowercase.contains(queryLowercase) || locationNameLocalizedLowercase.contains(queryLowercase)
+                val queryLowercase = query.lowercase(currentLocale) // Convert query to lowercase
+                val locationNameLocalizedLowercase = getString(viewModel.getLocationNameResId(location.name)).lowercase(currentLocale) // Convert location name to lowercase
+                locationNameLowercase.contains(queryLowercase) || locationNameLocalizedLowercase.contains(queryLowercase) // Filter locations based on query
             }
-            //locationsList.filter { it.name.lowercase(Locale.getDefault()).contains(query.lowercase(Locale.getDefault())) }
         } else {
             locationsList
         }

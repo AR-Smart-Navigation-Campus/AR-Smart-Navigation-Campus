@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/allLocationsFragments"
-        android:name="com.example.locations.Admin.all_location.AllLocationsFragment"
+        android:name="com.example.locations.admin.all_location.AllLocationsFragment"
         android:label="all_locations_layout"
         tools:layout="@layout/all_locations_layout" >
         <action
@@ -41,7 +41,7 @@
     </fragment>
     <fragment
         android:id="@+id/addItemFragment"
-        android:name="com.example.locations.Admin.all_location.single_location.AddLocationFragment"
+        android:name="com.example.locations.admin.all_location.single_location.AddLocationFragment"
         android:label="add_location_layout"
         tools:layout="@layout/add_location" >
         <action
@@ -65,7 +65,7 @@
     </fragment>
     <fragment
         android:id="@+id/detailLocationInfo"
-        android:name="com.example.locations.Admin.all_location.detail_location.DetailLocationInfo"
+        android:name="com.example.locations.admin.all_location.detail_location.DetailLocationInfo"
         android:label="DetailLocationInfo"
         tools:layout="@layout/detail_location_info">
         <action
@@ -81,7 +81,7 @@
     </fragment>
     <fragment
         android:id="@+id/homePage"
-        android:name="com.example.locations.UI.ui_activity.HomePageFragment"
+        android:name="com.example.locations.ui.ui_activity.HomePageFragment"
         android:label="HomePageFragment"
         tools:layout="@layout/home_page">
         <action
@@ -108,7 +108,7 @@
     </fragment>
     <fragment
         android:id="@+id/Login"
-        android:name="com.example.locations.UI.LoginFragment"
+        android:name="com.example.locations.ui.ui_activity.LoginFragment"
         android:label="LoginFragment"
         tools:layout="@layout/login_fragment">
         <action
@@ -137,7 +137,7 @@
     </fragment>
     <fragment
         android:id="@+id/Register"
-        android:name="com.example.locations.UI.RegisterFragment"
+        android:name="com.example.locations.ui.ui_activity.RegisterFragment"
         android:label="RegisterFragment"
         tools:layout="@layout/register_fragment">
         <action
@@ -165,7 +165,7 @@
     </fragment>
     <fragment
         android:id="@+id/Nav"
-        android:name="com.example.locations.UI.ui_activity.NavigationFragment"
+        android:name="com.example.locations.ui.ui_activity.NavigationFragment"
         android:label="NavigationFragment"
         tools:layout="@layout/navigation_fragment">
         <action
@@ -202,7 +202,7 @@
     </fragment>
     <fragment
         android:id="@+id/News"
-        android:name="com.example.locations.UI.NewsletterFragment"
+        android:name="com.example.locations.ui.ui_activity.NewsletterFragment"
         android:label="NewsFragment"
         tools:layout="@layout/newsletter_fragment">
         <action
@@ -217,7 +217,7 @@
     </fragment>
     <fragment
         android:id="@+id/StartNav"
-        android:name="com.example.locations.UI.ui_activity.StartNavFragment"
+        android:name="com.example.locations.ui.ui_activity.StartNavFragment"
         android:label="StartNavFragment"
         tools:layout="@layout/start_nav_fragment">
         <action
@@ -246,7 +246,7 @@
     </fragment>
     <fragment
         android:id="@+id/Map"
-        android:name="com.example.locations.UI.ui_activity.MapFragment"
+        android:name="com.example.locations.ui.ui_activity.MapFragment"
         android:label="Map"
         tools:layout="@layout/map_fragment">
         <action
@@ -266,7 +266,7 @@
     </fragment>
     <fragment
         android:id="@+id/AR"
-        android:name="com.example.locations.AR.StartARFragment"
+        android:name="com.example.locations.ar.StartARFragment"
         android:label="AR"
         tools:layout="@layout/start_ar_fragment">
         <action

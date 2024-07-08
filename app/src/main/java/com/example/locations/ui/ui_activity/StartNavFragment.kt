@@ -1,4 +1,4 @@
-package com.example.locations.UI.ui_activity
+package com.example.locations.ui.ui_activity
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,10 +11,15 @@ import androidx.navigation.fragment.findNavController
 import com.example.locations.databinding.StartNavFragmentBinding
 import com.example.locations.R
 
+/**
+ * A fragment representing the start navigation screen.
+ */
+
 class StartNavFragment : Fragment() {
 
     private lateinit var binding : StartNavFragmentBinding
 
+    // Inflate the layout for this fragment.
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

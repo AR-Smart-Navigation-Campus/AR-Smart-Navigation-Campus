@@ -1,7 +1,5 @@
-package com.example.locations.UI
+package com.example.locations.ui.ui_activity
 
-import android.annotation.SuppressLint
-import android.content.Context
 import android.content.res.ColorStateList
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -9,9 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
-import android.view.inputmethod.EditorInfo
-import android.view.inputmethod.InputMethodManager
-import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.navigation.Navigation
@@ -22,10 +17,16 @@ import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
 
+/**
+ *  LoginFragment class that extends Fragment and provides UI for user login.
+ */
+
 class LoginFragment : Fragment() {
 
-    lateinit var binding : LoginFragmentBinding
+    lateinit var binding: LoginFragmentBinding
     private lateinit var auth: FirebaseAuth
+
+    // Inflate the layout for this fragment
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -33,28 +34,33 @@ class LoginFragment : Fragment() {
         binding = LoginFragmentBinding.inflate(inflater, container, false)
 
         binding.buttonHomepage.setOnClickListener {
-           returnToHome()
+            returnToHome()
         }
-        binding.confirmLogin.setOnClickListener{
+        binding.confirmLogin.setOnClickListener {
             view?.let { it1 -> loginFunc(it1) }
         }
-        binding.registerButton.setOnClickListener{
+        binding.registerButton.setOnClickListener {
             findNavController().navigate(R.id.action_LoginFragment_to_Register)
         }
         auth = Firebase.auth // Initialize Firebase Auth
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-              returnToHome()
-            }
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    returnToHome()
+                }
 
-        })
+            })
 
         return binding.root
     }
-    private fun returnToHome(){
+
+    // Return to the home page
+    private fun returnToHome() {
         findNavController().navigate(R.id.action_loginFragment_to_homePage)
     }
-    public override fun onStart() {
+
+    // Check if user is signed in (non-null) and update UI accordingly.
+    override fun onStart() {
         super.onStart()
         // Check if user is signed in (non-null) and update UI accordingly.
         val currentUser = auth.currentUser
@@ -62,14 +68,18 @@ class LoginFragment : Fragment() {
             navigateToHomePage()
         }
     }
+
+    // Navigate to the home page
     private fun navigateToHomePage() {
         view?.let {
             Navigation.findNavController(it).navigate(R.id.action_LoginFragment_to_Nav)
         }
     }
+
+    // Login function
     private fun loginFunc(view: View) {
-       val txtEmail=binding.emailTextInput.editText?.text.toString()
-        val txtPass=binding.passwordTextInput.editText?.text.toString()
+        val txtEmail = binding.emailTextInput.editText?.text.toString()
+        val txtPass = binding.passwordTextInput.editText?.text.toString()
         if (txtEmail.isNotEmpty() && txtPass.isNotEmpty()) {
             binding.progressBar.visibility = View.VISIBLE
             auth.signInWithEmailAndPassword(txtEmail, txtPass)
@@ -87,13 +97,14 @@ class LoginFragment : Fragment() {
         }
     }
 
+    // Toggle validation error
     private fun toggleValidationError(isError: Boolean) {
-        var email = binding.emailTextInput
-        var password = binding.passwordTextInput
+        val email = binding.emailTextInput
+        val password = binding.passwordTextInput
         if (isError) {
             email.boxStrokeColor =
                 ContextCompat.getColor(requireContext(), R.color.red)
-           email.hintTextColor =
+            email.hintTextColor =
                 ContextCompat.getColorStateList(requireContext(), R.color.red)
             email.setStartIconTintList(
                 ColorStateList.valueOf(
@@ -114,7 +125,7 @@ class LoginFragment : Fragment() {
                     )
                 )
             )
-            val shakeAnimation= AnimationUtils.loadAnimation(context, R.anim.vibrate)
+            val shakeAnimation = AnimationUtils.loadAnimation(context, R.anim.vibrate)
             email.startAnimation(shakeAnimation)
             password.startAnimation(shakeAnimation)
         } else {

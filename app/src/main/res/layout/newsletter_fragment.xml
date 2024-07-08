@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/newsletterpic"
-    tools:context="com.example.locations.UI.NewsletterFragment" >
+    tools:context="com.example.locations.ui.ui_activity.NewsletterFragment" >
 
     <Button
         android:id="@+id/btnback"

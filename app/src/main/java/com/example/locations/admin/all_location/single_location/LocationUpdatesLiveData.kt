@@ -1,10 +1,9 @@
-package com.example.locations.Admin.all_location.single_location
+package com.example.locations.admin.all_location.single_location
 
 import android.content.Context
 import android.os.Looper
 import android.util.Log
 import androidx.lifecycle.LiveData
-import com.example.locations.databinding.AddLocationBinding
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
@@ -18,6 +17,7 @@ import java.util.concurrent.TimeUnit
  * This class handles requesting location updates from the FusedLocationProviderClient
  * and emits updates to observers with the latest location as a formatted string.
  */
+
 class LocationUpdatesLiveData(context:Context) : LiveData<String>() {
     //FusedLocationProviderClient instance to request location updates.
     private val locationClient : FusedLocationProviderClient =

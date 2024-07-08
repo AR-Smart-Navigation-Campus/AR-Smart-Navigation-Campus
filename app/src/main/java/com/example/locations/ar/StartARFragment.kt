@@ -1,4 +1,4 @@
-package com.example.locations.AR
+package com.example.locations.ar
 
 import android.content.Context
 import android.graphics.Typeface
@@ -17,7 +17,7 @@ import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import com.example.locations.Admin.all_location.AdminViewModel
+import com.example.locations.admin.all_location.AdminViewModel
 import com.example.locations.R
 import com.example.locations.databinding.StartArFragmentBinding
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -37,8 +37,7 @@ import kotlin.math.sin
 import kotlin.text.*
 
 /**
- * Fragment class for the AR view
- *
+ * Fragment for the start AR screen.
  */
 class StartARFragment : Fragment() {
 
@@ -70,7 +69,7 @@ class StartARFragment : Fragment() {
             findNavController().navigate(R.id.action_AR_to_StartNav)
         }
         binding.exitBtn.setOnClickListener {
-            activity?.finishAffinity()
+            activity?.finishAffinity() // Exit the app
         }
         return binding.root
     }
@@ -112,20 +111,21 @@ class StartARFragment : Fragment() {
                     } else {
                         textDistance = getString(R.string.meters, distance.toInt())
                     }
-                    val text = locationName
+                    val textID = adminViewModel.getLocationNameResId(locationName) // Get the text resource ID
+                    val text = getString(textID) // Get the text from the resource ID
                     textRenderer(
                         requireContext(),
                         textViewDistance,
                         textDistance,
                         Vector3(2f, 1.6f, 0f),
-                        70
+                        60
                     ) // Render the text on the screen
                     textRenderer(
                         requireContext(),
                         textViewDestination,
                         text,
                         Vector3(2f, 2f, 0f),
-                        100
+                        70
                     ) // Render the text on the screen
 
                     if (distance < 6.0) {
@@ -222,7 +222,7 @@ class StartARFragment : Fragment() {
 
     // Calculate the direction to the target location
     private fun calculateBearing(from: Location, to: Location): Float {
-        val bearing = from.bearingTo(to) + 90 // Calculate the bearing to the target location
+        val bearing = from.bearingTo(to) // Calculate the bearing to the target location
         return (-bearing + 360) % 360 // Normalize the bearing
     }
 
@@ -237,10 +237,10 @@ class StartARFragment : Fragment() {
         val x = cos(bearingRadians).toFloat() // Calculate the x component of the direction vector
         val z = sin(bearingRadians).toFloat() // Calculate the z component of the direction vector
 
-        return Vector3(x, 0f, z).normalized()
+        return Vector3(x, 0f, z).normalized() // Normalize the direction vector
     }
 
-    // Render text on the screen
+    // Render 3D text on the screen
     private fun textRenderer(
         context: Context,
         textView: TextView,
@@ -252,18 +252,15 @@ class StartARFragment : Fragment() {
         textView.text = text
         textView.setTextColor(ContextCompat.getColor(context, color))
         textView.textSize = size.toFloat()
-        textView.typeface =
-            Typeface.createFromAsset(context.assets, "fonts/gunplay 3d.otf")// Set the text style
+        textView.typeface = Typeface.createFromAsset(context.assets, "fonts/gunplay 3d.otf")// Set the text style
         textView.gravity = Gravity.CENTER // Center the text
 
         // Create a background with rounded corners and shadow
         val background = GradientDrawable()
         background.shape = GradientDrawable.RECTANGLE
-        //background.setColor(Color.argb(255, 255, 255, 255)) // 60% transparent white background using argb
-        //background.setColor(Color.parseColor("#99FFFFFF")) // Set the background color
         background.cornerRadius = 16f // Set the corner radius
         textView.background = background
-        textView.setPadding(16, 8, 16, 8)
+        textView.setPadding(0, 8, 0, 8)
 
         // Add shadow to the text view
         ViewCompat.setElevation(textView, 10f)
