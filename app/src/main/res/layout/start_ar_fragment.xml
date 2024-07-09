@@ -55,6 +55,7 @@
         android:layout_height="wrap_content"
         app:cardCornerRadius="10dp"
         android:layout_margin="20dp"
+        app:cardBackgroundColor="@color/baby_blue"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent">
@@ -68,6 +69,7 @@
             android:text="@string/low_accuracy_please_wait"
             android:layout_margin="10dp"
             android:textSize="20sp"
+            android:textColor="@color/black"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -78,6 +80,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
+            app:drawableTint="@color/black"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/loading_text"
@@ -95,7 +98,7 @@
         app:cardCornerRadius="15dp"
         app:cardElevation="8dp"
         android:visibility="gone"
-        app:cardBackgroundColor="@color/modal_window"
+        app:cardBackgroundColor="@color/baby_blue"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -104,7 +107,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="470dp"
-            android:background="@color/modal_window"
+            android:background="@color/baby_blue"
             android:padding="16dp">
 
             <TextView
@@ -113,7 +116,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/you_have_arrived"
                 android:textSize="30sp"
-                android:textColor="@color/white"
+                android:textColor="@color/black"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -127,6 +130,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/arrived_text"
+                android:backgroundTint="#D767BEC1"
+                android:textColor="@color/white"
                 tools:layout_editor_absoluteX="16dp"
                 android:layout_margin="25dp"/>
 
@@ -138,9 +143,10 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/exitBtn"
+                android:backgroundTint="#018186"
+                android:textColor="@color/white"
                 android:layout_margin="25dp"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.cardview.widget.CardView>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

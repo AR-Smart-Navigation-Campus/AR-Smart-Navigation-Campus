@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background"
+    android:background="@color/background_white"
     tools:context="com.example.locations.ui.ui_activity.RegisterFragment">
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
@@ -21,23 +21,6 @@
         app:layout_constraintTop_toTopOf="parent"/>
 
     <androidx.cardview.widget.CardView
-        android:layout_width="120dp"
-        android:layout_height="100dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginBottom="30dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:cardCornerRadius="15dp">
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:src="@drawable/hitlogo"
-            android:scaleType="centerCrop" />
-
-    </androidx.cardview.widget.CardView>
-    <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -52,14 +35,14 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="480dp"
-            android:background="@color/modal_window"
+            android:background="@color/baby_blue"
             android:padding="16dp">
             <TextView
                 android:id="@+id/register_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/register"
-                android:textColor="@color/white"
+                android:textColor="@color/black"
                 android:textSize="40sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -184,8 +167,8 @@
                 android:id="@+id/confirm_register"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/btnsAndInput"
-                android:textColor="@color/black"
+                android:backgroundTint="#018186"
+                android:textColor="@color/white"
                 android:text="@string/register"
                 android:layout_marginTop="15dp"
                 app:layout_constraintTop_toBottomOf="@+id/reg_confirm_password_text_input"
@@ -197,7 +180,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/already_have_an_account"
-                android:textColor="@color/white"
+                android:textColor="@color/black"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"/>
