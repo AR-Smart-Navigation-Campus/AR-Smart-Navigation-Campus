@@ -25,7 +25,7 @@ class NewsletterFragment : Fragment() {
     ): View {
         binding = NewsletterFragmentBinding.inflate(inflater, container, false)
 
-        binding.btnback.setOnClickListener {
+        binding.btnBack.setOnClickListener {
             findNavController().navigate(R.id.action_News_to_Nav)
         }
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,object : OnBackPressedCallback(true) {

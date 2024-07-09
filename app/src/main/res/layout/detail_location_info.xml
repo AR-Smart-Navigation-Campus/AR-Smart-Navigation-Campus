@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@drawable/background"
+    android:background="@color/baby_blue"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".admin.all_location.detail_location.DetailLocationInfo">
 

@@ -26,7 +26,7 @@
     <string name="nevigate_again">Nevigate Again</string>
     <string name="delete_location_msg">Location deleted successfully</string>
     <string name="km">%.1f Km</string>
-    <string name="meters">%d meters</string>
+    <string name="meters">meters</string>
     <string name="morning_msg">Good Morning,                  Sign In or Create Account</string>
     <string name="afternoon_msg">Good Afternoon,                  Sign In or Create Account</string>
     <string name="evening_msg">Good Evening,                  Sign In or Create Account</string>

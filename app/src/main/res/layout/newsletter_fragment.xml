@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/newsletterpic"
-    tools:context="com.example.locations.ui.ui_activity.NewsletterFragment" >
+    tools:context="com.example.locations.ui.ui_activity.NewsletterFragment">
 
-    <Button
-        android:id="@+id/btnback"
+    <TextView
+        android:id="@+id/btnBack"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/white"
-        android:text="Back"
-        android:textColor="@color/black" />
+        app:drawableStartCompat="@drawable/baseline_arrow_back_ios_24"
+        tools:layout_editor_absoluteX="10dp"
+        tools:layout_editor_absoluteY="10dp" />
 </FrameLayout>

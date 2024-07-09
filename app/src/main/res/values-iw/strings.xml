@@ -28,7 +28,7 @@
     <string name="nevigate_again">נווט שוב</string>
     <string name="delete_location_msg">המיקום נמחק בהצלחה</string>
     <string name="km">ק\'\'מ %.1f</string>
-    <string name="meters">%d מטרים</string>
+    <string name="meters">מטרים</string>
     <string name="morning_msg">בוקר טוב,                  התחבר או הירשם</string>
     <string name="afternoon_msg">צהריים טובים,                  התחבר או הירשם</string>
     <string name="evening_msg">ערב טוב,                  התחבר או הירשם</string>
