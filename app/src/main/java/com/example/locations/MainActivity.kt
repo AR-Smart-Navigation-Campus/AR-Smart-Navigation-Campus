@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 
 /**
- * Main activity for the location data app.
+ * Main activity for ArNavigator app.
  */
 class MainActivity : AppCompatActivity() {
 

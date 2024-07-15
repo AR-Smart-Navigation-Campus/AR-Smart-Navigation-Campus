@@ -18,7 +18,7 @@ import com.google.firebase.auth.auth
 class DetailLocationInfo : Fragment() {
 
     // Binding object instance corresponding to the detail_location_info.xml layout
-    private var _binding : DetailLocationInfoBinding? = null
+    private var _binding: DetailLocationInfoBinding? = null
     private val binding get() = _binding!!
 
     // Get the view model
@@ -30,7 +30,7 @@ class DetailLocationInfo : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = DetailLocationInfoBinding.inflate(inflater , container , false)
+        _binding = DetailLocationInfoBinding.inflate(inflater, container, false)
         binding.btnBack.setOnClickListener {
             findNavController().navigate(R.id.action_detailLocationInfo_to_allLocationsFragments)
         }
@@ -41,26 +41,24 @@ class DetailLocationInfo : Fragment() {
     // Set the text and image of the chosen item in the detail view
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.chosenItem.observe(viewLifecycleOwner){ it ->
-            val auth= Firebase.auth
-            val currentUser=auth.currentUser?.email.toString()
-            val coords=   binding.locationLocation
-            val azimuth= binding.locationAzimuth
-            val description= binding.description
-
-            val resId = viewModel.getLocationNameResId(it.name)
-            binding.locationName.text = binding.root.context.getString(resId)
+        // Observe the chosen item in the view model
+        viewModel.chosenItem.observe(viewLifecycleOwner) { it ->
+            val auth = Firebase.auth // Firebase authentication instance
+            val currentUser = auth.currentUser?.email.toString() // Get the current user's email
+            val resId = viewModel.getLocationNameResId(it.name) // Get the resource ID of the location name
+            binding.locationName.text = binding.root.context.getString(resId) // Set the location name text view
             val coordsText = getString(R.string.coordinates) + ": " + it.location.replace("\\s+".toRegex(), "")
-            coords.text = coordsText
+            binding.locationLocation.text = coordsText
             val azimuthText = getString(R.string.azimuth) + ": " + it.azimuth
-            azimuth.text = azimuthText
+            binding.locationAzimuth.text = azimuthText
             val descriptionText = viewModel.getLocationDescriptionResId(it.description)
-            description.text = binding.root.context.getString(descriptionText)
-            if(currentUser!= viewModel.admin) {
-                coords.visibility=View.GONE
-                azimuth.visibility=View.GONE
+            binding.description.text = binding.root.context.getString(descriptionText)
+            if (currentUser != viewModel.admin) {
+                binding.locationLocation.visibility = View.GONE
+                binding.locationAzimuth.visibility = View.GONE
             }
-            Glide.with(binding.root).load(it.imgUrl).circleCrop().into(binding.itemDetailImage) // Load the image into the image view
+            Glide.with(binding.root).load(it.imgUrl).circleCrop()
+                .into(binding.itemDetailImage) // Load the image into the image view
         }
     }
 

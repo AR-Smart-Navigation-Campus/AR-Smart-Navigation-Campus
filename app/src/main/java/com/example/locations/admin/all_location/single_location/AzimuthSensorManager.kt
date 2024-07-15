@@ -28,10 +28,7 @@ class AzimuthSensorManager(context: Context, private val onAzimuthChanged: (Floa
 
     private val sensorEventListener = object : SensorEventListener {
         // SensorEventListener to listen for sensor events
-        override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
-            // Not in use
-        }
-
+        override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {} // Not in use
         override fun onSensorChanged(event: SensorEvent?) {
             if (event != null) {
                 // If the event is from the accelerometer, update gravity values
@@ -40,7 +37,6 @@ class AzimuthSensorManager(context: Context, private val onAzimuthChanged: (Floa
                 // If the event is from the magnetic field sensor, update geomagnetic values
                 if (event.sensor.type == Sensor.TYPE_MAGNETIC_FIELD)
                     geomagnetic = event.values
-
                 // If both gravity and geomagnetic values are available, calculate azimuth
                 if (gravity != null && geomagnetic != null) {
                     val r = FloatArray(9)
@@ -50,8 +46,7 @@ class AzimuthSensorManager(context: Context, private val onAzimuthChanged: (Floa
                         val orientation = FloatArray(3)
                         SensorManager.getOrientation(r, orientation)
                         val azimuth = Math.toDegrees(orientation[0].toDouble()).toFloat()
-                        // Call the onAzimuthChanged function with the calculated azimuth
-                        onAzimuthChanged(azimuth)
+                        onAzimuthChanged(azimuth) // Call the onAzimuthChanged function with the calculated azimuth
                     }
                 }
             }
@@ -60,9 +55,11 @@ class AzimuthSensorManager(context: Context, private val onAzimuthChanged: (Floa
 
     // Start listening to sensor events
     fun startListening() {
+        // Register sensor event listener for accelerometer and magnetometer
         accelerometer?.also { accelerometer ->
             sensorManager.registerListener(sensorEventListener, accelerometer, SensorManager.SENSOR_DELAY_NORMAL)
         }
+        // Register sensor event listener for magnetometer
         magnetometer?.also { magnetometer ->
             sensorManager.registerListener(sensorEventListener, magnetometer, SensorManager.SENSOR_DELAY_NORMAL)
         }

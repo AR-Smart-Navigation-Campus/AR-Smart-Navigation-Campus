@@ -40,7 +40,6 @@ class HomePageFragment : Fragment() {
         binding = HomePageBinding.inflate(inflater, container, false)
         val window: Window = requireActivity().window
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
         window.statusBarColor = ContextCompat.getColor(
             requireContext(),
             androidx.cardview.R.color.cardview_dark_background
@@ -107,7 +106,7 @@ class HomePageFragment : Fragment() {
                         append(welcomeMessage[index])
                     }
                     index++
-                    handler.postDelayed(this, 25) // delay of 30ms
+                    handler.postDelayed(this, 25) // delay of 25ms
                 }
             }
         }

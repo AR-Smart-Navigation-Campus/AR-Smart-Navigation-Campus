@@ -114,84 +114,32 @@ class MapFragment : Fragment() {
 
     // Set up button listeners
     private fun setupButtonListeners() {
-        binding.buttonFichmanGate.setOnClickListener {
-            findLocationByName("Fichman Gate")
+        val buttonLocationMap = mapOf(
+            binding.buttonFichmanGate to "Fichman Gate",
+            binding.buttonHoffinGate to "Hoffin Gate",
+            binding.buttonGolombGate to "Golomb Gate",
+            binding.buttonbuilding1 to "Building 1",
+            binding.buttonbuilding2 to "Building 2",
+            binding.buttonbuilding3A to "Building 3-A",
+            binding.buttonbuilding3B to "Building 3-B",
+            binding.buttonbuilding4 to "Building 4-Workshop",
+            binding.buttonbuilding5 to "Building 5",
+            binding.buttonbuilding6 to "Building 6",
+            binding.buttonbuilding7 to "Building 7",
+            binding.buttonbuilding8A to "Building 8-A",
+            binding.buttonbuilding8B to "Building 8-B",
+            binding.buttonbuilding8C to "Building 8-C",
+            binding.buttonaguda to "Aguda",
+            binding.buttoncafeteria to "Cafeteria",
+            binding.buttonclub to "Club",
+            binding.buttonlibrary to "Library",
+            binding.buttonstore to "Materials Shop"
+        )
+        buttonLocationMap.forEach { (button, location) ->
+            button.setOnClickListener {
+                findLocationByName(location)
+            }
         }
-
-        binding.buttonHoffinGate.setOnClickListener {
-            findLocationByName("Hoffin Gate")
-        }
-
-        binding.buttonGolombGate.setOnClickListener {
-            findLocationByName("Golomb Gate")
-        }
-
-
-        binding.buttonbuilding1.setOnClickListener {
-            findLocationByName("Building 1")
-        }
-
-        binding.buttonbuilding2.setOnClickListener {
-            findLocationByName("Building 2")
-        }
-
-        binding.buttonbuilding3A.setOnClickListener {
-            findLocationByName("Building 3-A")
-        }
-
-        binding.buttonbuilding3B.setOnClickListener {
-            findLocationByName("Building 3-B")
-        }
-
-        binding.buttonbuilding4.setOnClickListener {
-            findLocationByName("Building 4-Workshop")
-        }
-
-        binding.buttonbuilding5.setOnClickListener {
-            findLocationByName("Building 5")
-        }
-
-        binding.buttonbuilding6.setOnClickListener {
-            findLocationByName("Building 6")
-        }
-
-        binding.buttonbuilding7.setOnClickListener {
-            findLocationByName("Building 7")
-        }
-
-        binding.buttonbuilding8A.setOnClickListener {
-            findLocationByName("Building 8-A")
-        }
-
-        binding.buttonbuilding8B.setOnClickListener {
-            findLocationByName("Building 8-B")
-        }
-
-        binding.buttonbuilding8C.setOnClickListener {
-            findLocationByName("Building 8-C")
-        }
-
-        binding.buttonaguda.setOnClickListener {
-            findLocationByName("Aguda")
-        }
-
-        binding.buttoncafeteria.setOnClickListener {
-            findLocationByName("Cafeteria")
-        }
-
-        binding.buttonclub.setOnClickListener {
-            findLocationByName("Club")
-        }
-
-
-        binding.buttonlibrary.setOnClickListener {
-            findLocationByName("Library")
-        }
-
-        binding.buttonstore.setOnClickListener {
-            findLocationByName("Materials Shop")
-        }
-
         binding.btnBack.setOnClickListener {
             // Hide the location icon
             binding.locationIcon.apply {

@@ -82,7 +82,7 @@ class LoginFragment : Fragment() {
         val txtPass = binding.passwordTextInput.editText?.text.toString()
         if (txtEmail.isNotEmpty() && txtPass.isNotEmpty()) {
             binding.progressBar.visibility = View.VISIBLE
-            auth.signInWithEmailAndPassword(txtEmail, txtPass)
+            auth.signInWithEmailAndPassword(txtEmail, txtPass) // Sign in with email and password
                 .addOnCompleteListener(requireActivity()) { task ->
                     binding.progressBar.visibility = View.GONE
                     if (task.isSuccessful) {

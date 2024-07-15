@@ -42,17 +42,12 @@ class AllLocationsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = AllLocationsLayoutBinding.inflate(inflater, container, false)
-
         auth = FirebaseAuth.getInstance() // Get instance of Firebase authentication
         val currentUser = auth.currentUser?.email.toString()
         setupRecyclerView(currentUser) // Setup RecyclerView
-
         binding.btnBack.setOnClickListener { returnToAdd() }
-
-        val colorStateList =
-            ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.gray))
+        val colorStateList = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.gray))
         binding.searchEditTextLayout.defaultHintTextColor = colorStateList
-
         // Handle back press
         requireActivity().onBackPressedDispatcher.addCallback(
             viewLifecycleOwner,
@@ -61,7 +56,6 @@ class AllLocationsFragment : Fragment() {
                     returnToAdd()
                 }
             })
-
         return binding.root
     }
 
@@ -94,12 +88,13 @@ class AllLocationsFragment : Fragment() {
     // Setup adapter for RecyclerView
     private fun setupAdapter(allLocations: List<LocationData>) {
         adapter = LocationAdapter(allLocations, object : LocationAdapter.ItemListener {
+            // Handle item click event
             override fun onItemClick(index: Int) {
                 viewModel.setLocation(adapter.currentList[index])
                 binding.searchEditTextLayout.editText?.text?.clear()
                 findNavController().navigate(R.id.action_allLocationsFragments_to_AR)
             }
-
+            // Handle item long click event
             override fun onItemLongClicked(index: Int) {
                 viewModel.setLocation(adapter.currentList[index]) // Set location entry
                 binding.searchEditTextLayout.editText?.text?.clear()
@@ -130,34 +125,26 @@ class AllLocationsFragment : Fragment() {
                     0
                 }
             }
-
             // Handle move event
             override fun onMove(
                 recyclerView: RecyclerView,
                 viewHolder: RecyclerView.ViewHolder,
                 target: RecyclerView.ViewHolder
             ) = false // Unused
-
             // Handle swipe event
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 if (currentUser == viewModel.admin) {
-                    binding.confirmDeleteCardView.visibility =
-                        View.VISIBLE // Show confirm delete card view
+                    binding.confirmDeleteCardView.visibility = View.VISIBLE // Show confirm delete card view
                     binding.btnConfirmDelete.setOnClickListener {
                         binding.confirmDeleteCardView.visibility =
                             View.GONE // Hide confirm delete card view
                         val location =
                             (binding.recyclerView.adapter as LocationAdapter).itemAt(viewHolder.adapterPosition) // Get location entry
                         viewModel.deleteEntry(location) // Delete location entry
-                        Toast.makeText(
-                            requireContext(),
-                            getString(R.string.delete_location_msg),
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        Toast.makeText(requireContext(), getString(R.string.delete_location_msg), Toast.LENGTH_SHORT).show()
                     }
                     binding.btnCancleDelete.setOnClickListener {
-                        binding.confirmDeleteCardView.visibility =
-                            View.GONE // Hide confirm delete card view
+                        binding.confirmDeleteCardView.visibility = View.GONE // Hide confirm delete card view
                         adapter.notifyItemChanged(viewHolder.adapterPosition) // Notify item changed
                     }
                 }
@@ -193,8 +180,11 @@ class AllLocationsFragment : Fragment() {
             locationsList.filter { location ->
                 val locationNameLowercase = location.name.lowercase(currentLocale)
                 val queryLowercase = query.lowercase(currentLocale) // Convert query to lowercase
-                val locationNameLocalizedLowercase = getString(viewModel.getLocationNameResId(location.name)).lowercase(currentLocale) // Convert location name to lowercase
-                locationNameLowercase.contains(queryLowercase) || locationNameLocalizedLowercase.contains(queryLowercase) // Filter locations based on query
+                val locationNameLocalizedLowercase =
+                    getString(viewModel.getLocationNameResId(location.name)).lowercase(currentLocale) // Convert location name to lowercase
+                locationNameLowercase.contains(queryLowercase) || locationNameLocalizedLowercase.contains(
+                    queryLowercase
+                ) // Filter locations based on query
             }
         } else {
             locationsList

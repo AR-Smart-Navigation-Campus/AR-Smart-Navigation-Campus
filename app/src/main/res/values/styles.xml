@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <style name="AlertDialogCustom" parent="Theme.AppCompat.Light.Dialog.Alert">
-        <!-- Use this to change the background color -->
-        <item name="android:background">@color/btnsAndInput</item>
-        <!-- Use this to change the title text color -->
-        <item name="android:textColorPrimary">#000000</item>
-        <!-- Use this to change the message text color -->
-        <item name="android:textColor">#000000</item>
-        <!-- Use this to change the color of the buttons -->
-        <item name="colorAccent">#000000</item>
-    </style>
-    <style name="CustomProgressBar" parent="Widget.AppCompat.ProgressBar">
-        <item name="android:indeterminateTint">@color/white</item>
-    </style>
-    <style name="RoundedImageView" parent="">
-        <item name="cornerFamily">rounded</item>
-        <item name="cornerSize">50dp</item>
-    </style>
-</resources>
+    <resources>
+        <style name="AlertDialogCustom" parent="Theme.AppCompat.Light.Dialog.Alert">
+            <!-- Use this to change the background color -->
+            <item name="android:background">@color/btnsAndInput</item>
+            <!-- Use this to change the title text color -->
+            <item name="android:textColorPrimary">#000000</item>
+            <!-- Use this to change the message text color -->
+            <item name="android:textColor">#000000</item>
+            <!-- Use this to change the color of the buttons -->
+            <item name="colorAccent">#000000</item>
+        </style>
+        <style name="CustomProgressBar" parent="Widget.AppCompat.ProgressBar">
+            <item name="android:indeterminateTint">@color/white</item>
+        </style>
+        <style name="RoundedImageView" parent="">
+            <item name="cornerFamily">rounded</item>
+            <item name="cornerSize">50dp</item>
+        </style>
+    </resources>

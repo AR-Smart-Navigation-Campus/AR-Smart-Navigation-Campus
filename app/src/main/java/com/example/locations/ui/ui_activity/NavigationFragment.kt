@@ -42,12 +42,10 @@ class NavigationFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         binding = NavigationFragmentBinding.inflate(inflater, container, false)
         binding.btnStartNav.setOnClickListener {
             findNavController().navigate(R.id.action_Nav_to_StartNav)
         }
-
         binding.btnNews.setOnClickListener {
             val url="https://www.hit.ac.il/news/"
             val intent=Intent(Intent.ACTION_VIEW)
@@ -64,10 +62,10 @@ class NavigationFragment : Fragment() {
             alertDialog.window?.setBackgroundDrawableResource(R.drawable.dialog_background)
             alertDialog.setOnShowListener {
                 val positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE)
-                positiveButton.setTextColor(R.color.black) // Change the color of the "Yes" button
+                positiveButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.black)) // Change the color of the "Yes" button
 
                 val negativeButton = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE)
-                negativeButton.setTextColor(R.color.black) // Change the color of the "No" button
+                negativeButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.black)) // Change the color of the "No" button
 
                 positiveButton.setOnClickListener {
                     alertDialog.dismiss()
