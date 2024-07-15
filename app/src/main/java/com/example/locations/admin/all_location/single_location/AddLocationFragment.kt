@@ -121,11 +121,7 @@ class AddLocationFragment: Fragment() {
            textLayout.hintTextColor = ContextCompat.getColorStateList(requireContext(), R.color.btnsAndInput)
            textLayout.setStartIconTintList(
                ColorStateList.valueOf(
-                   ContextCompat.getColor(
-                       requireContext(), R.color.btnsAndInput
-                   )
-               )
-           )
+                   ContextCompat.getColor(requireContext(), R.color.btnsAndInput)))
        }
     }
 
@@ -143,7 +139,9 @@ class AddLocationFragment: Fragment() {
     // Handle the image pick.
     private fun handleImagePick(uri: Uri) {
         binding.resultImg.setImageURI(uri)
+        // Grant permission to access the image
         val takeFlags: Int = Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+        // Persist the permission to access the image
         requireActivity().contentResolver.takePersistableUriPermission(uri, takeFlags)
         imageUri = uri
     }
@@ -174,7 +172,7 @@ class AddLocationFragment: Fragment() {
             val accuracy = data[2].toFloat()
             "${latitude},${longitude}".also { binding.coordText.text = it } // Update the text view with the location
 
-            val accuracyText = getString(R.string.accuracy) + ": " + accuracy + " "+ getString(R.string.meters)
+            val accuracyText = getString(R.string.accuracy) + ": " + accuracy + " "+ getString(R.string.meters_accuracy)
             binding.accuracy.text = accuracyText
         }
     }

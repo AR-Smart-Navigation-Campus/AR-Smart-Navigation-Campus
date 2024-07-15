@@ -32,18 +32,12 @@ class FirestoreRepository {
                 Log.d("Firestore", "No locations found")
                 callback(Result.success(emptyList())) // Return empty list if no locations found
             }
-
-//            if (snapshot != null && !snapshot.isEmpty) {
-//                val locations = snapshot.toObjects(LocationData::class.java)
-//                locationData.postValue(locations)
-//            } else {
-//                Log.d("Firestore", "No locations found")
-//            }
         }
     }
 
     // Saves a building to Firestore
     fun saveBuildingToFirestore(building: LocationData) {
+        // Create a new building data object
         val buildingData = hashMapOf(
             "id" to building.id,
             "name" to building.name,
@@ -53,6 +47,7 @@ class FirestoreRepository {
             "imgUrl" to building.imgUrl
         )
 
+        // Add the building data to Firestore
         db.collection("buildings")
             .add(buildingData)
             .addOnFailureListener { e ->
@@ -76,6 +71,7 @@ class FirestoreRepository {
 
     // Uploads an image to Firebase Storage and gets the URL
     fun uploadImageToFirebaseStorage(imageUri: Uri, callback: (String) -> Unit) {
+        // Generate a unique file name for the image
         val storageReference = FirebaseStorage.getInstance().reference.child("images/${UUID.randomUUID()}")
         storageReference.putFile(imageUri)
             .addOnSuccessListener {

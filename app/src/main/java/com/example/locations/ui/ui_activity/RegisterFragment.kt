@@ -147,56 +147,25 @@ class RegisterFragment : Fragment() {
         val email=binding.regEmailTextInput
         val password=binding.regPasswordTextInput
         if(isError) {
-            email.boxStrokeColor =
-                ContextCompat.getColor(requireContext(), R.color.red)
-            email.hintTextColor =
-                ContextCompat.getColorStateList(requireContext(), R.color.red)
-            email.setStartIconTintList(
-                ColorStateList.valueOf(
-                    ContextCompat.getColor(
-                        requireContext(), R.color.red
-                    )
-                )
-            )
+            email.boxStrokeColor = ContextCompat.getColor(requireContext(), R.color.red) // Set the box stroke color to red
+            email.hintTextColor = ContextCompat.getColorStateList(requireContext(), R.color.red) // Set the hint text color to red
+            email.setStartIconTintList(ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.red))) // Set the start icon tint list to red
             binding.regError.visibility = View.VISIBLE
-           password.boxStrokeColor =
-                ContextCompat.getColor(requireContext(), R.color.red)
-            password.hintTextColor =
-                ContextCompat.getColorStateList(requireContext(), R.color.red)
-            password.setStartIconTintList(
-                ColorStateList.valueOf(
-                    ContextCompat.getColor(
-                        requireContext(), R.color.red
-                    )
-                )
-            )
-            val shakeAnimation= AnimationUtils.loadAnimation(context, R.anim.vibrate)
-            password.startAnimation(shakeAnimation)
-            email.startAnimation(shakeAnimation)
+            password.boxStrokeColor = ContextCompat.getColor(requireContext(), R.color.red) // Set the box stroke color to red
+            password.hintTextColor = ContextCompat.getColorStateList(requireContext(), R.color.red) // Set the hint text color to red
+            password.setStartIconTintList(ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.red))) // Set the start icon tint list to red
+            val shakeAnimation= AnimationUtils.loadAnimation(context, R.anim.vibrate) // Load the vibrate animation
+            password.startAnimation(shakeAnimation) // Start the vibrate animation
+            email.startAnimation(shakeAnimation) // Start the vibrate animation
         }else{
-            binding.regEmailTextInput.boxStrokeColor =
-                ContextCompat.getColor(requireContext(), R.color.black)
-            binding.regEmailTextInput.hintTextColor =
-                ContextCompat.getColorStateList(requireContext(), R.color.black)
-            binding.regEmailTextInput.setStartIconTintList(
-                ColorStateList.valueOf(
-                    ContextCompat.getColor(
-                        requireContext(), R.color.black
-                    )
-                )
-            )
+            binding.regEmailTextInput.boxStrokeColor = ContextCompat.getColor(requireContext(), R.color.black)
+            binding.regEmailTextInput.hintTextColor = ContextCompat.getColorStateList(requireContext(), R.color.black)
+            binding.regEmailTextInput.setStartIconTintList(ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.black)))
             binding.regError.visibility = View.GONE
-            binding.regPasswordTextInput.boxStrokeColor =
-                ContextCompat.getColor(requireContext(), R.color.black)
-            binding.regPasswordTextInput.hintTextColor =
-                ContextCompat.getColorStateList(requireContext(), R.color.black)
+            binding.regPasswordTextInput.boxStrokeColor = ContextCompat.getColor(requireContext(), R.color.black)
+            binding.regPasswordTextInput.hintTextColor = ContextCompat.getColorStateList(requireContext(), R.color.black)
             binding.regPasswordTextInput.setStartIconTintList(
-                ColorStateList.valueOf(
-                    ContextCompat.getColor(
-                        requireContext(), R.color.black
-                    )
-                )
-            )
+                ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.black)))
         }
     }
 
