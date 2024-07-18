@@ -1,4 +1,4 @@
-package com.example.locations.admin.all_location.single_location
+package com.example.arnavigationapp.admin.all_location.single_location
 
 import android.content.Context
 import android.hardware.Sensor

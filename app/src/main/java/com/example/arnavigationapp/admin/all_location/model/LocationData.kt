@@ -1,4 +1,4 @@
-package com.example.locations.admin.all_location.model
+package com.example.arnavigationapp.admin.all_location.model
 
 /**
  * used for efficiently passing data between different Android components

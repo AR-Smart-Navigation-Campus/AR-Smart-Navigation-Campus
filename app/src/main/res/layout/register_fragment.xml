@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background_white"
-    tools:context="com.example.locations.ui.ui_activity.RegisterFragment">
+    tools:context="com.example.arnavigationapp.ui.ui_activity.RegisterFragment">
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"

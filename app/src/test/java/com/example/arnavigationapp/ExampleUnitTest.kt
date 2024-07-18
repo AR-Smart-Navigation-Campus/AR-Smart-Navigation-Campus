@@ -1,4 +1,4 @@
-package com.example.locations
+package com.example.arnavigationapp
 
 import org.junit.Test
 

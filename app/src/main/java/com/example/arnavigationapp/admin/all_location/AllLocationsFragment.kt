@@ -1,4 +1,4 @@
-package com.example.locations.admin.all_location
+package com.example.arnavigationapp.admin.all_location
 
 import android.content.res.ColorStateList
 import android.os.Bundle
@@ -17,9 +17,9 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.locations.R
-import com.example.locations.admin.all_location.model.LocationData
-import com.example.locations.databinding.AllLocationsLayoutBinding
+import com.example.arnavigationapp.R
+import com.example.arnavigationapp.admin.all_location.model.LocationData
+import com.example.arnavigationapp.databinding.AllLocationsLayoutBinding
 import com.google.firebase.auth.FirebaseAuth
 import java.util.Locale
 

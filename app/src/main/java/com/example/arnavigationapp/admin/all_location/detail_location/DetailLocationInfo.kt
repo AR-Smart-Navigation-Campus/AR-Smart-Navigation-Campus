@@ -1,4 +1,4 @@
-package com.example.locations.admin.all_location.detail_location
+package com.example.arnavigationapp.admin.all_location.detail_location
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,9 +8,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
-import com.example.locations.admin.all_location.AdminViewModel
-import com.example.locations.R
-import com.example.locations.databinding.DetailLocationInfoBinding
+import com.example.arnavigationapp.admin.all_location.AdminViewModel
+import com.example.arnavigationapp.R
+import com.example.arnavigationapp.databinding.DetailLocationInfoBinding
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 

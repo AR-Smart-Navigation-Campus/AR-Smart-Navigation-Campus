@@ -1,4 +1,4 @@
-package com.example.locations
+package com.example.arnavigationapp
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

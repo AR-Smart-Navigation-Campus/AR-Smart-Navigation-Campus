@@ -1,4 +1,4 @@
-package com.example.locations.ui.ui_activity
+package com.example.arnavigationapp.ui.ui_activity
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -7,8 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.navigation.fragment.findNavController
-import com.example.locations.R
-import com.example.locations.databinding.NewsletterFragmentBinding
+import com.example.arnavigationapp.R
+import com.example.arnavigationapp.databinding.NewsletterFragmentBinding
 
 /**
  *  NewsletterFragment class that extends Fragment and provides functionality for the newsletter screen.

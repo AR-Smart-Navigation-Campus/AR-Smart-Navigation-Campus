@@ -1,4 +1,4 @@
-package com.example.locations.admin.all_location
+package com.example.arnavigationapp.admin.all_location
 
 import android.app.Application
 import android.location.Location
@@ -7,10 +7,10 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.locations.admin.all_location.model.FirestoreRepository
-import com.example.locations.admin.all_location.model.LocationData
-import com.example.locations.admin.all_location.single_location.LocationUpdatesLiveData
-import com.example.locations.R
+import com.example.arnavigationapp.admin.all_location.model.FirestoreRepository
+import com.example.arnavigationapp.admin.all_location.model.LocationData
+import com.example.arnavigationapp.admin.all_location.single_location.LocationUpdatesLiveData
+import com.example.arnavigationapp.R
 
 /**
  * AdminViewModel class that extends AndroidViewModel and provides LiveData objects for the UI to observe.
