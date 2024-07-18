@@ -1,4 +1,4 @@
-package com.example.locations.ui.ui_activity
+package com.example.arnavigationapp.ui.ui_activity
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,8 +8,8 @@ import androidx.activity.OnBackPressedCallback
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.example.locations.databinding.StartNavFragmentBinding
-import com.example.locations.R
+import com.example.arnavigationapp.databinding.StartNavFragmentBinding
+import com.example.arnavigationapp.R
 
 /**
  * A fragment representing the start navigation screen.

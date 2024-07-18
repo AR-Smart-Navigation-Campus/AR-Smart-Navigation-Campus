@@ -1,4 +1,4 @@
-package com.example.locations.ui.ui_activity
+package com.example.arnavigationapp.ui.ui_activity
 
 import android.content.res.ColorStateList
 import android.os.Bundle
@@ -11,8 +11,8 @@ import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
-import com.example.locations.R
-import com.example.locations.databinding.LoginFragmentBinding
+import com.example.arnavigationapp.R
+import com.example.arnavigationapp.databinding.LoginFragmentBinding
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
@@ -37,7 +37,7 @@ class LoginFragment : Fragment() {
             returnToHome()
         }
         binding.confirmLogin.setOnClickListener {
-            view?.let { it1 -> loginFunc(it1) }
+            view?.let { loginFunc() }
         }
         binding.registerButton.setOnClickListener {
             findNavController().navigate(R.id.action_LoginFragment_to_Register)
@@ -77,7 +77,7 @@ class LoginFragment : Fragment() {
     }
 
     // Login function
-    private fun loginFunc(view: View) {
+    private fun loginFunc() {
         val txtEmail = binding.emailTextInput.editText?.text.toString()
         val txtPass = binding.passwordTextInput.editText?.text.toString()
         if (txtEmail.isNotEmpty() && txtPass.isNotEmpty()) {

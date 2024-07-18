@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/newsletterpic"
-    tools:context="com.example.locations.ui.ui_activity.NewsletterFragment">
+    tools:context="com.example.arnavigationapp.ui.ui_activity.NewsletterFragment">
 
     <TextView
         android:id="@+id/btnBack"

@@ -1,4 +1,4 @@
-package com.example.locations.admin.all_location.model
+package com.example.arnavigationapp.admin.all_location.model
 
 import android.net.Uri
 import android.util.Log

@@ -1,4 +1,4 @@
-package com.example.locations.ui.ui_activity
+package com.example.arnavigationapp.ui.ui_activity
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -16,9 +16,9 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import com.example.locations.admin.all_location.AdminViewModel
-import com.example.locations.R
-import com.example.locations.databinding.NavigationFragmentBinding
+import com.example.arnavigationapp.admin.all_location.AdminViewModel
+import com.example.arnavigationapp.R
+import com.example.arnavigationapp.databinding.NavigationFragmentBinding
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth

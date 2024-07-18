@@ -1,4 +1,4 @@
-package com.example.locations.admin.all_location
+package com.example.arnavigationapp.admin.all_location
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
@@ -6,9 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.locations.admin.all_location.model.LocationData
-import com.example.locations.R
-import com.example.locations.databinding.LocationItemBinding
+import com.example.arnavigationapp.admin.all_location.model.LocationData
+import com.example.arnavigationapp.R
+import com.example.arnavigationapp.databinding.LocationItemBinding
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 

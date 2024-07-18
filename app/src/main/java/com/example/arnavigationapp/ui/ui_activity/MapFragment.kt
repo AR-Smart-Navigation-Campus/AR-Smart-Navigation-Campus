@@ -1,4 +1,4 @@
-package com.example.locations.ui.ui_activity
+package com.example.arnavigationapp.ui.ui_activity
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,10 +8,10 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import com.example.locations.admin.all_location.AdminViewModel
-import com.example.locations.admin.all_location.model.LocationData
-import com.example.locations.databinding.MapFragmentBinding
-import com.example.locations.R
+import com.example.arnavigationapp.admin.all_location.AdminViewModel
+import com.example.arnavigationapp.admin.all_location.model.LocationData
+import com.example.arnavigationapp.databinding.MapFragmentBinding
+import com.example.arnavigationapp.R
 
 /**
  *  MapFragment class that extends Fragment and provides functionality for the map screen.

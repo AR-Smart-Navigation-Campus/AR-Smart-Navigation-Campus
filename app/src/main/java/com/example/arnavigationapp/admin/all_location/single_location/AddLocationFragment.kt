@@ -1,4 +1,4 @@
-package com.example.locations.admin.all_location.single_location
+package com.example.arnavigationapp.admin.all_location.single_location
 
 import android.content.Intent
 import android.content.res.ColorStateList
@@ -16,9 +16,9 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import com.example.locations.admin.all_location.AdminViewModel
-import com.example.locations.R
-import com.example.locations.databinding.AddLocationBinding
+import com.example.arnavigationapp.admin.all_location.AdminViewModel
+import com.example.arnavigationapp.R
+import com.example.arnavigationapp.databinding.AddLocationBinding
 
 /**
  * AddLocationFragment is a Fragment that allows the user to add a new location entry

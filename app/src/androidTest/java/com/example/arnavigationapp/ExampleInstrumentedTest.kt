@@ -1,4 +1,4 @@
-package com.example.locations
+package com.example.arnavigationapp
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
