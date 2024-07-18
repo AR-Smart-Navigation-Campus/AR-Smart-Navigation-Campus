@@ -28,7 +28,7 @@
 
         <meta-data android:name="com.google.ar.core" android:value="required" />
         <activity
-            android:name=".MainActivity"
+            android:name="com.example.com.arnavigationapp.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -37,7 +37,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".admin.all_location.AllLocationsFragment"
+            android:name="com.example.com.arnavigationapp.admin.all_location.AllLocationsFragment"
             android:windowSoftInputMode="adjustPan">
 
         </activity>
