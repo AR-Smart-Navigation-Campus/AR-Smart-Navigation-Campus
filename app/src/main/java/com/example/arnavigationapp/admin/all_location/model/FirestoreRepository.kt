@@ -1,7 +1,14 @@
 package com.example.arnavigationapp.admin.all_location.model
 
+import android.content.Context
+import android.graphics.Color
 import android.net.Uri
 import android.util.Log
+import android.widget.Button
+import android.widget.Toast
+import androidx.constraintlayout.widget.ConstraintLayout
+import com.example.arnavigationapp.databinding.MapFragmentBinding
+import com.example.arnavigationapp.ui.ui_activity.MapFragment
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
@@ -60,6 +67,14 @@ class FirestoreRepository {
         db.collection("buildings").get().addOnSuccessListener { result ->
             for (document in result) {
                 if (document.data["id"] == id) {
+                    val name = document.data["name"]
+                    db.collection("buttons").get().addOnSuccessListener { btnResult ->
+                        for (btnDocument in btnResult) {
+                            if (btnDocument.data["text"] == name) {
+                                deleteButtonFromFirestore(btnDocument.id)
+                            }
+                        }
+                    }
                     db.collection("buildings").document(document.id).delete()
                 }
             }
@@ -67,6 +82,7 @@ class FirestoreRepository {
             .addOnFailureListener { e ->
                 Log.w("Firestore", "Error deleting document", e)
             }
+
     }
 
     // Uploads an image to Firebase Storage and gets the URL
@@ -85,4 +101,87 @@ class FirestoreRepository {
                 Log.e("Firebase", "Error uploading image to Firebase Storage: ${exception.message}", exception)
             }
     }
+
+    // Save button state to Firestore
+    fun saveButtonStateToFirestore(x: Float, y: Float, text: String) {
+        val buttonData = hashMapOf(
+            "x" to x,
+            "y" to y,
+            "text" to text
+        )
+
+        db.collection("buttons")
+            .add(buttonData)
+            .addOnSuccessListener { documentReference ->
+                Log.d("Firestore", "DocumentSnapshot added with ID: ${documentReference.id}")
+            }
+            .addOnFailureListener { e ->
+                Log.w("Firestore", "Error adding document", e)
+            }
+    }
+
+    // Load button state from Firestore with callback
+    fun loadButtonStateFromFirestore(callback: (List<ButtonData>) -> Unit) {
+        db.collection("buttons")
+            .get()
+            .addOnSuccessListener { result ->
+                val buttonList = mutableListOf<ButtonData>()
+                for (document in result) {
+                    val x = document.getDouble("x")?.toFloat() ?: -1f
+                    val y = document.getDouble("y")?.toFloat() ?: -1f
+                    val text = document.getString("text") ?: ""
+
+                    if (x != -1f && y != -1f) {
+                        buttonList.add(ButtonData(x, y, text))
+                    }
+                }
+                callback(buttonList)
+            }
+            .addOnFailureListener { exception ->
+                Log.w("Firestore", "Error getting documents.", exception)
+            }
+    }
+
+    // Deletes a button from Firestore
+    private fun deleteButtonFromFirestore(id: String) {
+        db.collection("buttons").get().addOnSuccessListener { result ->
+            for (document in result) {
+                if (document.id == id) {
+                    db.collection("buttons").document(document.id).delete()
+                        .addOnSuccessListener {
+                            Log.d("Firestore", "DocumentSnapshot successfully deleted!")
+                        }
+                        .addOnFailureListener { e ->
+                            Log.w("Firestore", "Error deleting document", e)
+                        }
+                }
+            }
+        }.addOnFailureListener { e ->
+            Log.w("Firestore", "Error getting documents", e)
+        }
+    }
+
+    // Method to update the button's position in Firestore
+    fun updateButtonPositionInFirestore(buttonText: String, newX: Float, newY: Float) {
+        db.collection("buttons")
+            .whereEqualTo("text", buttonText)
+            .get()
+            .addOnSuccessListener { documents ->
+                for (document in documents) {
+                    db.collection("buttons").document(document.id)
+                        .update(mapOf("x" to newX, "y" to newY))
+                        .addOnSuccessListener {
+                            Log.d("Firestore", "Button position updated successfully")
+                        }
+                        .addOnFailureListener { e ->
+                            Log.w("Firestore", "Error updating button position", e)
+                        }
+                }
+            }
+            .addOnFailureListener { e ->
+                Log.w("Firestore", "Error finding button document", e)
+            }
+    }
+
+    data class ButtonData(val x: Float, val y: Float, val text: String)
 }

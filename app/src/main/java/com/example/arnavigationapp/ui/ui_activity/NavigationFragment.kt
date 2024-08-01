@@ -6,13 +6,19 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
+import android.widget.ImageButton
+import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -31,20 +37,53 @@ class NavigationFragment : Fragment() {
 
     private val viewModel: AdminViewModel by activityViewModels() // Instance of AdminViewModel to access the data
     private lateinit var binding : NavigationFragmentBinding
-    private lateinit var auth: FirebaseAuth
+    private var auth: FirebaseAuth = Firebase.auth
+    private val currentUser = auth.currentUser
+    private var isNavigationStarted = false
 
     // Register a launcher for requesting location permission.
     private val locationRequestLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { handleLocationPermissionResult(it) }
 
     // Inflate the layout for this fragment.
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = NavigationFragmentBinding.inflate(inflater, container, false)
+
+        val moveUpAnimation: Animation = AnimationUtils.loadAnimation(context, R.anim.to_up)
+        val moveDownAnimation: Animation = AnimationUtils.loadAnimation(context, R.anim.move_down)
+        val fadeInAnimation: Animation = AnimationUtils.loadAnimation(context, R.anim.fade_in)
+        val fadeOutAnimation: Animation = AnimationUtils.loadAnimation(context, R.anim.fade_out)
+
         binding.btnStartNav.setOnClickListener {
-            findNavController().navigate(R.id.action_Nav_to_StartNav)
+            if (!isNavigationStarted) {
+                binding.btnStartNav.startAnimation(moveUpAnimation)
+                moveUpAnimation.setAnimationListener(object : Animation.AnimationListener {
+                    override fun onAnimationStart(animation: Animation?) {}
+                    override fun onAnimationEnd(animation: Animation?) {
+                        binding.btnStartNav.visibility = View.GONE
+                        binding.btnMap.visibility = View.VISIBLE
+                        binding.btnList.visibility = View.VISIBLE
+                        binding.btnMap.startAnimation(fadeInAnimation)
+                        binding.btnList.startAnimation(fadeInAnimation)
+                    }
+                    override fun onAnimationRepeat(animation: Animation?) {}
+                })
+            } else {
+                binding.btnMap.startAnimation(fadeOutAnimation)
+                binding.btnList.startAnimation(fadeOutAnimation)
+                fadeOutAnimation.setAnimationListener(object : Animation.AnimationListener {
+                    override fun onAnimationStart(animation: Animation?) {}
+
+                    override fun onAnimationEnd(animation: Animation?) {
+                        binding.btnMap.visibility = View.GONE
+                        binding.btnList.visibility = View.GONE
+                        binding.btnStartNav.visibility = View.VISIBLE
+                        binding.btnStartNav.startAnimation(moveDownAnimation)
+                    }
+
+                    override fun onAnimationRepeat(animation: Animation?) {}
+                })
+            }
+            isNavigationStarted = !isNavigationStarted
         }
         binding.btnNews.setOnClickListener {
             val url="https://www.hit.ac.il/news/"
@@ -52,31 +91,10 @@ class NavigationFragment : Fragment() {
             intent.data= android.net.Uri.parse(url)
             startActivity(intent)
         }
-        binding.btnLogout.setOnClickListener {
-            val alertDialog = AlertDialog.Builder(requireContext(), R.style.AlertDialogCustom)
-                .setTitle(getString(R.string.confirm_logout))
-                .setMessage(getString(R.string.logout_msg_text))
-                .setPositiveButton(getString(R.string.yes), null)
-                .setNegativeButton(getString(R.string.no), null)
-                .create()
-            alertDialog.window?.setBackgroundDrawableResource(R.drawable.dialog_background)
-            alertDialog.setOnShowListener {
-                val positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE)
-                positiveButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.black)) // Change the color of the "Yes" button
 
-                val negativeButton = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE)
-                negativeButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.black)) // Change the color of the "No" button
-
-                positiveButton.setOnClickListener {
-                    alertDialog.dismiss()
-                    auth = Firebase.auth
-                    Firebase.auth.signOut()
-                    findNavController().navigate(R.id.action_Nav_to_homepage)
-                }
-            }
-
-            alertDialog.show()
-
+        val buttonMenu: ImageButton = binding.buttonMenu
+        buttonMenu.setOnClickListener {
+            showPopupMenu(it)
         }
 
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,object : OnBackPressedCallback(true) {
@@ -101,27 +119,22 @@ class NavigationFragment : Fragment() {
                         requireActivity().finish()
                     }
                 }
-
                 alertDialog.show()
             }
         })
 
         checkAndRequestLocationPermission()
 
-        return binding.root
-    }
-
-    // Check if the user is an admin and set the button visibility accordingly.
-    override fun onStart() {
-        super.onStart()
-        auth = Firebase.auth
-        val currentUser = auth.currentUser
-        if(currentUser!=null && currentUser.email== viewModel.admin){
-            binding.buttonAdmin.visibility = View.VISIBLE
-            binding.buttonAdmin.setOnClickListener {
-                findNavController().navigate(R.id.action_Nav_to_addItemFragment)
-            }
+        binding.btnList.setOnClickListener {
+            val bundle = bundleOf("returnToFragmentId" to R.id.action_allLocationsFragments_to_Nav )
+            findNavController().navigate(R.id.action_Nav_to_allLocationsFragments,bundle)
         }
+
+        binding.btnMap.setOnClickListener {
+            findNavController().navigate(R.id.action_Nav_to_Map)
+        }
+
+        return binding.root
     }
 
     // Check and request location permission.
@@ -135,5 +148,52 @@ class NavigationFragment : Fragment() {
     private fun handleLocationPermissionResult(isGranted: Boolean) {
         if (isGranted)
             Toast.makeText(requireContext(), getString(R.string.location_permission_msg), Toast.LENGTH_SHORT).show()
+    }
+
+    // Show the popup menu.
+    private fun showPopupMenu(view: View) {
+        val popupMenu = PopupMenu(requireContext(), view)
+        popupMenu.inflate(R.menu.menu)
+        popupMenu.menu.findItem(R.id.action_add_location).isVisible = currentUser!=null && currentUser.email== viewModel.admin
+        popupMenu.setOnMenuItemClickListener { menuItem: MenuItem ->
+            when (menuItem.itemId) {
+                R.id.action_add_location -> {
+                    // Handle add location
+                    findNavController().navigate(R.id.action_Nav_to_addItemFragment)
+                    true
+                }
+                R.id.action_logout -> {
+                    // Handle logout
+                    val alertDialog = AlertDialog.Builder(requireContext(), R.style.AlertDialogCustom)
+                        .setTitle(getString(R.string.confirm_logout))
+                        .setMessage(getString(R.string.logout_msg_text))
+                        .setPositiveButton(getString(R.string.yes), null)
+                        .setNegativeButton(getString(R.string.no), null)
+                        .create()
+                    alertDialog.window?.setBackgroundDrawableResource(R.drawable.dialog_background)
+                    alertDialog.setOnShowListener {
+                        val positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE)
+                        // Change the color of the "Yes" button
+                        positiveButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
+
+                        val negativeButton = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE)
+                        // Change the color of the "No" button
+                        negativeButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
+
+                        positiveButton.setOnClickListener {
+                            alertDialog.dismiss()
+                            auth = Firebase.auth
+                            Firebase.auth.signOut()
+                            findNavController().navigate(R.id.action_Nav_to_homepage)
+                        }
+                    }
+
+                    alertDialog.show()
+                    true
+                }
+                else -> false
+            }
+        }
+        popupMenu.show()
     }
 }

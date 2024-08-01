@@ -8,11 +8,15 @@
     <string name="home_page">home page</string>
     <string name="sign_in">Sign in</string>
     <string name="logout">Logout</string>
+    <string name="choose_from_gallery">Choose from gallery</string>
+    <string name="take_photo">Take photo</string>
     <string name="hit_newsletter">HIT Newsletter</string>
     <string name="start_navigation">Start Navigation</string>
-    <string name="admin_manager">Admin Manager</string>
+    <string name="Add_location">Add location</string>
     <string name="hit_logo">HIT Logo</string>
     <string name="out_of_bounds_can_t_show_current_location">Out of bounds , can\'t show current location</string>
+    <string name="please_choose_a_place_to_navigate">Please choose a place to navigate</string>
+    <string name="please_choose_where_to_add_a_location">Please choose where to add a location</string>
     <string name="back">Back</string>
     <string name="choose_from_list">Choose from list</string>
     <string name="choose_from_map">Choose from map</string>
@@ -20,17 +24,18 @@
     <string name="name">Name</string>
     <string name="coordinates">Coordinates</string>
     <string name="azimuth">Azimuth</string>
-    <string name="low_accuracy_please_wait">Low accuracy, Please wait...</string>
+    <string name="low_accuracy_please_wait">Low accuracy, Please wait…</string>
     <string name="you_have_arrived">You have arrived!</string>
     <string name="exit">Exit</string>
     <string name="nevigate_again">Nevigate Again</string>
     <string name="delete_location_msg">Location deleted successfully</string>
-    <string name="km">%.1f Km</string>
-    <string name="meters">%d meters</string>
-    <string name="meters_accuracy">meters</string>
-    <string name="morning_msg">Good Morning,                  Sign In or Create Account</string>
-    <string name="afternoon_msg">Good Afternoon,                  Sign In or Create Account</string>
-    <string name="evening_msg">Good Evening,                  Sign In or Create Account</string>
+    <string name="km" translatable="false">%.1f Km</string>
+    <string name="meters" translatable="false">%.1f M</string>
+    <string name="meters_accuracy">M</string>
+    <string name="morning_msg">Good Morning,</string>
+    <string name="afternoon_msg">Good Afternoon,</string>
+    <string name="evening_msg">Good Evening,</string>
+    <string name="signIn_Or_Create_Account">Sign In or Create Account</string>
     <string name="no_locations_available">Location data is not available</string>
     <string name="location_found">Location found</string>
     <string name="no_location_found">Location not found</string>
@@ -45,7 +50,9 @@
     <string name="registration_success">Registration Success</string>
     <string name="pick_an_image">Pick an image</string>
     <string name="enter_place_name">Enter place name</string>
-    <string name="save_data">Save data</string>
+    <string name="enter_description">Enter description</string>
+    <string name="save_data">Add</string>
+    <string name="add_place_to_map">Add place to map</string>
     <string name="view_list">View List</string>
     <string name="search">Search</string>
     <string name="are_you_sure_you_want_to_delete_this_location">Are you sure you want to delete this location?</string>
@@ -97,7 +104,8 @@
     <string name="golomb_gate_desc">The rear gate of Hit , near building 1 and 2</string>
     <string name="building_5_desc">The main building in HIT</string>
     <string name="no_desc">No description</string>
-
+    <string name="menu">menu</string>
+    <string name="could_not_take_picture">Could not take a picture</string>
 
 
 </resources>

@@ -58,7 +58,12 @@ RecyclerView.Adapter<LocationAdapter.LocationViewHolder>() {
             val auth=Firebase.auth
             val currentUser=auth.currentUser?.email.toString()
             val resId = viewModel.getLocationNameResId(location.name)
-            binding.buildingName.text = binding.root.context.getString(resId)
+            if(resId == R.string.unknown_location){
+                binding.buildingName.text = location.name
+            }
+            else{
+                binding.buildingName.text = binding.root.context.getString(resId)
+            }
             Glide.with(binding.root).load(location.imgUrl).circleCrop().into(binding.buildingImage)
             val coords=   binding.locationTextView
             val azimuth= binding.azimuthTextView
@@ -70,8 +75,13 @@ RecyclerView.Adapter<LocationAdapter.LocationViewHolder>() {
             if(currentUser!=viewModel.admin) {
                 coords.visibility=View.GONE
                 azimuth.visibility=View.GONE
-                val descriptionText =viewModel.getLocationDescriptionResId(location.description)
-                description.text = binding.root.context.getString(descriptionText)
+                val descriptionId =viewModel.getLocationDescriptionResId(location.description)
+                if (descriptionId == R.string.no_desc){
+                    description.text = location.description
+                }
+                else{
+                    description.text = binding.root.context.getString(descriptionId)
+                }
                 description.visibility=View.VISIBLE
             }
         }

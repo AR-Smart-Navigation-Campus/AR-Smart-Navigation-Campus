@@ -65,7 +65,7 @@ class AllLocationsFragment : Fragment() {
         if (returnToFragmentId != null) {
             findNavController().navigate(returnToFragmentId)
         } else {
-            findNavController().navigate(R.id.action_allLocationsFragments_to_StartNav)
+            findNavController().navigate(R.id.action_allLocationsFragments_to_Nav)
         }
     }
 
@@ -180,11 +180,21 @@ class AllLocationsFragment : Fragment() {
             locationsList.filter { location ->
                 val locationNameLowercase = location.name.lowercase(currentLocale)
                 val queryLowercase = query.lowercase(currentLocale) // Convert query to lowercase
-                val locationNameLocalizedLowercase =
-                    getString(viewModel.getLocationNameResId(location.name)).lowercase(currentLocale) // Convert location name to lowercase
-                locationNameLowercase.contains(queryLowercase) || locationNameLocalizedLowercase.contains(
-                    queryLowercase
-                ) // Filter locations based on query
+                val locationResId = viewModel.getLocationNameResId(location.name)
+                if(locationResId==R.string.unknown_location){
+                    val locationNameLocalizedLowercase =
+                       location.name.lowercase(currentLocale) // Convert location name to lowercase
+                    locationNameLowercase.contains(queryLowercase) || locationNameLocalizedLowercase.contains(
+                        queryLowercase
+                    ) // Filter locations based on query
+                }
+                else{
+                    val locationNameLocalizedLowercase =
+                        getString(locationResId).lowercase(currentLocale) // Convert location name to lowercase
+                    locationNameLowercase.contains(queryLowercase) || locationNameLocalizedLowercase.contains(
+                        queryLowercase
+                    ) // Filter locations based on query
+                }
             }
         } else {
             locationsList

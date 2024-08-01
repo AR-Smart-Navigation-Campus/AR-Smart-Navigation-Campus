@@ -1,6 +1,7 @@
 package com.example.arnavigationapp.ar
 
 import android.content.Context
+import android.graphics.Color
 import android.graphics.Typeface
 import android.graphics.drawable.GradientDrawable
 import android.location.Location
@@ -11,12 +12,16 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 import com.example.arnavigationapp.admin.all_location.AdminViewModel
 import com.example.arnavigationapp.R
 import com.example.arnavigationapp.databinding.StartArFragmentBinding
@@ -52,9 +57,9 @@ class StartARFragment : Fragment() {
     private lateinit var arrowNode: Node
     private lateinit var targetLocation: Location
     private lateinit var myLocation: Location
-    private lateinit var locationName: String
+    private lateinit var imgUrl: String
     private lateinit var textViewDistance: TextView
-    private lateinit var textViewDestination: TextView
+    private lateinit var locationIcon: ImageView
     private var accuracy: Float = 0.0f
 
 
@@ -66,7 +71,7 @@ class StartARFragment : Fragment() {
     ): View {
         binding = StartArFragmentBinding.inflate(inflater, container, false) // Inflate the layout
         binding.navigateAgainBtn.setOnClickListener {
-            findNavController().navigate(R.id.action_AR_to_StartNav)
+            findNavController().navigate(R.id.action_AR_to_Nav)
         }
         binding.exitBtn.setOnClickListener {
             activity?.finishAffinity() // Exit the app
@@ -82,13 +87,13 @@ class StartARFragment : Fragment() {
             childFragmentManager.findFragmentById(R.id.sceneView) as ArFragment // Get the AR fragment
         arFragment.planeDiscoveryController.show() // Show the plane discovery controller
         textViewDistance = TextView(context) // Create a new text view for the distance
-        textViewDestination = TextView(context) // Create a new text view for the destination
+        locationIcon = ImageView(context) // Create a new text view for the destination
         arrowNode = Node() // Create a new node for the arrow model
 
         adminViewModel.chosenItem.observe(viewLifecycleOwner) { location ->
             targetLocation =
                 adminViewModel.createLocation(location.location) // Create a Location object from the location
-            locationName = location.name // Get the name of the location
+            imgUrl = location.imgUrl // Get the name of the location
         }
 
         adminViewModel.address.observe(viewLifecycleOwner) { address ->
@@ -96,6 +101,10 @@ class StartARFragment : Fragment() {
             accuracy = currAccuracy
             myLocation =
                 adminViewModel.createLocation("$latitude,$longitude") // Create a Location object from the address
+            adminViewModel.updateLocationAndAccuracy(
+                "$latitude,$longitude",
+                currAccuracy
+            )
         }
 
         // Add an update listener to the AR scene view
@@ -103,20 +112,7 @@ class StartARFragment : Fragment() {
             if (isModelPlaced) {
                 // Check if the current location is within 5 meters of the target location
                 if (::myLocation.isInitialized && ::targetLocation.isInitialized) {
-                    var distance = myLocation.distanceTo(targetLocation) // Calculate the distance to the target location
-                    val textDistance: String
-                    if (distance.toInt() >= 1000) {
-                        distance /= 1000
-                        textDistance = getString(R.string.km, distance)
-                    } else {
-                        textDistance = "" + distance.toInt() + "" + getString(R.string.meters_accuracy)
-                    }
-                    val textID =
-                        adminViewModel.getLocationNameResId(locationName) // Get the text resource ID
-                    val text = getString(textID) // Get the text from the resource ID
-                    textRenderer(requireContext(), textViewDistance, textDistance, Vector3(2f, 1.6f, 0f), 60) // Render the text on the screen
-                    textRenderer(requireContext(), textViewDestination, text, Vector3(2f, 2f, 0f), 70) // Render the text on the screen
-
+                    val distance = myLocation.distanceTo(targetLocation) // Calculate the distance to the target location
                     if (distance < 6.0) {
                         // Remove the arrow model from the scene
                         arrowNode.isEnabled = false // Disable the arrow node
@@ -125,34 +121,48 @@ class StartARFragment : Fragment() {
                         isDestinationReached = true
                         binding.arrivelCardView.visibility = View.VISIBLE // Show the arrival card
                     }
-                    adminViewModel.address.observe(viewLifecycleOwner) { address ->
-                        val (latitude, longitude, currAccuracy) = extractData(address) // Extract the data from the address
-                        accuracy = currAccuracy
-                        myLocation = adminViewModel.createLocation("$latitude,$longitude") // Create a Location object from the address
-                    }
+                    updateUI(distance) // Update the UI with the distance
                     setModelPosition() // Set the position of the model
                     arFragment.arSceneView.planeRenderer.isVisible = false // Hide the plane renderer
-
-                    return@addOnUpdateListener // Return from the listener
                 }
+            } else {
+                handlePlaneDetection() // Handle the plane detection
             }
-            val frame = arFragment.arSceneView.arFrame // Get the AR frame
-            if (frame != null && !isModelPlaced && !isDestinationReached) {
-                val planes = frame.getUpdatedTrackables(Plane::class.java) // Get the updated planes
-                for (plane in planes) {
-                    if (plane.trackingState == TrackingState.TRACKING) {
-                        if (accuracy > 5.0) {
-                            continue // Skip the plane if the accuracy is greater than 5 meters
-                        }
-                        binding.progressBar.visibility = View.GONE
-                        binding.loadingText.visibility = View.GONE
-                        loadArrowModel(arFragment, arrowNode) // Load the arrow model
-                        isModelPlaced = true // Set the flag to true
-                        break
+        }
+    }
+
+
+    // Handle the plane detection
+    private fun handlePlaneDetection() {
+        val frame = arFragment.arSceneView.arFrame
+        if (frame != null && !isModelPlaced && !isDestinationReached) {
+            val planes = frame.getUpdatedTrackables(Plane::class.java)
+            for (plane in planes) {
+                if (plane.trackingState == TrackingState.TRACKING) {
+                    if ((adminViewModel.accuracy.value ?: Float.MAX_VALUE) > 5.0f) {
+                        continue // Skip if accuracy is poor
                     }
+                    binding.progressBar.visibility = View.GONE
+                    binding.loadingText.visibility = View.GONE
+                    loadArrowModel(arFragment, arrowNode)
+                    isModelPlaced = true
+                    break
                 }
             }
         }
+    }
+
+    // Update the UI with the distance
+    private fun updateUI(distanceMeters: Float) {
+        val (distance, unitResId) = if (distanceMeters >= 1000) {
+            distanceMeters / 1000 to R.string.km
+        } else {
+            distanceMeters to R.string.meters
+        }
+
+        val textDistance = getString(unitResId, distance)
+        textRenderer(requireContext(), textViewDistance, textDistance, Vector3(2f, 1.6f, 0f), 60)
+        imageRenderer(requireContext(), locationIcon, imgUrl, Vector3(2f, 2f, 0f), 500, 500)
     }
 
     // Update the arrow node
@@ -227,12 +237,19 @@ class StartARFragment : Fragment() {
     }
 
     // Render 3D text on the screen
-    private fun textRenderer(context: Context, textView: TextView, text: String, vector3: Vector3, size: Int, color: Int = R.color.black
+    private fun textRenderer(
+        context: Context,
+        textView: TextView,
+        text: String,
+        vector3: Vector3,
+        size: Int,
+        color: Int = R.color.black
     ) {
         textView.text = text
         textView.setTextColor(ContextCompat.getColor(context, color))
         textView.textSize = size.toFloat()
-        textView.typeface = Typeface.createFromAsset(context.assets, "fonts/gunplay 3d.otf")// Set the text style
+        textView.typeface =
+            Typeface.createFromAsset(context.assets, "fonts/gunplay 3d.otf")// Set the text style
         textView.gravity = Gravity.CENTER // Center the text
 
         // Create a background with rounded corners and shadow
@@ -252,13 +269,58 @@ class StartARFragment : Fragment() {
                     override fun onUpdate(p0: FrameTime?) {
                         this.renderable = viewRenderable // Set the renderable of the text node
                         this.localPosition = vector3 // Set the position of the text node
-                        val cameraPosition = arFragment.arSceneView.scene.camera.worldPosition // Get the camera position
+                        val cameraPosition =
+                            arFragment.arSceneView.scene.camera.worldPosition // Get the camera position
                         val nodePosition = worldPosition // Get the node position
-                        val direction = Vector3.subtract(cameraPosition, nodePosition) // Calculate the direction from the camera to the node
-                        worldRotation = Quaternion.lookRotation(direction, Vector3.up()) // Set the rotation of the node
+                        val direction = Vector3.subtract(
+                            cameraPosition,
+                            nodePosition
+                        ) // Calculate the direction from the camera to the node
+                        worldRotation = Quaternion.lookRotation(
+                            direction,
+                            Vector3.up()
+                        ) // Set the rotation of the node
                     }
                 }
                 textNode.setParent(arrowNode) // Set the parent of the text node
+            }
+            .exceptionally { throwable: Throwable ->
+                Log.e("StartARFragment", "Error creating view renderable", throwable)
+                null
+            }
+    }
+
+    private fun imageRenderer(context: Context, imageView: ImageView, imageUrl: String, vector3: Vector3, width: Int, height: Int) {
+        imageView.layoutParams = LinearLayout.LayoutParams(width, height)
+        imageView.scaleType = ImageView.ScaleType.CENTER_CROP
+
+        // Create a background with rounded corners and shadow
+        val background = GradientDrawable()
+        background.shape = GradientDrawable.RECTANGLE
+        background.cornerRadius = 16f // Set the corner radius
+        background.setColor(Color.TRANSPARENT) // Transparent background
+        imageView.background = background
+        imageView.setPadding(0, 8, 0, 8)
+
+        // Add shadow to the image view
+        ViewCompat.setElevation(imageView, 10f)
+
+        // Load the image using Glide
+        Glide.with(context).load(imageUrl).circleCrop().into(imageView)
+
+        ViewRenderable.builder().setView(context, imageView).build().thenAccept { viewRenderable: ViewRenderable ->
+                val imageNode = object : Node() {
+                    override fun onUpdate(p0: FrameTime?) {
+                        this.renderable = viewRenderable // Set the renderable of the image node
+                        this.localPosition = vector3 // Set the position of the image node
+                        val cameraPosition = arFragment.arSceneView.scene.camera.worldPosition // Get the camera position
+                        val nodePosition = worldPosition // Get the node position
+                        // Calculate the direction from the camera to the node
+                        val direction = Vector3.subtract(cameraPosition, nodePosition)
+                        worldRotation = Quaternion.lookRotation(direction, Vector3.up()) // Set the rotation of the node
+                    }
+                }
+                imageNode.setParent(arrowNode) // Set the parent of the image node
             }
             .exceptionally { throwable: Throwable ->
                 Log.e("StartARFragment", "Error creating view renderable", throwable)

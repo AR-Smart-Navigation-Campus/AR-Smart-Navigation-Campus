@@ -31,8 +31,14 @@ class AdminViewModel(application: Application) : AndroidViewModel(application) {
     private val _location = MutableLiveData<String>() // MutableLiveData object for the current location
     val location: LiveData<String> = _location // LiveData object for the current location
 
+    private val _accuracy = MutableLiveData<Float>() // MutableLiveData object for the current accuracy
+    val accuracy: LiveData<Float> = _accuracy // LiveData object for the current accuracy
+
     private val _userInput = MutableLiveData<String>() // MutableLiveData object for the user input
     val userInput: LiveData<String> = _userInput // LiveData object for the user input
+
+    private val _descriptionInput = MutableLiveData<String>() // MutableLiveData object for the description input
+    val descriptionInput: LiveData<String> = _descriptionInput // LiveData object for the description input
 
     private val _azimuth = MutableLiveData<Float>() // MutableLiveData object for the current azimuth
     val azimuth: LiveData<Float> = _azimuth // LiveData object for the current azimuth
@@ -45,6 +51,12 @@ class AdminViewModel(application: Application) : AndroidViewModel(application) {
 
     init {
         fetchLocations()
+    }
+
+    // Update location and accuracy
+    fun updateLocationAndAccuracy(newLocation: String, newAccuracy: Float) {
+        _location.value = newLocation
+        _accuracy.value = newAccuracy
     }
 
     // Fetches the locations from Firestore
@@ -61,10 +73,8 @@ class AdminViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-
     //Adds a new entry to Firestore
     fun addEntry(imageUri: Uri) {
-        Log.d("Uri", "$imageUri")
         repository.uploadImageToFirebaseStorage(imageUri) { imageUrl ->
             // Generate a unique id
             val uniqueId = System.currentTimeMillis()
@@ -73,7 +83,7 @@ class AdminViewModel(application: Application) : AndroidViewModel(application) {
                 location = location.value!!,
                 name = userInput.value!!,
                 azimuth = azimuth.value.toString(),
-                description = "No description",
+                description = descriptionInput.value!!,
                 imgUrl = imageUrl
             )
             repository.saveBuildingToFirestore(newEntry)
@@ -94,6 +104,11 @@ class AdminViewModel(application: Application) : AndroidViewModel(application) {
     // Updates the user input with the provided text
     fun addUserInput(text: String) {
         _userInput.value = text
+    }
+
+    // Updates the user input with the provided text
+    fun addDescriptionInput(text: String) {
+        _descriptionInput.value = text
     }
 
     // Updates the current location with the provided value

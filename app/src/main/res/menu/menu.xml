@@ -1,0 +1,8 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/action_logout"
+        android:title="@string/logout" />
+    <item
+        android:id="@+id/action_add_location"
+        android:title="@string/Add_location" />
+</menu>

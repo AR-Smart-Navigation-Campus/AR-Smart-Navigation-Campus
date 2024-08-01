@@ -10,11 +10,15 @@
     <string name="home_page">דף הבית</string>
     <string name="sign_in">התחבר</string>
     <string name="logout">התנתק</string>
+    <string name="choose_from_gallery">בחירה מגלריה</string>
+    <string name="take_photo">צלם תמונה </string>
     <string name="hit_newsletter">ידיעון HIT</string>
     <string name="start_navigation">התחל ניווט</string>
-    <string name="admin_manager">מסך מנהל</string>
+    <string name="Add_location">הוספת מיקום</string>
     <string name="hit_logo">HIT לוגו</string>
     <string name="out_of_bounds_can_t_show_current_location">מחוץ לגבולות המפה , לא ניתן להציג מיקום</string>
+    <string name="please_choose_a_place_to_navigate">אנא בחר מקום לניווט</string>
+    <string name="please_choose_where_to_add_a_location">אנא בחר היכן להוסיף מיקום</string>
     <string name="back">חזור</string>
     <string name="choose_from_list">בחר מרשימה</string>
     <string name="choose_from_map">בחר ממפה</string>
@@ -27,12 +31,11 @@
     <string name="exit">יציאה</string>
     <string name="nevigate_again">נווט שוב</string>
     <string name="delete_location_msg">המיקום נמחק בהצלחה</string>
-    <string name="km">ק\'\'מ %.1f</string>
-    <string name="meters">מטרים d%</string>
     <string name="meters_accuracy">מטרים</string>
-    <string name="morning_msg">בוקר טוב,                  התחבר או הירשם</string>
-    <string name="afternoon_msg">צהריים טובים,                  התחבר או הירשם</string>
-    <string name="evening_msg">ערב טוב,                  התחבר או הירשם</string>
+    <string name="morning_msg">בוקר טוב,</string>
+    <string name="afternoon_msg">צהריים טובים,</string>
+    <string name="evening_msg">ערב טוב,</string>
+    <string name="signIn_Or_Create_Account">התחבר או הרשם</string>
     <string name="no_locations_available">נתוני מיקום אינם זמינים</string>
     <string name="location_found">נמצא מיקום</string>
     <string name="no_location_found">מיקום לא נמצא</string>
@@ -47,7 +50,9 @@
     <string name="registration_success">ההרשמה הצליחה</string>
     <string name="pick_an_image">בחר תמונה</string>
     <string name="enter_place_name">הזן שם מקום</string>
-    <string name="save_data">שמור נתונים</string>
+    <string name="save_data">הוסף</string>
+    <string name="enter_description">הזן תיאור</string>
+    <string name="add_place_to_map">הוסף מיקום למפה</string>
     <string name="view_list">הצג רשימה</string>
     <string name="search">חיפוש</string>
     <string name="are_you_sure_you_want_to_delete_this_location">האם אתה בטוח שברצונך למחוק מיקום זה?</string>
@@ -99,4 +104,6 @@
     <string name="golomb_gate_desc">השער האחורי של HIT, ליד בניין 1 ו-2</string>
     <string name="building_5_desc">הבניין הראשי בHIT</string>
     <string name="no_desc">אין תיאור</string>
+    <string name="menu">תפריט</string>
+    <string name="could_not_take_picture">לא ניתן לצלם תמונה</string>
 </resources>

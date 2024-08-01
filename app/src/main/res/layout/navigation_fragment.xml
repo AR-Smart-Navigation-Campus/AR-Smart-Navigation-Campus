@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigationFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background"
@@ -13,67 +14,90 @@
         android:backgroundTint="@color/background_white">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout"
             android:layout_height="match_parent"
             android:layout_width="match_parent">
+
+            <ImageButton
+                android:id="@+id/button_menu"
+                android:layout_width="31dp"
+                android:layout_height="55dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/baseline_menu_24"
+                android:contentDescription="@string/menu"
+                android:padding="5dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <Button
                 android:id="@+id/btnStartNav"
                 android:layout_width="220dp"
                 android:layout_height="70dp"
                 android:backgroundTint="#018186"
-                android:textColor="@color/white"
                 android:text="@string/start_navigation"
+                android:textColor="@color/white"
                 android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.497"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.579" />
+
+            <Button
+                android:id="@+id/btnMap"
+                android:layout_width="200dp"
+                android:layout_height="60dp"
+                android:backgroundTint="@color/medium_blue"
+                android:text="@string/choose_from_map"
+                android:textColor="@color/white"
+                android:textSize="15sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/btnStartNav"
+                android:visibility="gone" />
+
+            <Button
+                android:id="@+id/btnList"
+                android:layout_width="200dp"
+                android:layout_height="60dp"
+                android:layout_marginTop="8dp"
+                android:backgroundTint="@color/medium_blue"
+                android:text="@string/choose_from_list"
+                android:textColor="@color/white"
+                android:textSize="15sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/btnMap"
+                android:visibility="gone" />
 
             <Button
                 android:id="@+id/btnNews"
                 android:layout_width="200dp"
                 android:layout_height="60dp"
                 android:layout_marginTop="20dp"
-                android:backgroundTint="#D767BEC1"
+                android:backgroundTint="#018186"
+                android:text="@string/hit_newsletter"
                 android:textColor="@color/white"
                 android:textSize="15sp"
-                android:text="@string/hit_newsletter"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.498"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/btnStartNav" />
-
-            <Button
-                android:id="@+id/buttonAdmin"
-                android:layout_width="180dp"
-                android:layout_height="50dp"
-                android:backgroundTint="@color/gray"
-                android:text="@string/admin_manager"
-                android:textColor="@color/white"
-                android:textSize="13sp"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.497"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/btnNews"
-                app:layout_constraintVertical_bias="0.097" />
+                app:layout_constraintTop_toBottomOf="@id/btnList" />
 
-            <Button
-                android:id="@+id/btnLogout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:backgroundTint="@color/gray"
-                android:text="@string/logout"
-                android:textColor="@color/white"
+            <ImageView
+                android:layout_width="124dp"
+                android:layout_height="81dp"
+                android:layout_marginBottom="28dp"
+                android:contentDescription="hit logo"
+                android:scaleType="centerCrop"
+                android:src="@drawable/hitlogo"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.022"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/buttonAdmin"
-                app:layout_constraintVertical_bias="0.983" />
-
+                app:layout_constraintHorizontal_bias="0.498"
+                app:layout_constraintStart_toStartOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
