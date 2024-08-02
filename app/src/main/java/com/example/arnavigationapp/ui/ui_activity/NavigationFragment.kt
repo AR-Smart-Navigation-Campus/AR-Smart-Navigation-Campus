@@ -36,16 +36,23 @@ import com.google.firebase.auth.auth
 class NavigationFragment : Fragment() {
 
     private val viewModel: AdminViewModel by activityViewModels() // Instance of AdminViewModel to access the data
-    private lateinit var binding : NavigationFragmentBinding
+    private lateinit var binding: NavigationFragmentBinding
     private var auth: FirebaseAuth = Firebase.auth
     private val currentUser = auth.currentUser
     private var isNavigationStarted = false
 
     // Register a launcher for requesting location permission.
-    private val locationRequestLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { handleLocationPermissionResult(it) }
+    private val locationRequestLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) {
+            handleLocationPermissionResult(it)
+        }
 
     // Inflate the layout for this fragment.
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         binding = NavigationFragmentBinding.inflate(inflater, container, false)
 
         val moveUpAnimation: Animation = AnimationUtils.loadAnimation(context, R.anim.to_up)
@@ -65,6 +72,7 @@ class NavigationFragment : Fragment() {
                         binding.btnMap.startAnimation(fadeInAnimation)
                         binding.btnList.startAnimation(fadeInAnimation)
                     }
+
                     override fun onAnimationRepeat(animation: Animation?) {}
                 })
             } else {
@@ -86,9 +94,9 @@ class NavigationFragment : Fragment() {
             isNavigationStarted = !isNavigationStarted
         }
         binding.btnNews.setOnClickListener {
-            val url="https://www.hit.ac.il/news/"
-            val intent=Intent(Intent.ACTION_VIEW)
-            intent.data= android.net.Uri.parse(url)
+            val url = "https://www.hit.ac.il/news/"
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.data = android.net.Uri.parse(url)
             startActivity(intent)
         }
 
@@ -97,37 +105,39 @@ class NavigationFragment : Fragment() {
             showPopupMenu(it)
         }
 
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,object : OnBackPressedCallback(true) {
-            @SuppressLint("ResourceAsColor")
-            override fun handleOnBackPressed() {
-                val alertDialog = AlertDialog.Builder(requireContext(), R.style.AlertDialogCustom)
-                    .setTitle(getString(R.string.confirm_exit))
-                    .setMessage(getString(R.string.exit_msg_text))
-                    .setPositiveButton(getString(R.string.yes), null)
-                    .setNegativeButton(getString(R.string.no), null)
-                    .create()
-                alertDialog.window?.setBackgroundDrawableResource(R.drawable.dialog_background)
-                alertDialog.setOnShowListener {
-                    val positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE)
-                    positiveButton.setTextColor(R.color.black) // Change the color of the "Yes" button
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                @SuppressLint("ResourceAsColor")
+                override fun handleOnBackPressed() {
+                    val alertDialog =
+                        AlertDialog.Builder(requireContext(), R.style.AlertDialogCustom)
+                            .setTitle(getString(R.string.confirm_exit))
+                            .setMessage(getString(R.string.exit_msg_text))
+                            .setPositiveButton(getString(R.string.yes), null)
+                            .setNegativeButton(getString(R.string.no), null)
+                            .create()
+                    alertDialog.window?.setBackgroundDrawableResource(R.drawable.dialog_background)
+                    alertDialog.setOnShowListener {
+                        val positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE)
+                        positiveButton.setTextColor(R.color.black) // Change the color of the "Yes" button
 
-                    val negativeButton = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE)
-                    negativeButton.setTextColor(R.color.black) // Change the color of the "No" button
+                        val negativeButton = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE)
+                        negativeButton.setTextColor(R.color.black) // Change the color of the "No" button
 
-                    positiveButton.setOnClickListener {
-                        alertDialog.dismiss()
-                        requireActivity().finish()
+                        positiveButton.setOnClickListener {
+                            alertDialog.dismiss()
+                            requireActivity().finish()
+                        }
                     }
+                    alertDialog.show()
                 }
-                alertDialog.show()
-            }
-        })
+            })
 
         checkAndRequestLocationPermission()
 
         binding.btnList.setOnClickListener {
-            val bundle = bundleOf("returnToFragmentId" to R.id.action_allLocationsFragments_to_Nav )
-            findNavController().navigate(R.id.action_Nav_to_allLocationsFragments,bundle)
+            val bundle = bundleOf("returnToFragmentId" to R.id.action_allLocationsFragments_to_Nav)
+            findNavController().navigate(R.id.action_Nav_to_allLocationsFragments, bundle)
         }
 
         binding.btnMap.setOnClickListener {
@@ -139,7 +149,11 @@ class NavigationFragment : Fragment() {
 
     // Check and request location permission.
     private fun checkAndRequestLocationPermission() {
-        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
             locationRequestLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
         }
     }
@@ -147,14 +161,19 @@ class NavigationFragment : Fragment() {
     // Handle the location permission result.
     private fun handleLocationPermissionResult(isGranted: Boolean) {
         if (isGranted)
-            Toast.makeText(requireContext(), getString(R.string.location_permission_msg), Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                requireContext(),
+                getString(R.string.location_permission_msg),
+                Toast.LENGTH_SHORT
+            ).show()
     }
 
     // Show the popup menu.
     private fun showPopupMenu(view: View) {
         val popupMenu = PopupMenu(requireContext(), view)
         popupMenu.inflate(R.menu.menu)
-        popupMenu.menu.findItem(R.id.action_add_location).isVisible = currentUser!=null && currentUser.email== viewModel.admin
+        popupMenu.menu.findItem(R.id.action_add_location).isVisible =
+            currentUser != null && currentUser.email == viewModel.admin
         popupMenu.setOnMenuItemClickListener { menuItem: MenuItem ->
             when (menuItem.itemId) {
                 R.id.action_add_location -> {
@@ -162,23 +181,35 @@ class NavigationFragment : Fragment() {
                     findNavController().navigate(R.id.action_Nav_to_addItemFragment)
                     true
                 }
+
                 R.id.action_logout -> {
                     // Handle logout
-                    val alertDialog = AlertDialog.Builder(requireContext(), R.style.AlertDialogCustom)
-                        .setTitle(getString(R.string.confirm_logout))
-                        .setMessage(getString(R.string.logout_msg_text))
-                        .setPositiveButton(getString(R.string.yes), null)
-                        .setNegativeButton(getString(R.string.no), null)
-                        .create()
+                    val alertDialog =
+                        AlertDialog.Builder(requireContext(), R.style.AlertDialogCustom)
+                            .setTitle(getString(R.string.confirm_logout))
+                            .setMessage(getString(R.string.logout_msg_text))
+                            .setPositiveButton(getString(R.string.yes), null)
+                            .setNegativeButton(getString(R.string.no), null)
+                            .create()
                     alertDialog.window?.setBackgroundDrawableResource(R.drawable.dialog_background)
                     alertDialog.setOnShowListener {
                         val positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE)
                         // Change the color of the "Yes" button
-                        positiveButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
+                        positiveButton.setTextColor(
+                            ContextCompat.getColor(
+                                requireContext(),
+                                R.color.black
+                            )
+                        )
 
                         val negativeButton = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE)
                         // Change the color of the "No" button
-                        negativeButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
+                        negativeButton.setTextColor(
+                            ContextCompat.getColor(
+                                requireContext(),
+                                R.color.black
+                            )
+                        )
 
                         positiveButton.setOnClickListener {
                             alertDialog.dismiss()
@@ -191,6 +222,7 @@ class NavigationFragment : Fragment() {
                     alertDialog.show()
                     true
                 }
+
                 else -> false
             }
         }

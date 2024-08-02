@@ -112,7 +112,8 @@ class StartARFragment : Fragment() {
             if (isModelPlaced) {
                 // Check if the current location is within 5 meters of the target location
                 if (::myLocation.isInitialized && ::targetLocation.isInitialized) {
-                    val distance = myLocation.distanceTo(targetLocation) // Calculate the distance to the target location
+                    val distance =
+                        myLocation.distanceTo(targetLocation) // Calculate the distance to the target location
                     if (distance < 6.0) {
                         // Remove the arrow model from the scene
                         arrowNode.isEnabled = false // Disable the arrow node
@@ -123,7 +124,8 @@ class StartARFragment : Fragment() {
                     }
                     updateUI(distance) // Update the UI with the distance
                     setModelPosition() // Set the position of the model
-                    arFragment.arSceneView.planeRenderer.isVisible = false // Hide the plane renderer
+                    arFragment.arSceneView.planeRenderer.isVisible =
+                        false // Hide the plane renderer
                 }
             } else {
                 handlePlaneDetection() // Handle the plane detection
@@ -290,7 +292,14 @@ class StartARFragment : Fragment() {
             }
     }
 
-    private fun imageRenderer(context: Context, imageView: ImageView, imageUrl: String, vector3: Vector3, width: Int, height: Int) {
+    private fun imageRenderer(
+        context: Context,
+        imageView: ImageView,
+        imageUrl: String,
+        vector3: Vector3,
+        width: Int,
+        height: Int
+    ) {
         imageView.layoutParams = LinearLayout.LayoutParams(width, height)
         imageView.scaleType = ImageView.ScaleType.CENTER_CROP
 
@@ -308,16 +317,21 @@ class StartARFragment : Fragment() {
         // Load the image using Glide
         Glide.with(context).load(imageUrl).circleCrop().into(imageView)
 
-        ViewRenderable.builder().setView(context, imageView).build().thenAccept { viewRenderable: ViewRenderable ->
+        ViewRenderable.builder().setView(context, imageView).build()
+            .thenAccept { viewRenderable: ViewRenderable ->
                 val imageNode = object : Node() {
                     override fun onUpdate(p0: FrameTime?) {
                         this.renderable = viewRenderable // Set the renderable of the image node
                         this.localPosition = vector3 // Set the position of the image node
-                        val cameraPosition = arFragment.arSceneView.scene.camera.worldPosition // Get the camera position
+                        val cameraPosition =
+                            arFragment.arSceneView.scene.camera.worldPosition // Get the camera position
                         val nodePosition = worldPosition // Get the node position
                         // Calculate the direction from the camera to the node
                         val direction = Vector3.subtract(cameraPosition, nodePosition)
-                        worldRotation = Quaternion.lookRotation(direction, Vector3.up()) // Set the rotation of the node
+                        worldRotation = Quaternion.lookRotation(
+                            direction,
+                            Vector3.up()
+                        ) // Set the rotation of the node
                     }
                 }
                 imageNode.setParent(arrowNode) // Set the parent of the image node

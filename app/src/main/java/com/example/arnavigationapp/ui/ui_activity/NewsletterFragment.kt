@@ -28,12 +28,13 @@ class NewsletterFragment : Fragment() {
         binding.btnBack.setOnClickListener {
             findNavController().navigate(R.id.action_News_to_Nav)
         }
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                findNavController().navigate(R.id.action_News_to_Nav)
-            }
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    findNavController().navigate(R.id.action_News_to_Nav)
+                }
 
-        })
+            })
         return binding.root
     }
 

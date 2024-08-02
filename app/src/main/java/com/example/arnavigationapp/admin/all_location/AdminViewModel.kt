@@ -26,27 +26,35 @@ class AdminViewModel(application: Application) : AndroidViewModel(application) {
 
     private val repository = FirestoreRepository() // FirestoreRepository object
 
-    val address: LiveData<String> = LocationUpdatesLiveData(application.applicationContext)  // LiveData object for the current address
+    val address: LiveData<String> =
+        LocationUpdatesLiveData(application.applicationContext)  // LiveData object for the current address
 
-    private val _location = MutableLiveData<String>() // MutableLiveData object for the current location
+    private val _location =
+        MutableLiveData<String>() // MutableLiveData object for the current location
     val location: LiveData<String> = _location // LiveData object for the current location
 
-    private val _accuracy = MutableLiveData<Float>() // MutableLiveData object for the current accuracy
+    private val _accuracy =
+        MutableLiveData<Float>() // MutableLiveData object for the current accuracy
     val accuracy: LiveData<Float> = _accuracy // LiveData object for the current accuracy
 
     private val _userInput = MutableLiveData<String>() // MutableLiveData object for the user input
     val userInput: LiveData<String> = _userInput // LiveData object for the user input
 
-    private val _descriptionInput = MutableLiveData<String>() // MutableLiveData object for the description input
-    val descriptionInput: LiveData<String> = _descriptionInput // LiveData object for the description input
+    private val _descriptionInput =
+        MutableLiveData<String>() // MutableLiveData object for the description input
+    val descriptionInput: LiveData<String> =
+        _descriptionInput // LiveData object for the description input
 
-    private val _azimuth = MutableLiveData<Float>() // MutableLiveData object for the current azimuth
+    private val _azimuth =
+        MutableLiveData<Float>() // MutableLiveData object for the current azimuth
     val azimuth: LiveData<Float> = _azimuth // LiveData object for the current azimuth
 
-    private val _locationData = MutableLiveData<List<LocationData>>() // MutableLiveData object for the list of LocationData objects
+    private val _locationData =
+        MutableLiveData<List<LocationData>>() // MutableLiveData object for the list of LocationData objects
     val locationData: LiveData<List<LocationData>> get() = _locationData // LiveData object for the list of LocationData objects
 
-    private val _chosenItem = MutableLiveData<LocationData>() // MutableLiveData object for the selected LocationData object
+    private val _chosenItem =
+        MutableLiveData<LocationData>() // MutableLiveData object for the selected LocationData object
     val chosenItem: LiveData<LocationData> get() = _chosenItem // LiveData object for the selected LocationData object
 
     init {

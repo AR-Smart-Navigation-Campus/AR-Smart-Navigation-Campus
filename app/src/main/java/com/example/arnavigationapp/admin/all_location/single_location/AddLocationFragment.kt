@@ -35,7 +35,7 @@ import java.util.Locale
  * home screen.
  * The admin can also view the current location and azimuth.
  */
-class AddLocationFragment: Fragment() {
+class AddLocationFragment : Fragment() {
 
     // View binding
     private var _binding: AddLocationBinding? = null
@@ -51,25 +51,35 @@ class AddLocationFragment: Fragment() {
 
 
     // Register a launcher for taking a picture.
-    private val takePictureLauncher = registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
-        if (success) {
-            imageUri?.let {
-                handleImagePick(it)
+    private val takePictureLauncher =
+        registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
+            if (success) {
+                imageUri?.let {
+                    handleImagePick(it)
+                }
+            } else {
+                Toast.makeText(
+                    context,
+                    getString(R.string.could_not_take_picture),
+                    Toast.LENGTH_SHORT
+                ).show()
             }
-        } else {
-            Toast.makeText(context, getString(R.string.could_not_take_picture), Toast.LENGTH_SHORT).show()
         }
-    }
 
     // Register a launcher for picking an image.
-    private val pickImageLauncher = registerForActivityResult(ActivityResultContracts.OpenDocument()) {
-        if (it != null) {
-            handleImagePick(it)
+    private val pickImageLauncher =
+        registerForActivityResult(ActivityResultContracts.OpenDocument()) {
+            if (it != null) {
+                handleImagePick(it)
+            }
         }
-    }
 
     // Create the view.
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         _binding = AddLocationBinding.inflate(inflater, container, false)
 
         // Initialize AzimuthSensorManager and set azimuth update listener
@@ -88,15 +98,15 @@ class AddLocationFragment: Fragment() {
         binding.resultImg.setOnClickListener { showPopupMenu(it) }
         binding.btnViewList.setOnClickListener { handleViewListClick() }
         binding.btnAddPlaceToMap.setOnClickListener { handleAddToMapClick() }
-        binding.btnBack.setOnClickListener{ handleBackClick()}
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                handleBackClick()
-            }
+        binding.btnBack.setOnClickListener { handleBackClick() }
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    handleBackClick()
+                }
 
-        })
+            })
     }
-
 
 
     private fun handleTakePictureClick() {
@@ -106,7 +116,11 @@ class AddLocationFragment: Fragment() {
             null
         }
         photoFile?.also {
-            val photoURI: Uri = FileProvider.getUriForFile(requireContext(), "${requireContext().packageName}.provider", it)
+            val photoURI: Uri = FileProvider.getUriForFile(
+                requireContext(),
+                "${requireContext().packageName}.provider",
+                it
+            )
             imageUri = photoURI
             takePictureLauncher.launch(photoURI)
         }
@@ -140,7 +154,6 @@ class AddLocationFragment: Fragment() {
     }
 
 
-
     private fun showPopupMenu(view: View) {
         val popupMenu = PopupMenu(requireContext(), view)
         popupMenu.inflate(R.menu.pick_img)
@@ -151,11 +164,13 @@ class AddLocationFragment: Fragment() {
                     handleImageBtnClick()
                     true
                 }
+
                 R.id.action_take_photo -> {
                     // Handle take photo
                     handleTakePictureClick()
                     true
                 }
+
                 else -> false
             }
         }
@@ -175,9 +190,9 @@ class AddLocationFragment: Fragment() {
         val descriptionLayout = binding.descriptionEditText
         val description = descriptionLayout.editText?.text.toString()
         val location = binding.coordText.text.toString()
-        if(locationName.isEmpty()){
+        if (locationName.isEmpty()) {
             toggleNameError(true)
-        }else{
+        } else {
             toggleNameError(false)
             viewModel.updateLocation(location)
             viewModel.addUserInput(locationName)
@@ -195,17 +210,21 @@ class AddLocationFragment: Fragment() {
 
     // Handle the click on the view list button.
     private fun handleViewListClick() {
-        val bundle= bundleOf("returnToFragmentId" to R.id.action_allLocationsFragments_to_addLocationFragment)
-        findNavController().navigate(R.id.action_addLocationFragment_to_allLocationsFragments,bundle)
+        val bundle =
+            bundleOf("returnToFragmentId" to R.id.action_allLocationsFragments_to_addLocationFragment)
+        findNavController().navigate(
+            R.id.action_addLocationFragment_to_allLocationsFragments,
+            bundle
+        )
     }
 
     // Handle the click on the add to map button.
-    private fun handleAddToMapClick(){
+    private fun handleAddToMapClick() {
         val textLayout = binding.placeNameEditText
         val locationName = textLayout.editText?.text.toString()
-        if(locationName.isEmpty()){
+        if (locationName.isEmpty()) {
             toggleNameError(true)
-        }else {
+        } else {
             toggleNameError(false)
             viewModel.addUserInput(locationName)
             val bundle =
@@ -233,11 +252,12 @@ class AddLocationFragment: Fragment() {
     }
 
     // Toggle the error state of the name text layout.
-    private fun toggleNameError(isError:Boolean){
+    private fun toggleNameError(isError: Boolean) {
         val textLayout = binding.placeNameEditText
-        if(isError){
+        if (isError) {
             textLayout.boxStrokeColor = ContextCompat.getColor(requireContext(), R.color.red)
-            textLayout.hintTextColor = ContextCompat.getColorStateList(requireContext(), R.color.red)
+            textLayout.hintTextColor =
+                ContextCompat.getColorStateList(requireContext(), R.color.red)
             textLayout.setStartIconTintList(
                 ColorStateList.valueOf(
                     ContextCompat.getColor(
@@ -245,14 +265,18 @@ class AddLocationFragment: Fragment() {
                     )
                 )
             )
-            val shakeAnimation= AnimationUtils.loadAnimation(context, R.anim.vibrate)
+            val shakeAnimation = AnimationUtils.loadAnimation(context, R.anim.vibrate)
             textLayout.startAnimation(shakeAnimation)
-        }else{
-            textLayout.boxStrokeColor = ContextCompat.getColor(requireContext(), R.color.btnsAndInput)
-            textLayout.hintTextColor = ContextCompat.getColorStateList(requireContext(), R.color.btnsAndInput)
+        } else {
+            textLayout.boxStrokeColor =
+                ContextCompat.getColor(requireContext(), R.color.btnsAndInput)
+            textLayout.hintTextColor =
+                ContextCompat.getColorStateList(requireContext(), R.color.btnsAndInput)
             textLayout.setStartIconTintList(
                 ColorStateList.valueOf(
-                    ContextCompat.getColor(requireContext(), R.color.btnsAndInput)))
+                    ContextCompat.getColor(requireContext(), R.color.btnsAndInput)
+                )
+            )
         }
     }
 
@@ -263,9 +287,12 @@ class AddLocationFragment: Fragment() {
             val latitude = data[0]
             val longitude = data[1]
             val accuracy = data[2].toFloat()
-            "${latitude},${longitude}".also { binding.coordText.text = it } // Update the text view with the location
+            "${latitude},${longitude}".also {
+                binding.coordText.text = it
+            } // Update the text view with the location
 
-            val accuracyText = getString(R.string.accuracy) + ": " + accuracy + " "+ getString(R.string.meters_accuracy)
+            val accuracyText =
+                getString(R.string.accuracy) + ": " + accuracy + " " + getString(R.string.meters_accuracy)
             binding.accuracy.text = accuracyText
         }
     }

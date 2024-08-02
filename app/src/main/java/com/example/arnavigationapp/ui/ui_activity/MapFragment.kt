@@ -24,18 +24,17 @@ import com.example.arnavigationapp.admin.all_location.model.FirestoreRepository
 
 /**
  *  MapFragment class that extends Fragment and provides functionality for the map screen.
- *
  */
 
 class MapFragment : Fragment() {
-    private lateinit var binding: MapFragmentBinding
-    private val viewModel: AdminViewModel by activityViewModels()
-    private val repository = FirestoreRepository() // FirestoreRepository object
-    private var fragmentId: Int? = null
-    private val addLocationId = 2131230786
-    private val ar = R.id.action_MapFragment_to_AR
-    private val loadedButtons = mutableSetOf<String>() // Set to track loaded buttons
-
+    private lateinit var binding: MapFragmentBinding // View binding for the fragment's layout
+    private val viewModel: AdminViewModel by activityViewModels() // Shared ViewModel between fragments
+    private val repository = FirestoreRepository() // FirestoreRepository object for data operations
+    private var fragmentId: Int? = null // Holds the fragment ID to handle navigation
+    private val addLocationId = 2131230786 // ID for the add location fragment
+    private val ar = R.id.action_MapFragment_to_AR // Action ID to navigate to AR fragment
+    private val loadedButtons =
+        mutableSetOf<String>() // Set to track loaded buttons to prevent duplication
 
     // Define map's GPS boundaries
     companion object {
@@ -45,24 +44,30 @@ class MapFragment : Fragment() {
         const val MAX_LONGITUDE = 34.7743
     }
 
-
     // Inflate the layout
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        fragmentId = arguments?.getInt("returnToFragmentId")
-        binding = MapFragmentBinding.inflate(inflater, container, false)
+        fragmentId = arguments?.getInt("returnToFragmentId") // Get the fragment ID from arguments
+        binding = MapFragmentBinding.inflate(
+            inflater,
+            container,
+            false
+        ) // Inflate the layout using View Binding
 
-        val flickerAnimation = AnimationUtils.loadAnimation(context, R.anim.flicker)
+        val flickerAnimation =
+            AnimationUtils.loadAnimation(context, R.anim.flicker) // Load animation
         if (fragmentId != addLocationId) {
+            // Setup for normal map view
             binding.outOfBounds.startAnimation(flickerAnimation)
             binding.pickPlace.startAnimation(flickerAnimation)
             binding.addPlaceOnMap.visibility = View.GONE
             convertLatLngToScreenPosition()
             setupButtonListeners()
         } else {
+            // Setup for adding locations
             binding.addPlaceOnMap.startAnimation(flickerAnimation)
             binding.outOfBounds.visibility = View.GONE
             binding.pickPlace.visibility = View.GONE
@@ -70,97 +75,111 @@ class MapFragment : Fragment() {
         }
 
         if (loadedButtons.isEmpty()) {
-            loadDynamicButtons()
+            loadDynamicButtons() // Load dynamic buttons from Firestore
         }
 
         // Handle back press
         setupBackPressHandler()
 
+        // Setup back button click listener
         binding.btnBack.setOnClickListener {
-            // Hide the location icon
+            // Hide the location icon and reset its position
             binding.locationIcon.apply {
                 visibility = View.GONE
                 x = 0f
                 y = 0f
             }
-            returnToAdd()
+            returnToAdd() // Navigate back to add location fragment
         }
 
-        return binding.root
+        return binding.root // Return the root view of the fragment
     }
 
     override fun onResume() {
         super.onResume()
-        clearDynamicButtons()
-        loadDynamicButtons()
+        clearDynamicButtons() // Clear buttons to prevent duplication
+        loadDynamicButtons() // Reload buttons from Firestore
     }
 
     // Load buttons state from Firestore
     private fun loadDynamicButtons() {
-            repository.loadButtonStateFromFirestore { buttons ->
-                context?.let {
-                    buttons.forEach { buttonData ->
-                        if (buttonData.text.isNotEmpty() && !loadedButtons.contains(buttonData.text)) {
-                            createButtonAtPosition(buttonData.x, buttonData.y, buttonData.text)
-                            loadedButtons.add(buttonData.text) // Track created buttons
-                        }
+        repository.loadButtonStateFromFirestore { buttons ->
+            context?.let {
+                buttons.forEach { buttonData ->
+                    if (buttonData.text.isNotEmpty() && !loadedButtons.contains(buttonData.text)) {
+                        createButtonAtPosition(buttonData.x, buttonData.y, buttonData.text)
+                        loadedButtons.add(buttonData.text) // Track created buttons
                     }
                 }
             }
+        }
     }
 
     // Clear dynamic buttons to prevent duplication
     private fun clearDynamicButtons() {
-        val parentLayout = binding.root as ViewGroup
+        val parentLayout = binding.root as ViewGroup // Get the parent layout
         for (i in parentLayout.childCount - 1 downTo 0) {
             val view = parentLayout.getChildAt(i)
             if (view is Button && view.id == View.NO_ID) {
-                parentLayout.removeView(view)
+                parentLayout.removeView(view) // Remove dynamic buttons
             }
         }
-        loadedButtons.clear()
+        loadedButtons.clear() // Clear the loaded buttons set
     }
 
     // Setup dynamic button creation
     @SuppressLint("ClickableViewAccessibility")
     private fun setupDynamicButtonCreation() {
         binding.mapImageView.setOnTouchListener { v, event ->
-            val btnName = viewModel.userInput.value
+            val btnName =
+                viewModel.userInput.value // Get the name for the new button from ViewModel
             if (event.action == MotionEvent.ACTION_DOWN) {
                 v.performClick()
                 if (!btnName.isNullOrEmpty() && !loadedButtons.contains(btnName)) {
-                    createButtonAtPosition(event.x, event.y, btnName)
-                    repository.saveButtonStateToFirestore(event.x, event.y, btnName)
-                    loadedButtons.add(btnName)
+                    createButtonAtPosition(
+                        event.x,
+                        event.y,
+                        btnName
+                    ) // Create a new button at the touched position
+                    repository.saveButtonStateToFirestore(
+                        event.x,
+                        event.y,
+                        btnName
+                    ) // Save the button state to Firestore
+                    loadedButtons.add(btnName) // Add the button to the loaded set
                 } else {
-                    Toast.makeText(context, "Button with this name already exists or name is empty.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        context,
+                        "Button with this name already exists or name is empty.",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
                 true
             } else false
         }
     }
 
-
     // Create a button at the specified position
     @SuppressLint("ClickableViewAccessibility")
     private fun createButtonAtPosition(x: Float, y: Float, btnName: String) {
         var translatedText = ""
-        val stringResId = viewModel.getLocationNameResId(btnName)
-        if(stringResId == R.string.unknown_location){
-            translatedText = btnName
-        }
-        else{
-            translatedText = binding.root.context.getString(stringResId)
+        val stringResId =
+            viewModel.getLocationNameResId(btnName) // Get resource ID for the location name
+        if (stringResId == R.string.unknown_location) {
+            translatedText = btnName // If no resource ID, use the button name directly
+        } else {
+            translatedText =
+                binding.root.context.getString(stringResId) // Get the string from resource ID
         }
 
         // Check if the button is already created
         if (loadedButtons.contains(translatedText)) return
 
         val button = Button(context).apply {
-            // Set button text from the viewModel's userInput
+            // Set button text from the ViewModel's userInput
             text = translatedText
 
-            setPadding(0, 0, 0, 0)// Remove default padding
+            setPadding(0, 0, 0, 0) // Remove default padding
             textSize = 10f // Set text size
             minWidth = 0 // Remove minimum width
             minHeight = 0 // Remove minimum height
@@ -170,11 +189,8 @@ class MapFragment : Fragment() {
 
             // Set button position and size
             layoutParams = ConstraintLayout.LayoutParams(
-                //ConstraintLayout.LayoutParams.WRAP_CONTENT,
-                //ConstraintLayout.LayoutParams.WRAP_CONTENT,
-                200,50
-
-                ).apply {
+                200, 50 // Fixed width and height for the button
+            ).apply {
                 topToTop = binding.mapImageView.id
                 leftToLeft = binding.mapImageView.id
                 marginStart = x.toInt()
@@ -185,7 +201,7 @@ class MapFragment : Fragment() {
             setTextColor(Color.BLACK) // Set text color to black
         }
 
-        if(fragmentId==addLocationId) {
+        if (fragmentId == addLocationId) {
             // Make the button draggable and update its position in Firestore
             button.setOnTouchListener { view, motionEvent ->
                 when (motionEvent.action) {
@@ -221,31 +237,34 @@ class MapFragment : Fragment() {
                     else -> false
                 }
             }
-        } else{
+        } else {
+            // Setup click listener for buttons when not adding new locations
             button.setOnClickListener {
                 findLocationByName(translatedText)
             }
         }
-        binding.root.addView(button)
+        binding.root.addView(button) // Add the button to the layout
     }
 
     // Return to add location fragment
     private fun returnToAdd() {
-        val returnToFragmentId = arguments?.getInt("returnToFragmentId")
+        val returnToFragmentId =
+            arguments?.getInt("returnToFragmentId") // Get the return fragment ID from arguments
         if (returnToFragmentId != null) {
             Log.d("returnToFragmentId", returnToFragmentId.toString())
-            findNavController().navigate(returnToFragmentId)
+            findNavController().navigate(returnToFragmentId) // Navigate to the specified fragment
         } else {
-            findNavController().navigate(R.id.action_Map_to_Nav)
+            findNavController().navigate(R.id.action_Map_to_Nav) // Navigate to the default fragment
         }
     }
 
+    // Setup back press handling to return to the add location fragment
     private fun setupBackPressHandler() {
         requireActivity().onBackPressedDispatcher.addCallback(
             viewLifecycleOwner,
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
-                    returnToAdd()
+                    returnToAdd() // Handle the back press
                 }
             })
     }
@@ -260,8 +279,7 @@ class MapFragment : Fragment() {
         }
     }
 
-
-    // Find the location by name
+    // Find the location by name and navigate to AR fragment if found
     private fun findLocationByName(locationName: String) {
         viewModel.locationData.observe(viewLifecycleOwner) { allLocations ->
             if (allLocations.isEmpty()) {
@@ -275,7 +293,7 @@ class MapFragment : Fragment() {
             val location = getLocationByName(locationName, allLocations) // Get the location by name
             if (location != null) {
                 viewModel.setLocation(location) // Set the selected location
-                findNavController().navigate(ar)
+                findNavController().navigate(ar) // Navigate to the AR fragment
                 Toast.makeText(
                     requireContext(),
                     getString(R.string.location_found) + ": " + location.name,
@@ -290,7 +308,6 @@ class MapFragment : Fragment() {
             }
         }
     }
-
 
     // Placeholder function to convert GPS coordinates to screen position
     private fun convertLatLngToScreenPosition() {
@@ -319,8 +336,7 @@ class MapFragment : Fragment() {
         }
     }
 
-
-    // Set up button listeners
+    // Set up button listeners for predefined buttons
     private fun setupButtonListeners() {
         val buttonLocationMap = mapOf(
             binding.buttonFichmanGate to "Fichman Gate",
@@ -345,12 +361,12 @@ class MapFragment : Fragment() {
         )
         buttonLocationMap.forEach { (button, location) ->
             button.setOnClickListener {
-                findLocationByName(location)
+                findLocationByName(location) // Setup listener for each predefined button
             }
         }
     }
 
-    // Destroy view binding
+    // Destroy view binding when fragment is destroyed
     override fun onDestroyView() {
         super.onDestroyView()
         binding.locationIcon.apply {

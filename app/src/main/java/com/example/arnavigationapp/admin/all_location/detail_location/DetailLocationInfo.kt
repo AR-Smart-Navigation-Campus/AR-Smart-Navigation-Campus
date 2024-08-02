@@ -45,25 +45,26 @@ class DetailLocationInfo : Fragment() {
         viewModel.chosenItem.observe(viewLifecycleOwner) { it ->
             val auth = Firebase.auth // Firebase authentication instance
             val currentUser = auth.currentUser?.email.toString() // Get the current user's email
-            val resId = viewModel.getLocationNameResId(it.name) // Get the resource ID of the location name
-            if(resId == R.string.unknown_location){
+            val resId =
+                viewModel.getLocationNameResId(it.name) // Get the resource ID of the location name
+            if (resId == R.string.unknown_location) {
                 binding.locationName.text = it.name
+            } else {
+                binding.locationName.text =
+                    binding.root.context.getString(resId) // Set the location name text view
             }
-            else{
-                binding.locationName.text = binding.root.context.getString(resId) // Set the location name text view
-            }
-            val coordsText = getString(R.string.coordinates) + ": " + it.location.replace("\\s+".toRegex(), "")
+            val coordsText =
+                getString(R.string.coordinates) + ": " + it.location.replace("\\s+".toRegex(), "")
             binding.locationLocation.text = coordsText
             val azimuthText = getString(R.string.azimuth) + ": " + it.azimuth
             binding.locationAzimuth.text = azimuthText
-            val descriptionId =viewModel.getLocationDescriptionResId(it.description)
-            if (descriptionId == R.string.no_desc){
+            val descriptionId = viewModel.getLocationDescriptionResId(it.description)
+            if (descriptionId == R.string.no_desc) {
                 binding.description.text = it.description
-            }
-            else{
+            } else {
                 binding.description.text = binding.root.context.getString(descriptionId)
             }
-            binding.description.visibility=View.VISIBLE
+            binding.description.visibility = View.VISIBLE
             if (currentUser != viewModel.admin) {
                 binding.locationLocation.visibility = View.GONE
                 binding.locationAzimuth.visibility = View.GONE

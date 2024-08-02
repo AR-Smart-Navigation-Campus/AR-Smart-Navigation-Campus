@@ -15,14 +15,18 @@ import android.hardware.SensorManager
 class AzimuthSensorManager(context: Context, private val onAzimuthChanged: (Float) -> Unit) {
 
     // SensorManager to access sensors
-    private var sensorManager: SensorManager = context.getSystemService(Context.SENSOR_SERVICE) as SensorManager
+    private var sensorManager: SensorManager =
+        context.getSystemService(Context.SENSOR_SERVICE) as SensorManager
+
     // Accelerometer sensor
     private var accelerometer: Sensor? = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
+
     // Magnetic field sensor
     private var magnetometer: Sensor? = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD)
 
     // Array to hold gravity values
     private var gravity: FloatArray? = null
+
     // Array to hold geomagnetic values
     private var geomagnetic: FloatArray? = null
 
@@ -57,11 +61,19 @@ class AzimuthSensorManager(context: Context, private val onAzimuthChanged: (Floa
     fun startListening() {
         // Register sensor event listener for accelerometer and magnetometer
         accelerometer?.also { accelerometer ->
-            sensorManager.registerListener(sensorEventListener, accelerometer, SensorManager.SENSOR_DELAY_NORMAL)
+            sensorManager.registerListener(
+                sensorEventListener,
+                accelerometer,
+                SensorManager.SENSOR_DELAY_NORMAL
+            )
         }
         // Register sensor event listener for magnetometer
         magnetometer?.also { magnetometer ->
-            sensorManager.registerListener(sensorEventListener, magnetometer, SensorManager.SENSOR_DELAY_NORMAL)
+            sensorManager.registerListener(
+                sensorEventListener,
+                magnetometer,
+                SensorManager.SENSOR_DELAY_NORMAL
+            )
         }
     }
 

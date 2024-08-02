@@ -8,11 +8,11 @@ package com.example.arnavigationapp.admin.all_location.model
  */
 data class LocationData(
 
-    val id:Long=0,
-    val name: String ="",
-    val location: String="",
-    val azimuth: String="",
-    val description: String="",
-    val imgUrl: String="",
+    val id: Long = 0,
+    val name: String = "",
+    val location: String = "",
+    val azimuth: String = "",
+    val description: String = "",
+    val imgUrl: String = "",
 )
 

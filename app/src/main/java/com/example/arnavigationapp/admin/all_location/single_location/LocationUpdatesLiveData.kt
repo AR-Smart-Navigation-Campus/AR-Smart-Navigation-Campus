@@ -18,17 +18,18 @@ import java.util.concurrent.TimeUnit
  * and emits updates to observers with the latest location as a formatted string.
  */
 
-class LocationUpdatesLiveData(context:Context) : LiveData<String>() {
+class LocationUpdatesLiveData(context: Context) : LiveData<String>() {
     //FusedLocationProviderClient instance to request location updates.
-    private val locationClient : FusedLocationProviderClient =
+    private val locationClient: FusedLocationProviderClient =
         LocationServices.getFusedLocationProviderClient(context)
 
     // Location request object specifying update interval and priority.
     private val locationRequest =
-        LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY,TimeUnit.SECONDS.toMillis(1)).build()
+        LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, TimeUnit.SECONDS.toMillis(1))
+            .build()
 
     //Location callback to receive location updates from the FusedLocationProviderClient.
-    private val locationCallback = object  : LocationCallback(){
+    private val locationCallback = object : LocationCallback() {
         override fun onLocationResult(p0: LocationResult) {
             p0.lastLocation?.let {
                 postValue("${it.latitude},${it.longitude},${it.accuracy}")
@@ -40,9 +41,13 @@ class LocationUpdatesLiveData(context:Context) : LiveData<String>() {
     override fun onActive() {
         super.onActive()
         try {
-            locationClient.requestLocationUpdates(locationRequest , locationCallback , Looper.getMainLooper())
-        }catch (e:SecurityException){
-            Log.d("LocationUpdatesLiveData" , "Missing location permission")
+            locationClient.requestLocationUpdates(
+                locationRequest,
+                locationCallback,
+                Looper.getMainLooper()
+            )
+        } catch (e: SecurityException) {
+            Log.d("LocationUpdatesLiveData", "Missing location permission")
         }
     }
 

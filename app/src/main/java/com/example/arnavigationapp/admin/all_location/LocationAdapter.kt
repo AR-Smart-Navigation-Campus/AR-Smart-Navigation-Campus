@@ -22,19 +22,19 @@ class LocationAdapter(
     private val viewModel: AdminViewModel // Add ViewModel as a constructor parameter
 
 ) :
-RecyclerView.Adapter<LocationAdapter.LocationViewHolder>() {
+    RecyclerView.Adapter<LocationAdapter.LocationViewHolder>() {
 
     var currentList: List<LocationData> = locationList
 
     // Interface for item click and long click events
     interface ItemListener {
-        fun onItemClick(index:Int)
-        fun onItemLongClicked(index:Int)
+        fun onItemClick(index: Int)
+        fun onItemLongClicked(index: Int)
     }
 
     // ViewHolder for the RecyclerView items
-    inner class LocationViewHolder(private val binding: LocationItemBinding)
-        : RecyclerView.ViewHolder(binding.root), View.OnClickListener , View.OnLongClickListener {
+    inner class LocationViewHolder(private val binding: LocationItemBinding) :
+        RecyclerView.ViewHolder(binding.root), View.OnClickListener, View.OnLongClickListener {
 
         // Set click listeners for the item view
         init {
@@ -55,34 +55,37 @@ RecyclerView.Adapter<LocationAdapter.LocationViewHolder>() {
 
         // Bind the location data to the item view
         fun bind(location: LocationData) {
-            val auth=Firebase.auth
-            val currentUser=auth.currentUser?.email.toString()
+            val auth = Firebase.auth
+            val currentUser = auth.currentUser?.email.toString()
             val resId = viewModel.getLocationNameResId(location.name)
-            if(resId == R.string.unknown_location){
+            if (resId == R.string.unknown_location) {
                 binding.buildingName.text = location.name
-            }
-            else{
+            } else {
                 binding.buildingName.text = binding.root.context.getString(resId)
             }
             Glide.with(binding.root).load(location.imgUrl).circleCrop().into(binding.buildingImage)
-            val coords=   binding.locationTextView
-            val azimuth= binding.azimuthTextView
-            val description= binding.descriptionTextView
-            val coordsText = binding.root.context.getString(R.string.coordinates) + ": " + location.location.replace("\\s+".toRegex(), "")
+            val coords = binding.locationTextView
+            val azimuth = binding.azimuthTextView
+            val description = binding.descriptionTextView
+            val coordsText =
+                binding.root.context.getString(R.string.coordinates) + ": " + location.location.replace(
+                    "\\s+".toRegex(),
+                    ""
+                )
             coords.text = coordsText
-            val azimuthText = binding.root.context.getString(R.string.azimuth) + ": " + location.azimuth
+            val azimuthText =
+                binding.root.context.getString(R.string.azimuth) + ": " + location.azimuth
             azimuth.text = azimuthText
-            if(currentUser!=viewModel.admin) {
-                coords.visibility=View.GONE
-                azimuth.visibility=View.GONE
-                val descriptionId =viewModel.getLocationDescriptionResId(location.description)
-                if (descriptionId == R.string.no_desc){
+            if (currentUser != viewModel.admin) {
+                coords.visibility = View.GONE
+                azimuth.visibility = View.GONE
+                val descriptionId = viewModel.getLocationDescriptionResId(location.description)
+                if (descriptionId == R.string.no_desc) {
                     description.text = location.description
-                }
-                else{
+                } else {
                     description.text = binding.root.context.getString(descriptionId)
                 }
-                description.visibility=View.VISIBLE
+                description.visibility = View.VISIBLE
             }
         }
     }
