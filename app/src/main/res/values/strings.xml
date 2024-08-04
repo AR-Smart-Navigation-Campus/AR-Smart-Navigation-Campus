@@ -29,6 +29,7 @@
     <string name="exit">Exit</string>
     <string name="nevigate_again">Nevigate Again</string>
     <string name="delete_location_msg">Location deleted successfully</string>
+    <string name="add_location_msg">Location added successfully</string>
     <string name="km" translatable="false">%.1f Km</string>
     <string name="meters" translatable="false">%.1f M</string>
     <string name="meters_accuracy">M</string>
@@ -52,10 +53,10 @@
     <string name="enter_place_name">Enter place name</string>
     <string name="enter_description">Enter description</string>
     <string name="save_data">Add</string>
-    <string name="add_place_to_map">Add place to map</string>
     <string name="view_list">View List</string>
     <string name="search">Search</string>
     <string name="are_you_sure_you_want_to_delete_this_location">Are you sure you want to delete this location?</string>
+    <string name="add_place_to_map">Add this place to map?</string>
     <string name="description">Description</string>
     <string name="location_image">location image</string>
     <string name="invalid_email_or_password_please_try_again">*Invalid email or password, please try again</string>

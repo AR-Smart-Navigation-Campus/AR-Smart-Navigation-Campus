@@ -95,6 +95,8 @@ class MapFragment : Fragment() {
         return binding.root // Return the root view of the fragment
     }
 
+
+
     override fun onResume() {
         super.onResume()
         clearDynamicButtons() // Clear buttons to prevent duplication
@@ -147,6 +149,7 @@ class MapFragment : Fragment() {
                         btnName
                     ) // Save the button state to Firestore
                     loadedButtons.add(btnName) // Add the button to the loaded set
+                    Toast.makeText(context, getString(R.string.add_location_msg), Toast.LENGTH_SHORT).show()
                 } else {
                     Toast.makeText(
                         context,
@@ -171,7 +174,6 @@ class MapFragment : Fragment() {
             translatedText =
                 binding.root.context.getString(stringResId) // Get the string from resource ID
         }
-
         // Check if the button is already created
         if (loadedButtons.contains(translatedText)) return
 
@@ -240,7 +242,7 @@ class MapFragment : Fragment() {
         } else {
             // Setup click listener for buttons when not adding new locations
             button.setOnClickListener {
-                findLocationByName(translatedText)
+                findLocationByName(btnName)
             }
         }
         binding.root.addView(button) // Add the button to the layout
@@ -274,6 +276,7 @@ class MapFragment : Fragment() {
         locationName: String,
         allLocations: List<LocationData>
     ): LocationData? {
+
         return allLocations.find {
             it.name.equals(locationName, ignoreCase = true)
         }
@@ -294,11 +297,6 @@ class MapFragment : Fragment() {
             if (location != null) {
                 viewModel.setLocation(location) // Set the selected location
                 findNavController().navigate(ar) // Navigate to the AR fragment
-                Toast.makeText(
-                    requireContext(),
-                    getString(R.string.location_found) + ": " + location.name,
-                    Toast.LENGTH_SHORT
-                ).show()
             } else {
                 Toast.makeText(
                     requireContext(),

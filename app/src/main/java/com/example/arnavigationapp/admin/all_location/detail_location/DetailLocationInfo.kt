@@ -59,11 +59,13 @@ class DetailLocationInfo : Fragment() {
             val azimuthText = getString(R.string.azimuth) + ": " + it.azimuth
             binding.locationAzimuth.text = azimuthText
             val descriptionId = viewModel.getLocationDescriptionResId(it.description)
+            var descriptionText = getString(R.string.description) + ": "
             if (descriptionId == R.string.no_desc) {
-                binding.description.text = it.description
+                descriptionText+= it.description
             } else {
-                binding.description.text = binding.root.context.getString(descriptionId)
+                descriptionText += binding.root.context.getString(descriptionId)
             }
+            binding.description.text = descriptionText
             binding.description.visibility = View.VISIBLE
             if (currentUser != viewModel.admin) {
                 binding.locationLocation.visibility = View.GONE

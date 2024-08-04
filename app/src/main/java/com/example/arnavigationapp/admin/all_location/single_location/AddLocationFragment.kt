@@ -96,8 +96,6 @@ class AddLocationFragment : Fragment() {
         getLocationUpdates()
         binding.btnSavePlace.setOnClickListener { handleSavePlaceClick() }
         binding.resultImg.setOnClickListener { showPopupMenu(it) }
-        binding.btnViewList.setOnClickListener { handleViewListClick() }
-        binding.btnAddPlaceToMap.setOnClickListener { handleAddToMapClick() }
         binding.btnBack.setOnClickListener { handleBackClick() }
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,
             object : OnBackPressedCallback(true) {
@@ -200,23 +198,28 @@ class AddLocationFragment : Fragment() {
 
             // Check if imageUri is not null
             imageUri?.let { uri ->
-                viewModel.addEntry(uri)
                 updateUIWithLatestEntry()
+                binding.addToMapCardView.visibility = View.VISIBLE
+                binding.btnAddToMap.setOnClickListener {
+                    handleAddToMapClick()
+                    binding.addToMapCardView.visibility = View.GONE
+                    viewModel.addEntry(uri)
+                    binding.placeNameEditText.editText?.text?.clear()
+                    binding.descriptionEditText.editText?.text?.clear()
+                }
+                binding.btnDontAddToMap.setOnClickListener {
+                    binding.addToMapCardView.visibility = View.GONE
+                    Toast.makeText(context, getString(R.string.add_location_msg), Toast.LENGTH_SHORT).show()
+                    viewModel.addEntry(uri)
+                    binding.placeNameEditText.editText?.text?.clear()
+                    binding.descriptionEditText.editText?.text?.clear()
+                }
             } ?: run {
                 Toast.makeText(context, getString(R.string.select_image), Toast.LENGTH_SHORT).show()
             }
         }
     }
 
-    // Handle the click on the view list button.
-    private fun handleViewListClick() {
-        val bundle =
-            bundleOf("returnToFragmentId" to R.id.action_allLocationsFragments_to_addLocationFragment)
-        findNavController().navigate(
-            R.id.action_addLocationFragment_to_allLocationsFragments,
-            bundle
-        )
-    }
 
     // Handle the click on the add to map button.
     private fun handleAddToMapClick() {
@@ -245,9 +248,6 @@ class AddLocationFragment : Fragment() {
         binding.coordinatesView.text = coordsText
         val azimuthText = getString(R.string.azimuth) + ": " + azimuth
         binding.azimuthView.text = azimuthText
-
-        binding.placeNameEditText.editText?.text?.clear()
-        binding.descriptionEditText.editText?.text?.clear()
         //NO NEED TO UPDATE IMAGE
     }
 

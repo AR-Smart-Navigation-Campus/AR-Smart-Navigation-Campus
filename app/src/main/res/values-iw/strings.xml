@@ -31,6 +31,7 @@
     <string name="exit">יציאה</string>
     <string name="nevigate_again">נווט שוב</string>
     <string name="delete_location_msg">המיקום נמחק בהצלחה</string>
+    <string name="add_location_msg">המיקום התווסף בהצלחה</string>
     <string name="meters_accuracy">מטרים</string>
     <string name="morning_msg">בוקר טוב,</string>
     <string name="afternoon_msg">צהריים טובים,</string>
@@ -52,7 +53,7 @@
     <string name="enter_place_name">הזן שם מקום</string>
     <string name="save_data">הוסף</string>
     <string name="enter_description">הזן תיאור</string>
-    <string name="add_place_to_map">הוסף מיקום למפה</string>
+    <string name="add_place_to_map">האם להוסיף מיקום למפה?</string>
     <string name="view_list">הצג רשימה</string>
     <string name="search">חיפוש</string>
     <string name="are_you_sure_you_want_to_delete_this_location">האם אתה בטוח שברצונך למחוק מיקום זה?</string>
