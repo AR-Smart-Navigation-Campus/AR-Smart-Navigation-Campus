@@ -79,12 +79,12 @@ class LocationAdapter(
             if (currentUser != viewModel.admin) {
                 coords.visibility = View.GONE
                 azimuth.visibility = View.GONE
-                val descriptionId = viewModel.getLocationDescriptionResId(location.description)
-                if (descriptionId == R.string.no_desc) {
-                    description.text = location.description
-                } else {
-                    description.text = binding.root.context.getString(descriptionId)
-                }
+                val descriptionText = viewModel.getFormattedLocationDescription(binding.root.context,location.description)
+                val descriptionTextFirstSentence =
+                    (binding.root.context.getString(R.string.description) + ": \n" + descriptionText.split(
+                        "\n"
+                    ).firstOrNull()) ?: ""
+                description.text = descriptionTextFirstSentence
                 description.visibility = View.VISIBLE
             }
         }

@@ -58,13 +58,9 @@ class DetailLocationInfo : Fragment() {
             binding.locationLocation.text = coordsText
             val azimuthText = getString(R.string.azimuth) + ": " + it.azimuth
             binding.locationAzimuth.text = azimuthText
-            val descriptionId = viewModel.getLocationDescriptionResId(it.description)
-            var descriptionText = getString(R.string.description) + ": "
-            if (descriptionId == R.string.no_desc) {
-                descriptionText+= it.description
-            } else {
-                descriptionText += binding.root.context.getString(descriptionId)
-            }
+            val description = viewModel.getFormattedLocationDescription(requireContext(),it.description)
+            var descriptionText = getString(R.string.description) + ": " + '\n'
+            descriptionText+= description
             binding.description.text = descriptionText
             binding.description.visibility = View.VISIBLE
             if (currentUser != viewModel.admin) {

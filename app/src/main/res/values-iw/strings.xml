@@ -65,6 +65,7 @@
     <string name="passwords_do_not_match">*הסיסמאות אינן תואמות</string>
     <string name="confirm_password">אימות סיסמה</string>
     <string name="already_have_an_account">כבר יש לך חשבון?</string>
+
     <string name="fichman_gate">שער פיכמן</string>
     <string name="hoffin_gate">שער הופיין</string>
     <string name="golomb_gate">שער גולומב</string>
@@ -88,22 +89,27 @@
     <string name="dorms_gate">שער מעונות</string>
     <string name="unknown_location">מיקום לא ידוע</string>
 
-
+    <string name="cafeteria_desc">קפיטריה</string>
     <string name="club_desc">מועדון סטודנטים בבניין 6</string>
     <string name="aguda_desc">אגודת הסטודנטים בבניין 5</string>
-    <string name="building_8_a_desc">הכניסה הראשית לבניין</string>
-    <string name="building_8_b_desc">הכניסה השנייה לבניין</string>
-    <string name="building_8_c_desc">הכניסה השלישית לבניין</string>
-    <string name="building_3_a_desc">הכניסה הראשית לבניין</string>
-    <string name="building_3_b_desc">הכניסה השנייה לבניין</string>
+    <string name="building_8_a_desc">הכניסה הראשית לבניין. הפקולטה למדעים. המחלקה למדעי המחשב. המחלקה למתמטיקה שימושית. אודיטוריום.</string>
+    <string name="building_8_b_desc">הכניסה השנייה לבניין. הפקולטה למדעים. המחלקה למדעי המחשב. המחלקה למתמטיקה שימושית. אודיטוריום.</string>
+    <string name="building_8_c_desc">הכניסה השלישית לבניין. הפקולטה למדעים. המחלקה למדעי המחשב. המחלקה למתמטיקה שימושית. אודיטוריום.</string>
+    <string name="building_3_a_desc">הכניסה הראשית לבניין. מרכז מחשבים. בניין הנהלה. אולם כנסים. מעבדות הנדסת תקשורת.</string>
+    <string name="building_3_b_desc">הכניסה השנייה לבניין. מרכז מחשבים. בניין הנהלה. אולם כנסים. מעבדות הנדסת תקשורת.</string>
     <string name="dorms_desc">מעונות סטודנטים ליד חניון ובניין 7</string>
     <string name="dorms_gate_desc">השער הקרוב ביותר למעונות</string>
     <string name="library_desc">נמצא בקומה העליונה של בניין 5</string>
     <string name="fichman_gate_desc">הכניסה הראשית לHIT, מול בניין 5</string>
     <string name="store_desc">חנות ליד בניין 6 (קומה 1-)</string>
     <string name="hoffin_gate_desc">שער ליד בניין 8 וחניון</string>
+    <string name="building_1_desc">הפקולטה להנדסת תעשייה וניהול טכנולוגיה. המרכז לקידום הסטודנט. מרכז לוגיסטי. כיתות לימוד ומעבדות.</string>
+    <string name="building_2_desc">רדיו קסם FM 106. כיתות לימוד טלמ.</string>
     <string name="golomb_gate_desc">השער האחורי של HIT, ליד בניין 1 ו-2</string>
-    <string name="building_5_desc">הבניין הראשי בHIT</string>
+    <string name="building_4_workshop_desc">סדנאות ציור. סדנאות עיצוב.</string>
+    <string name="building_5_desc">הבניין הראשי במכללה. הפקולטה להנדסה. הפקולטה לטכנולגיות למידה. בית הספר ללימודים רב תחומיים. מהנל אקדמי. אגודת הסטודנטים. מכינה קדם-אקדמית. בית הספר ללימודי תעודה. ספרייה. קפיטריה.</string>
+    <string name="building_6_desc">הפקולטה לעיצוב. אודיטוריום.</string>
+    <string name="building_7_desc">הפקולטה לעיצוב. סדנאות עיצוב.</string>
     <string name="no_desc">אין תיאור</string>
     <string name="menu">תפריט</string>
     <string name="could_not_take_picture">לא ניתן לצלם תמונה</string>

@@ -44,7 +44,7 @@
         <TextView
             android:id="@+id/descriptionTextView"
             android:layout_width="262dp"
-            android:layout_height="21dp"
+            android:layout_height="70dp"
             android:layout_weight="1"
             android:text="@string/description"
             android:paddingStart="5dp"

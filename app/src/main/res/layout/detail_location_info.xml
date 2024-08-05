@@ -72,10 +72,9 @@
             android:text="@string/description"
             android:textColor="@color/gray"
             android:textSize="20sp"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.767" />
+            app:layout_constraintTop_toBottomOf="@id/item_detail_image"
+            app:layout_constraintBottom_toBottomOf="parent" />
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/item_detail_image"
@@ -88,7 +87,7 @@
             app:layout_constraintHorizontal_bias="0.495"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.422"
+            app:layout_constraintVertical_bias="0.357"
             app:shapeAppearanceOverlay="@style/RoundedImageView" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

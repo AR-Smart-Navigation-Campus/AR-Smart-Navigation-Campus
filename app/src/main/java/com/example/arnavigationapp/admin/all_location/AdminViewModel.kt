@@ -1,6 +1,7 @@
 package com.example.arnavigationapp.admin.all_location
 
 import android.app.Application
+import android.content.Context
 import android.location.Location
 import android.net.Uri
 import android.util.Log
@@ -170,24 +171,52 @@ class AdminViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     // Method to map location names to string resource IDs
-    fun getLocationDescriptionResId(locationDescription: String): Int {
+    private fun getLocationDescriptionResId(locationDescription: String): Int {
         return when (locationDescription) {
-            "A student\\'s club in building 6" -> R.string.club_desc
+            "Cafeteria" -> R.string.cafeteria_desc
+            "A student's club in building 6" -> R.string.club_desc
             "The student\\'s union in building 5" -> R.string.aguda_desc
-            "The first entrance to building 8" -> R.string.building_8_a_desc
-            "The second entrance to building 8" -> R.string.building_8_b_desc
-            "The third entrance to building 8" -> R.string.building_8_c_desc
-            "The first entrance to building 3" -> R.string.building_3_a_desc
-            "The second entrance to building 3" -> R.string.building_3_b_desc
-            "Student\\'s dorms near the parking lot and building 7" -> R.string.dorms_desc
+            "The first entrance to building 8. Faculty of Science. Department of Computer Science. Department of Applied Mathematics. Auditorium " -> R.string.building_8_a_desc
+            "The second entrance to building 8. Faculty of Science. Department of Computer Science. Department of Applied Mathematics. Auditorium " -> R.string.building_8_b_desc
+            "The third entrance to building 8. Faculty of Science. Department of Computer Science. Department of Applied Mathematics. Auditorium " -> R.string.building_8_c_desc
+            "The first entrance to building 3. Computer center. Administration building. Assembly Hall. Communication engineering laboratories." -> R.string.building_3_a_desc
+            "The second entrance to building 3. Computer center. Administration building. Assembly Hall. Communication engineering laboratories." -> R.string.building_3_b_desc
+            "Student's dorms near the parking lot and building 7" -> R.string.dorms_desc
             "The closest gate to the dorms" -> R.string.dorms_gate_desc
             "Top floor of building 5" -> R.string.library_desc
             "The main entrance to HIT , in front of building 5" -> R.string.fichman_gate_desc
             "A store near building 6 (floor -1)" -> R.string.store_desc
             "A gate near building 8 and a parking lot" -> R.string.hoffin_gate_desc
+            "The Faculty of Industrial Engineering and Technology Management. The Center for Student Advancement. Logistics center. Classrooms and laboratories." -> R.string.building_1_desc
+            "Radio FM 106. Classrooms." -> R.string.building_2_desc
             "The rear gate of Hit , near building 1 and 2" -> R.string.golomb_gate_desc
-            "The main building in HIT" -> R.string.building_5_desc
+            "The Faculty of Design. Auditorium." -> R.string.building_6_desc
+            "The Faculty of Design. Design workshops." -> R.string.building_7_desc
+            "Painting workshops. Sculpture workshops" -> R.string.building_4_workshop_desc
+            "The main building in HIT. Faculty of Engineering. The Faculty of Learning Technologies. The School of Multidisciplinary Studies. Academic administration. Student Association. A preparatory program. School of Diploma Studies. Library. cafeteria." -> R.string.building_5_desc
             else -> R.string.no_desc
         }
+    }
+
+    fun getFormattedLocationDescription(context: Context, locationDescription: String): String {
+        // Get the resource ID for the location description
+        val resId = getLocationDescriptionResId(locationDescription)
+
+        // If the description is not found, return the original description
+        if (resId == R.string.no_desc) {
+            return locationDescription
+        }
+        // Retrieve the string from the resources
+        val originalText = context.getString(resId)
+
+        // Split the text by the period, trim whitespace, and filter out empty parts
+        val sentences = originalText.split(".")
+            .map { it.trim() }
+            .filter { it.isNotEmpty() }
+
+        // Join the sentences with a newline character
+        val formattedText = sentences.joinToString(separator = "\n")
+
+        return formattedText
     }
 }
