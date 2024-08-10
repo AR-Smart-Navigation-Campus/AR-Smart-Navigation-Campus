@@ -15,7 +15,6 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
@@ -35,6 +34,9 @@ import com.google.ar.sceneform.math.Quaternion
 import com.google.ar.sceneform.rendering.ModelRenderable
 import com.google.ar.sceneform.rendering.ViewRenderable
 import com.google.ar.sceneform.ux.ArFragment
+import com.google.firebase.Firebase
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.auth
 import kotlin.math.cos
 import kotlin.math.sin
 import kotlin.text.*
@@ -52,8 +54,11 @@ class StartARFragment : Fragment() {
     private val adminViewModel: AdminViewModel by activityViewModels()
     private lateinit var binding: StartArFragmentBinding
     private lateinit var arFragment: ArFragment
+    private var auth: FirebaseAuth = Firebase.auth
+    private val currentUser = auth.currentUser
     private var isModelPlaced = false
     private var isDestinationReached = false
+    private var accuracyText = ""
     private lateinit var arrowNode: Node
     private lateinit var targetLocation: Location
     private lateinit var myLocation: Location
@@ -105,6 +110,14 @@ class StartARFragment : Fragment() {
                 "$latitude,$longitude",
                 currAccuracy
             )
+            accuracyText =
+                getString(R.string.accuracy) + ": " + accuracy + " " + getString(R.string.meters_accuracy)
+            binding.accuracyText.text = accuracyText
+        }
+
+        // Update the accuracy text view if the user is an admin
+        if(currentUser?.email == adminViewModel.admin){
+            binding.accuracyText.visibility = View.VISIBLE
         }
 
         // Add an update listener to the AR scene view
@@ -123,7 +136,7 @@ class StartARFragment : Fragment() {
                         binding.arrivelCardView.visibility = View.VISIBLE // Show the arrival card
                     }
                     updateUI(distance) // Update the UI with the distance
-                    setModelPosition() // Set the position of the model
+                    updateArrowNode() // Set the position of the model
                     arFragment.arSceneView.planeRenderer.isVisible =
                         false // Hide the plane renderer
                 }
@@ -144,10 +157,13 @@ class StartARFragment : Fragment() {
                     if ((adminViewModel.accuracy.value ?: Float.MAX_VALUE) > 5.0f) {
                         continue // Skip if accuracy is poor
                     }
+                    binding.loadingCardView.visibility = View.GONE
                     binding.progressBar.visibility = View.GONE
                     binding.loadingText.visibility = View.GONE
+                    binding.arrivelCardView.visibility = View.GONE
                     loadArrowModel(arFragment, arrowNode)
                     isModelPlaced = true
+                    updateArrowNode() // Ensure the arrow is correctly positioned and rotated after placement
                     break
                 }
             }
@@ -169,7 +185,7 @@ class StartARFragment : Fragment() {
 
     // Update the arrow node
     private fun updateArrowNode() {
-        if (::myLocation.isInitialized && ::targetLocation.isInitialized) {
+        if (::myLocation.isInitialized && ::targetLocation.isInitialized && isModelPlaced) {
             val direction = calculateDirectionVector(
                 myLocation,
                 targetLocation
@@ -179,6 +195,7 @@ class StartARFragment : Fragment() {
                 Vector3.up()
             ) // Calculate the rotation of the arrow model
             arrowNode.worldRotation = rotation // Update arrow node rotation
+            Log.d("StartARFragment", "Arrow updated with direction: $direction, rotation: $rotation")
         }
     }
 
@@ -220,8 +237,7 @@ class StartARFragment : Fragment() {
 
     // Calculate the direction to the target location
     private fun calculateBearing(from: Location, to: Location): Float {
-        val bearing = from.bearingTo(to) // Calculate the bearing to the target location
-        return (-bearing + 360) % 360 // Normalize the bearing
+        return from.bearingTo(to) // Calculate the bearing to the target location
     }
 
     // Calculate the direction to the target location
@@ -230,10 +246,15 @@ class StartARFragment : Fragment() {
             myLocation,
             targetLocation
         ) // Calculate the bearing to the target location
-        val bearingRadians = Math.toRadians(bearing.toDouble()) // Convert the bearing to radians
 
-        val x = cos(bearingRadians).toFloat() // Calculate the x component of the direction vector
-        val z = sin(bearingRadians).toFloat() // Calculate the z component of the direction vector
+        // Adjust the bearing by 90 degrees to align with the AR coordinate system
+        val adjustedBearing = (bearing + 90) % 360
+        val adjustedBearingRadians = Math.toRadians(adjustedBearing.toDouble()) // Convert bearing to radians
+
+
+        val x = cos(adjustedBearingRadians).toFloat() // Calculate the x component of the direction vector
+        val z = sin(adjustedBearingRadians).toFloat() // Calculate the z component of the direction vector
+
 
         return Vector3(x, 0f, z).normalized() // Normalize the direction vector
     }
@@ -351,3 +372,4 @@ class StartARFragment : Fragment() {
         return Triple(latitude, longitude, accuracy) // Return the extracted data
     }
 }
+

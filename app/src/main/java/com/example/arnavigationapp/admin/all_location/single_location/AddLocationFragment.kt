@@ -1,5 +1,6 @@
 package com.example.arnavigationapp.admin.all_location.single_location
 
+import android.content.pm.PackageManager
 import android.content.res.ColorStateList
 import android.net.Uri
 import android.os.Bundle
@@ -108,6 +109,33 @@ class AddLocationFragment : Fragment() {
 
 
     private fun handleTakePictureClick() {
+        if (ContextCompat.checkSelfPermission(
+                requireContext(),
+                android.Manifest.permission.CAMERA
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            // Request camera permission
+            requestCameraPermissionLauncher.launch(android.Manifest.permission.CAMERA)
+        } else {
+            // Permission is already granted, proceed to take a picture
+            takePicture()
+        }
+    }
+
+    private val requestCameraPermissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
+            if (isGranted) {
+                takePicture()
+            } else {
+                Toast.makeText(
+                    context,
+                    getString(R.string.camera_permission_denied),
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+
+    private fun takePicture() {
         val photoFile: File? = try {
             createImageFile()
         } catch (ex: IOException) {
@@ -209,7 +237,11 @@ class AddLocationFragment : Fragment() {
                 }
                 binding.btnDontAddToMap.setOnClickListener {
                     binding.addToMapCardView.visibility = View.GONE
-                    Toast.makeText(context, getString(R.string.add_location_msg), Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        context,
+                        getString(R.string.add_location_msg),
+                        Toast.LENGTH_SHORT
+                    ).show()
                     viewModel.addEntry(uri)
                     binding.placeNameEditText.editText?.text?.clear()
                     binding.descriptionEditText.editText?.text?.clear()

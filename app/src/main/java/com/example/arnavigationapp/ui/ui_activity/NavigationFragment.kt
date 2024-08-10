@@ -24,6 +24,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.arnavigationapp.admin.all_location.AdminViewModel
 import com.example.arnavigationapp.R
+import com.example.arnavigationapp.admin.all_location.single_location.AzimuthSensorManager
 import com.example.arnavigationapp.databinding.NavigationFragmentBinding
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
@@ -54,6 +55,8 @@ class NavigationFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = NavigationFragmentBinding.inflate(inflater, container, false)
+
+
 
         val moveUpAnimation: Animation = AnimationUtils.loadAnimation(context, R.anim.to_up)
         val moveDownAnimation: Animation = AnimationUtils.loadAnimation(context, R.anim.move_down)

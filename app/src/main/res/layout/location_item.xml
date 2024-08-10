@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:cardUseCompatPadding="true"
-    app:contentPadding="5dp"
+    app:contentPadding="8dp"
     app:cardCornerRadius="8dp">
 
 
@@ -43,18 +43,20 @@
 
         <TextView
             android:id="@+id/descriptionTextView"
-            android:layout_width="262dp"
-            android:layout_height="70dp"
+            android:layout_width="220dp"
+            android:layout_height="65dp"
             android:layout_weight="1"
-            android:text="@string/description"
             android:paddingStart="5dp"
-            android:paddingEnd="5dp"
+            android:paddingEnd="3dp"
+            android:text="@string/description"
             android:textSize="16sp"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/buildingImage"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/buildingName"
-            app:layout_constraintVertical_bias="0.777"
+            app:layout_constraintVertical_bias="1.0"
             tools:ignore="MissingConstraints" />
 
         <TextView

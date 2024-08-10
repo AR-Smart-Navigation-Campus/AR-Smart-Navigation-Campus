@@ -44,7 +44,7 @@ class AdminViewModel(application: Application) : AndroidViewModel(application) {
 
     private val _descriptionInput =
         MutableLiveData<String>() // MutableLiveData object for the description input
-    val descriptionInput: LiveData<String> =
+    private val descriptionInput: LiveData<String> =
         _descriptionInput // LiveData object for the description input
 
     private val _azimuth =

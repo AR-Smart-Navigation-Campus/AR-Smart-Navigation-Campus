@@ -113,4 +113,6 @@
     <string name="no_desc">אין תיאור</string>
     <string name="menu">תפריט</string>
     <string name="could_not_take_picture">לא ניתן לצלם תמונה</string>
+    <string name="camera_permission_denied">לא ניתן לצלם תמונה, גישה נדחתה</string>
+
 </resources>
