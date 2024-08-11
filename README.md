@@ -57,3 +57,11 @@ The project follows the MVVM (Model-View-ViewModel) architecture pattern to ensu
 ## 🙌 **Acknowledgments**
 + Special thanks to the project mentors and contributors.
 + Recognition to the open-source libraries and tools used in this project.
+
+## 👥 **Authors**
++ Yarin Zaroog - [GitHub Profile](https://github.com/Yarinzaroog)
++ Gal Mizrachi - [GitHub Profile](https://github.com/GalMizrachi)
++ Michelle Cain - [GitHub Profile](https://github.com/michellecain31)
++ Maayan Swissa - [GitHub Profile](https://github.com/maayanswisa)
++ Adir Kandabi - [GitHub Profile](https://github.com/adirkandabi)
++ Yarin Ozeri - [GitHub Profile](https://github.com/ozeriyarin)
