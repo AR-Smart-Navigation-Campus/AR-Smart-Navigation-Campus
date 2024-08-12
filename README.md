@@ -5,13 +5,13 @@ A Smart Campus Navigation application using Augmented Reality (AR) to enhance us
 ---
 
 ## 📋 **Table of Contents**
-1. [Project Overview](#project-overview)
-2. [Installation](#installation)
-3. [Usage](#usage)
-4. [Documentation](#documentation)
-5. [Architecture](#architecture)
-6. [Features](#features)
-7. [Acknowledgments](#acknowledgments)
+1. [Project Overview](#-project-overview)
+2. [Installation](#-installation)
+3. [Usage](#-usage)
+4. [Documentation](#-documentation)
+5. [Architecture](#-architecture)
+6. [Features](#-features)
+7. [Acknowledgments](#-acknowledgments)
 
 ---
 
