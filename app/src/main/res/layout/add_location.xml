@@ -23,6 +23,31 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <ImageView
+            android:id="@+id/accuracyInfoIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:contentDescription="@string/accuracy_info"
+            android:focusable="true"
+            android:src="@drawable/msg_icon"
+            app:layout_constraintTop_toTopOf="@id/accuracy"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/accuracy"
+            app:layout_constraintBottom_toBottomOf="@id/accuracy" />
+
+        <TextView
+            android:id="@+id/accuracyInfoText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="@string/wait_for_accuracy"
+            android:textColor="@color/orange"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/coordText" />
+
         <TextView
             android:id="@+id/coordText"
             android:layout_width="wrap_content"

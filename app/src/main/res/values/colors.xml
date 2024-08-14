@@ -5,6 +5,9 @@
     <color name="white_blue">#5B73FF</color>
     <color name="btnsAndInput">#8FFFFFFF</color>
     <color name="red">#DAEA0000</color>
+    <color name="green">#00FF00</color>
+    <color name="yellow">#FFFF00</color>
+    <color name="orange">#FF8000</color>
     <color name="background_white">#A9D1D1D1</color>
     <color name="blue_link">#319DF3</color>
     <color name="modal_window">#A3313131</color>

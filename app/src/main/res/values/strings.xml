@@ -114,7 +114,8 @@
     <string name="menu">menu</string>
     <string name="could_not_take_picture">Could not take a picture</string>
     <string name="camera_permission_denied">Could not take a picture , camera permission denied</string>
-
+    <string name="accuracy_info" translatable="false" />
+    <string name="wait_for_accuracy">Please wait until the GPS accuracy improves</string>
 
 
 </resources>

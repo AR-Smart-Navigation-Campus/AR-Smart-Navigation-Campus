@@ -21,6 +21,9 @@ import com.example.arnavigationapp.admin.all_location.model.LocationData
 import com.example.arnavigationapp.databinding.MapFragmentBinding
 import com.example.arnavigationapp.R
 import com.example.arnavigationapp.admin.all_location.model.FirestoreRepository
+import com.google.firebase.Firebase
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.auth
 
 /**
  *  MapFragment class that extends Fragment and provides functionality for the map screen.
@@ -30,8 +33,7 @@ class MapFragment : Fragment() {
     private lateinit var binding: MapFragmentBinding // View binding for the fragment's layout
     private val viewModel: AdminViewModel by activityViewModels() // Shared ViewModel between fragments
     private val repository = FirestoreRepository() // FirestoreRepository object for data operations
-    private var fragmentId: Int? = null // Holds the fragment ID to handle navigation
-    private val addLocationId = 2131230786 // ID for the add location fragment
+    private var fragmentId: Int? = null // Fragment ID for navigation
     private val ar = R.id.action_MapFragment_to_AR // Action ID to navigate to AR fragment
     private val loadedButtons =
         mutableSetOf<String>() // Set to track loaded buttons to prevent duplication
@@ -59,7 +61,7 @@ class MapFragment : Fragment() {
 
         val flickerAnimation =
             AnimationUtils.loadAnimation(context, R.anim.flicker) // Load animation
-        if (fragmentId != addLocationId) {
+        if (R.id.action_MapFragment_to_addLocationFragment != fragmentId) {
             // Setup for normal map view
             binding.outOfBounds.startAnimation(flickerAnimation)
             binding.pickPlace.startAnimation(flickerAnimation)
@@ -203,7 +205,7 @@ class MapFragment : Fragment() {
             setTextColor(Color.BLACK) // Set text color to black
         }
 
-        if (fragmentId == addLocationId) {
+        if (R.id.action_MapFragment_to_addLocationFragment == fragmentId) {
             // Make the button draggable and update its position in Firestore
             button.setOnTouchListener { view, motionEvent ->
                 when (motionEvent.action) {

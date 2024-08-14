@@ -11,79 +11,72 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content"
+        android:padding="8dp">
 
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/buildingImage"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:padding="5dp"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
             android:contentDescription="@string/location_image"
             android:src="@mipmap/ic_launcher"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:shapeAppearanceOverlay="@style/RoundedImageView"
-            tools:ignore="MissingConstraints" />
-
-        <TextView
-            android:id="@+id/locationTextView"
-            android:layout_width="261dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:paddingStart="5dp"
-            android:paddingEnd="5dp"
-            android:text="@string/coordinates"
-            android:textSize="16sp"
-            app:layout_constraintBaseline_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/azimuthTextView" />
-
-        <TextView
-            android:id="@+id/descriptionTextView"
-            android:layout_width="220dp"
-            android:layout_height="65dp"
-            android:layout_weight="1"
-            android:paddingStart="5dp"
-            android:paddingEnd="3dp"
-            android:text="@string/description"
-            android:textSize="16sp"
-            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/buildingImage"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/buildingName"
-            app:layout_constraintVertical_bias="1.0"
-            tools:ignore="MissingConstraints" />
-
-        <TextView
-            android:id="@+id/azimuthTextView"
-            android:layout_width="261dp"
-            android:layout_height="23dp"
-            android:layout_weight="1"
-            android:text="@string/azimuth"
-            android:paddingStart="5dp"
-            android:paddingEnd="5dp"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toTopOf="@+id/locationTextView"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/buildingName"
-            tools:ignore="MissingConstraints" />
+            app:layout_constraintWidth_percent="0.4"
+            app:shapeAppearanceOverlay="@style/RoundedImageView" />
 
         <TextView
             android:id="@+id/buildingName"
-            android:layout_width="278dp"
-            android:layout_height="27dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:text="@string/name"
             android:paddingStart="5dp"
             android:paddingEnd="5dp"
             android:textSize="20sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="MissingConstraints" />
+            app:layout_constraintStart_toEndOf="@id/buildingImage"
+            app:layout_constraintTop_toTopOf="@id/buildingImage"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <TextView
+            android:id="@+id/azimuthTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/azimuth"
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp"
+            android:textSize="16sp"
+            app:layout_constraintStart_toEndOf="@id/buildingImage"
+            app:layout_constraintTop_toBottomOf="@id/buildingName"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <TextView
+            android:id="@+id/locationTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp"
+            android:text="@string/coordinates"
+            android:textSize="16sp"
+            app:layout_constraintStart_toEndOf="@id/buildingImage"
+            app:layout_constraintTop_toBottomOf="@id/azimuthTextView"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <TextView
+            android:id="@+id/descriptionTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp"
+            android:text="@string/description"
+            android:textSize="16sp"
+            android:visibility="gone"
+            app:layout_constraintStart_toEndOf="@id/buildingImage"
+            app:layout_constraintTop_toBottomOf="@id/locationTextView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

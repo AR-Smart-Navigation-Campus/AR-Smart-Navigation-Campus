@@ -114,5 +114,6 @@
     <string name="menu">תפריט</string>
     <string name="could_not_take_picture">לא ניתן לצלם תמונה</string>
     <string name="camera_permission_denied">לא ניתן לצלם תמונה, גישה נדחתה</string>
+    <string name="wait_for_accuracy">אנא המתן שהדיוק ישתפר</string>
 
 </resources>

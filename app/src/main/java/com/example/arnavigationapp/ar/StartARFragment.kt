@@ -15,6 +15,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
@@ -23,6 +24,7 @@ import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.arnavigationapp.admin.all_location.AdminViewModel
 import com.example.arnavigationapp.R
+import com.example.arnavigationapp.admin.all_location.single_location.AzimuthSensorManager
 import com.example.arnavigationapp.databinding.StartArFragmentBinding
 import com.google.ar.core.Plane
 import com.google.ar.core.TrackingState
@@ -81,6 +83,7 @@ class StartARFragment : Fragment() {
         binding.exitBtn.setOnClickListener {
             activity?.finishAffinity() // Exit the app
         }
+
         return binding.root
     }
 
@@ -94,6 +97,7 @@ class StartARFragment : Fragment() {
         textViewDistance = TextView(context) // Create a new text view for the distance
         locationIcon = ImageView(context) // Create a new text view for the destination
         arrowNode = Node() // Create a new node for the arrow model
+
 
         adminViewModel.chosenItem.observe(viewLifecycleOwner) { location ->
             targetLocation =
@@ -154,7 +158,7 @@ class StartARFragment : Fragment() {
             val planes = frame.getUpdatedTrackables(Plane::class.java)
             for (plane in planes) {
                 if (plane.trackingState == TrackingState.TRACKING) {
-                    if ((adminViewModel.accuracy.value ?: Float.MAX_VALUE) > 5.0f) {
+                    if (accuracy> 6.0f) {
                         continue // Skip if accuracy is poor
                     }
                     binding.loadingCardView.visibility = View.GONE
@@ -247,16 +251,16 @@ class StartARFragment : Fragment() {
             targetLocation
         ) // Calculate the bearing to the target location
 
-        // Adjust the bearing by 90 degrees to align with the AR coordinate system
-        val adjustedBearing = (bearing + 90) % 360
-        val adjustedBearingRadians = Math.toRadians(adjustedBearing.toDouble()) // Convert bearing to radians
+        val relativeBearing = (bearing + 360) % 360
 
+        // Convert the relative direction to radians if needed
+        val relativeDirectionRadians = Math.toRadians(relativeBearing.toDouble())
 
-        val x = cos(adjustedBearingRadians).toFloat() // Calculate the x component of the direction vector
-        val z = sin(adjustedBearingRadians).toFloat() // Calculate the z component of the direction vector
+        // Convert the relative direction to a direction vector
+        val directionX = sin(relativeDirectionRadians).toFloat()
+        val directionZ = -cos(relativeDirectionRadians).toFloat()
 
-
-        return Vector3(x, 0f, z).normalized() // Normalize the direction vector
+        return Vector3(directionX, 0f, directionZ).normalized()
     }
 
     // Render 3D text on the screen

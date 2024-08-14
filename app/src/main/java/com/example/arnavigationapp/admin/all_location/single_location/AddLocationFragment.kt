@@ -83,6 +83,17 @@ class AddLocationFragment : Fragment() {
     ): View {
         _binding = AddLocationBinding.inflate(inflater, container, false)
 
+        val fadeInAnimation = AnimationUtils.loadAnimation(context, R.anim.fade_in)
+
+        binding.accuracyInfoIcon.setOnClickListener {
+            if (binding.accuracyInfoText.visibility == View.GONE) {
+                binding.accuracyInfoText.visibility = View.VISIBLE
+                binding.accuracyInfoText.startAnimation(fadeInAnimation)
+            } else {
+                binding.accuracyInfoText.visibility = View.GONE
+            }
+        }
+
         // Initialize AzimuthSensorManager and set azimuth update listener
         azimuthSensorManager = AzimuthSensorManager(requireContext()) { azimuth ->
             viewModel.updateAzimuth(azimuth)
