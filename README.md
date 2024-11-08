@@ -42,7 +42,7 @@ After installing the application on an Android device:
 3.  Follow the AR-based navigation cues to reach your destination.
 
 ## 📄 Documentation
-Detailed documentation for this project can be found in the following Google Drive folder: [Project Documentation](https://drive.google.com/drive/folders/18rqIqUePffS1Uer7REIJ3RGXusSn4yhz).
+Detailed documentation for this project can be found in the following Google Drive folder: [Project Documentation](https://drive.google.com/drive/folders/1r0-S5Q8p94ltqEWH3tZytd2wM67fj6aC?usp=drive_link).
 
 ## 🧩 **Architecture**
 The project follows the MVVM (Model-View-ViewModel) architecture pattern to ensure a modular and maintainable codebase.
