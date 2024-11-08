@@ -15,7 +15,6 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
@@ -68,6 +67,8 @@ class StartARFragment : Fragment() {
     private lateinit var textViewDistance: TextView
     private lateinit var locationIcon: ImageView
     private var accuracy: Float = 0.0f
+    private lateinit var azimuthSensorManager: AzimuthSensorManager // Instance of AzimuthSensorManager to get azimuth updates.
+    private var currAzimuth: Float = 0.0f
 
 
     // Inflate the layout
@@ -84,6 +85,12 @@ class StartARFragment : Fragment() {
             activity?.finishAffinity() // Exit the app
         }
 
+        // Initialize AzimuthSensorManager and set azimuth update listener
+        azimuthSensorManager = AzimuthSensorManager(requireContext()) { azimuth ->
+            adminViewModel.updateAzimuth(azimuth)
+            currAzimuth = azimuth
+
+        }
         return binding.root
     }
 
@@ -94,17 +101,21 @@ class StartARFragment : Fragment() {
         arFragment =
             childFragmentManager.findFragmentById(R.id.sceneView) as ArFragment // Get the AR fragment
         arFragment.planeDiscoveryController.show() // Show the plane discovery controller
+
+        // Initialize UI elements
         textViewDistance = TextView(context) // Create a new text view for the distance
         locationIcon = ImageView(context) // Create a new text view for the destination
         arrowNode = Node() // Create a new node for the arrow model
 
 
+        // Observe the target location
         adminViewModel.chosenItem.observe(viewLifecycleOwner) { location ->
             targetLocation =
                 adminViewModel.createLocation(location.location) // Create a Location object from the location
-            imgUrl = location.imgUrl // Get the name of the location
+            imgUrl = location.imgUrl // Get the img of the location
         }
 
+        // Observe the user's location and accuracy
         adminViewModel.address.observe(viewLifecycleOwner) { address ->
             val (latitude, longitude, currAccuracy) = extractData(address) // Extract the data from the address
             accuracy = currAccuracy
@@ -120,29 +131,28 @@ class StartARFragment : Fragment() {
         }
 
         // Update the accuracy text view if the user is an admin
-        if(currentUser?.email == adminViewModel.admin){
+        if (currentUser?.email == adminViewModel.admin) {
             binding.accuracyText.visibility = View.VISIBLE
         }
 
         // Add an update listener to the AR scene view
         arFragment.arSceneView.scene.addOnUpdateListener {
             if (isModelPlaced) {
-                // Check if the current location is within 5 meters of the target location
+                // Check if the current location is within 6 meters of the target location
                 if (::myLocation.isInitialized && ::targetLocation.isInitialized) {
                     val distance =
                         myLocation.distanceTo(targetLocation) // Calculate the distance to the target location
-                    if (distance < 6.0) {
+                    if (distance < 6.0f) {
                         // Remove the arrow model from the scene
                         arrowNode.isEnabled = false // Disable the arrow node
                         arrowNode.renderable = null // Set the renderable of the arrow node to null
                         isModelPlaced = false
                         isDestinationReached = true
                         binding.arrivelCardView.visibility = View.VISIBLE // Show the arrival card
+                    } else {
+                        updateArrowNode() // Set the rotation of the model
+                        updateUI(distance) // Update the UI with the distance
                     }
-                    updateUI(distance) // Update the UI with the distance
-                    updateArrowNode() // Set the position of the model
-                    arFragment.arSceneView.planeRenderer.isVisible =
-                        false // Hide the plane renderer
                 }
             } else {
                 handlePlaneDetection() // Handle the plane detection
@@ -158,16 +168,16 @@ class StartARFragment : Fragment() {
             val planes = frame.getUpdatedTrackables(Plane::class.java)
             for (plane in planes) {
                 if (plane.trackingState == TrackingState.TRACKING) {
-                    if (accuracy> 6.0f) {
-                        continue // Skip if accuracy is poor
+                    if (accuracy > 6.0f || isModelPlaced) {
+                        continue // Skip if accuracy is poor or the model is already placed
                     }
                     binding.loadingCardView.visibility = View.GONE
                     binding.progressBar.visibility = View.GONE
                     binding.loadingText.visibility = View.GONE
                     binding.arrivelCardView.visibility = View.GONE
-                    loadArrowModel(arFragment, arrowNode)
-                    isModelPlaced = true
-                    updateArrowNode() // Ensure the arrow is correctly positioned and rotated after placement
+                    arFragment.arSceneView.planeRenderer.isVisible =
+                        false // Hide the plane renderer
+                    loadArrowModel() // Load the arrow model
                     break
                 }
             }
@@ -188,37 +198,50 @@ class StartARFragment : Fragment() {
     }
 
     // Update the arrow node
-    private fun updateArrowNode() {
+    private fun updateArrowNode(azimuth: Float = 0.0f) {
         if (::myLocation.isInitialized && ::targetLocation.isInitialized && isModelPlaced) {
+
             val direction = calculateDirectionVector(
                 myLocation,
-                targetLocation
+                targetLocation,
+                azimuth
             ) // Calculate the direction to the target location
+
             val rotation = Quaternion.lookRotation(
                 direction,
                 Vector3.up()
             ) // Calculate the rotation of the arrow model
-            arrowNode.worldRotation = rotation // Update arrow node rotation
-            Log.d("StartARFragment", "Arrow updated with direction: $direction, rotation: $rotation")
+
+            val forwardRotation = Quaternion.axisAngle(Vector3.up(),-90f);
+
+            val fixedRotation = Quaternion.multiply(forwardRotation,rotation)
+
+            if(azimuth.toDouble() !=0.0){
+                Log.d("StartARFragment", "Normalized direction: $direction")
+                Log.d("StartARFragment", "Normalized rotation: $fixedRotation")
+                Log.d("StartARFragment", "Normalized barrier: #####################################")
+            }
+
+           arrowNode.worldRotation = fixedRotation // Update arrow node rotation
         }
     }
 
     // Set the position of the model
     private fun setModelPosition() {
         arrowNode.localPosition = Vector3(0f, -1f, -2f) // 2 meter in front of the camera
-        updateArrowNode()
+        isModelPlaced = true
+        updateArrowNode(currAzimuth)
     }
 
     // Load the arrow model and attach it to the camera
     private fun loadArrowModel(
-        fragment: ArFragment, node: Node
     ) {
-        val modelUri = Uri.parse("models/direction_arrow.glb") // URI of the arrow model
+        val modelUri = Uri.parse("models/direction_arrow6.glb") // URI of the arrow model
         ModelRenderable.builder()
             .setSource(
-                fragment.context,
+                arFragment.context,
                 RenderableSource.builder()
-                    .setSource(fragment.context, modelUri, RenderableSource.SourceType.GLB)
+                    .setSource(arFragment.context, modelUri, RenderableSource.SourceType.GLB)
                     .setRecenterMode(RenderableSource.RecenterMode.ROOT)
                     .setScale(0.2f) // Scale the model
                     .build()
@@ -229,8 +252,8 @@ class StartARFragment : Fragment() {
                 arrowNode.apply {
                     this.renderable = renderable // Set the renderable of the node
                     arFragment.arSceneView.scene.addChild(this) // Add the node to the scene
+                    arrowNode.setParent(arFragment.arSceneView.scene.camera) // Set the parent of the node to the camera
                 }
-                node.setParent(fragment.arSceneView.scene.camera) // Attach the node to the camera
                 setModelPosition() // Set the position of the model
             }
             .exceptionally { throwable ->
@@ -239,29 +262,45 @@ class StartARFragment : Fragment() {
             }
     }
 
-    // Calculate the direction to the target location
+// Calculate the bearing to the target location
     private fun calculateBearing(from: Location, to: Location): Float {
-        return from.bearingTo(to) // Calculate the bearing to the target location
+        return from.bearingTo(to)
     }
 
     // Calculate the direction to the target location
-    private fun calculateDirectionVector(myLocation: Location, targetLocation: Location): Vector3 {
+    private fun calculateDirectionVector(
+        myLocation: Location,
+        targetLocation: Location,
+        azimuth: Float = 0.0f
+    ): Vector3 {
+
         val bearing = calculateBearing(
             myLocation,
             targetLocation
         ) // Calculate the bearing to the target location
 
-        val relativeBearing = (bearing + 360) % 360
+        //Normalize azimuth and bearing to be within 0 to 360 degrees
+        val normalizedAzimuth = (azimuth + 360) % 360
+        val normalizedBearing = (bearing + 360) % 360
 
-        // Convert the relative direction to radians if needed
-        val relativeDirectionRadians = Math.toRadians(relativeBearing.toDouble())
+        val angleDifference = (normalizedBearing - normalizedAzimuth + 360) % 360
 
-        // Convert the relative direction to a direction vector
-        val directionX = sin(relativeDirectionRadians).toFloat()
-        val directionZ = -cos(relativeDirectionRadians).toFloat()
+        if(azimuth.toDouble() !=0.0){
+            Log.d("StartARFragment", "Normalized azimuth: $normalizedAzimuth")
+            Log.d("StartARFragment", "Normalized bearing: $normalizedBearing")
+            Log.d("StartARFragment", "Normalized Angle: $angleDifference")
+        }
+
+        // Convert the angle difference to radians for calculation
+        val directionRadians = Math.toRadians(-angleDifference.toDouble())
+
+        // Convert the angle difference to a 3D direction vector
+        val directionX = sin(directionRadians).toFloat()
+        val directionZ = cos(directionRadians).toFloat()
 
         return Vector3(directionX, 0f, directionZ).normalized()
     }
+
 
     // Render 3D text on the screen
     private fun textRenderer(
@@ -367,6 +406,18 @@ class StartARFragment : Fragment() {
             }
     }
 
+    // Start listening for azimuth updates.
+    override fun onResume() {
+        super.onResume()
+        azimuthSensorManager.startListening()
+    }
+
+    // Stop listening for azimuth updates.
+    override fun onPause() {
+        super.onPause()
+        azimuthSensorManager.stopListening()
+    }
+
     // Extract the data from the address
     private fun extractData(data: String): Triple<String, String, Float> {
         val splitData = data.split(",")
@@ -376,4 +427,3 @@ class StartARFragment : Fragment() {
         return Triple(latitude, longitude, accuracy) // Return the extracted data
     }
 }
-

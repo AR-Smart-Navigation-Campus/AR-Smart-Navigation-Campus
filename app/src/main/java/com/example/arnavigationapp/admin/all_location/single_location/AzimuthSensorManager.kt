@@ -35,6 +35,7 @@ class AzimuthSensorManager(context: Context, private val onAzimuthChanged: (Floa
                 val orientation = FloatArray(3)
                 SensorManager.getOrientation(rotationMatrix, orientation)
                 val azimuth = Math.toDegrees(orientation[0].toDouble()).toFloat()
+
                 onAzimuthChanged(azimuth)
             }
         }

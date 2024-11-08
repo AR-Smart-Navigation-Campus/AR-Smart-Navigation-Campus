@@ -129,7 +129,7 @@ class AdminViewModel(application: Application) : AndroidViewModel(application) {
     // Create a Location object from a string
     fun createLocation(location: String): Location {
         val coordinates = location.split(",") // Split the string by comma
-        Location("provider").apply {
+        Location("location").apply {
             latitude = coordinates[0].toDouble() // Set the latitude
             longitude = coordinates[1].toDouble() // Set the longitude
             return this
