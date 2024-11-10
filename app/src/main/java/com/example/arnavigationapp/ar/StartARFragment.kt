@@ -142,6 +142,18 @@ class StartARFragment : Fragment() {
                 if (::myLocation.isInitialized && ::targetLocation.isInitialized) {
                     val distance =
                         myLocation.distanceTo(targetLocation) // Calculate the distance to the target location
+
+                    val cameraPosition = arFragment.arSceneView.scene.camera.worldPosition
+                    val cameraForward = arFragment.arSceneView.scene.camera.forward
+
+                    val distanceFromCamera = 1.0f  // Define how far in front of the camera the model should be (e.g., 1.0f for 1 meter)
+                    val verticalDisplacement = -0.5f// Define how much lower the model should be relative to the camera (e.g., -0.5f for 0.5 meters down)
+                    val forwardOffset = cameraForward.scaled(distanceFromCamera)// Calculate the forward offset
+                    val verticalOffset = Vector3(0f, verticalDisplacement, 0f)// Calculate the vertical offset
+                    val totalOffset = Vector3.add(forwardOffset, verticalOffset) // Combine the offset
+                    val modelPosition = Vector3.add(cameraPosition, totalOffset)// Calculate the new model position
+                    arrowNode.worldPosition = modelPosition// Set the model's world position
+
                     if (distance < 6.0f) {
                         // Remove the arrow model from the scene
                         arrowNode.isEnabled = false // Disable the arrow node
@@ -154,9 +166,20 @@ class StartARFragment : Fragment() {
                         updateUI(distance) // Update the UI with the distance
                     }
                 }
-            } else {
-                handlePlaneDetection() // Handle the plane detection
-            }
+//            } else {
+//                handlePlaneDetection() // Handle the plane detection
+//            }
+            }else if (arFragment.arSceneView.arFrame?.camera?.trackingState == TrackingState.TRACKING) {
+                    if (accuracy > 6.0f || isModelPlaced) {
+                        return@addOnUpdateListener
+                    }
+                    binding.loadingCardView.visibility = View.GONE
+                    binding.progressBar.visibility = View.GONE
+                    binding.loadingText.visibility = View.GONE
+                    binding.arrivelCardView.visibility = View.GONE
+                    arFragment.arSceneView.planeRenderer.isVisible = false // Hide the plane renderer
+                    loadArrowModel() // Load the arrow model
+                }
         }
     }
 
@@ -214,9 +237,11 @@ class StartARFragment : Fragment() {
 
             val forwardRotation = Quaternion.axisAngle(Vector3.up(),-90f);
 
-            val fixedRotation = Quaternion.multiply(forwardRotation,rotation)
+            val fixedRotation = Quaternion.multiply(rotation,forwardRotation)
 
+            val preRotation = arrowNode.worldRotation
             if(azimuth.toDouble() !=0.0){
+                Log.d("StartARFragment", "Normalized worldRotation: $preRotation")
                 Log.d("StartARFragment", "Normalized direction: $direction")
                 Log.d("StartARFragment", "Normalized rotation: $fixedRotation")
                 Log.d("StartARFragment", "Normalized barrier: #####################################")
@@ -228,8 +253,11 @@ class StartARFragment : Fragment() {
 
     // Set the position of the model
     private fun setModelPosition() {
-        arrowNode.localPosition = Vector3(0f, -1f, -2f) // 2 meter in front of the camera
+        // Set the model's scale to make it smaller
+        arrowNode.localScale = Vector3(0.5f, 0.5f, 0.5f)
+//        arrowNode.localPosition = Vector3(0f, -1f, -2f) // 2 meter in front of the camera
         isModelPlaced = true
+        arrowNode.worldRotation = Quaternion.identity()
         updateArrowNode(currAzimuth)
     }
 
@@ -252,7 +280,7 @@ class StartARFragment : Fragment() {
                 arrowNode.apply {
                     this.renderable = renderable // Set the renderable of the node
                     arFragment.arSceneView.scene.addChild(this) // Add the node to the scene
-                    arrowNode.setParent(arFragment.arSceneView.scene.camera) // Set the parent of the node to the camera
+                    //arrowNode.setParent(arFragment.arSceneView.scene.camera) // Set the parent of the node to the camera
                 }
                 setModelPosition() // Set the position of the model
             }
@@ -283,7 +311,8 @@ class StartARFragment : Fragment() {
         val normalizedAzimuth = (azimuth + 360) % 360
         val normalizedBearing = (bearing + 360) % 360
 
-        val angleDifference = (normalizedBearing - normalizedAzimuth + 360) % 360
+        val angleDifference = (normalizedBearing - normalizedAzimuth + 270) % 360
+
 
         if(azimuth.toDouble() !=0.0){
             Log.d("StartARFragment", "Normalized azimuth: $normalizedAzimuth")
